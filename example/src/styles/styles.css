@@ -1,0 +1,7 @@
+@import 'lib/variables.css';
+@import 'lib/reset.css';
+@import 'lib/base.css';
+
+body {
+  color: var(--color);
+}

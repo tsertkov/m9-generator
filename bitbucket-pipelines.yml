@@ -1,0 +1,14 @@
+image: node:8.1
+
+pipelines:
+  default:
+    - step:
+        caches:
+          - node
+        script:
+          - NPM_CONFIG_LOGLEVEL=warn NPM_CONFIG_PROGRESS=false npm install
+          - npm test
+          - npm run build
+          - git diff
+          - test -z "$(git status -s dist)"
+          - test -z "$(git status -s example/build)"
