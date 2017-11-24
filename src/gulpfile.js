@@ -23,6 +23,7 @@ gulp.task('dev', (callback) => {
     'build-clean',
     ['build-copy', 'dev-webpack'],
     'build-metalsmith',
+    'build-htmlmin',
     'dev-browsersync',
     'dev-watch',
     callback

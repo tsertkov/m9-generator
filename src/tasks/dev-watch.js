@@ -10,5 +10,5 @@ gulp.task('dev-watch', () => {
     path.join(config.layouts.directory, '**/*'),
     path.join(config.layouts.partials, '**/*'),
     path.join(config.helpers.directory, '**/*.js')
-  ], ['build-metalsmith'])
+  ], ['build-metalsmith', 'build-htmlmin'])
 })

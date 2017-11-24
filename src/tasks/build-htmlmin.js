@@ -8,6 +8,6 @@ gulp.task('build-htmlmin', () => (
   gulp
     .src(config.htmlmin.src)
     .pipe(gulpif(config.isGulpDebug, debug({ title: 'HTML Minified:' })))
-    .pipe(gulpif(config.isProduction, htmlmin(config.htmlmin.options)))
+    .pipe(htmlmin(config.htmlmin.options))
     .pipe(gulp.dest(config.paths.dst))
 ))
