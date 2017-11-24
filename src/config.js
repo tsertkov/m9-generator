@@ -36,7 +36,12 @@ let config = {
   htmlmin: {
     src: path.join(dst, '**/*.html'),
     options: {
-      collapseWhitespace: true
+      collapseWhitespace: true,
+      conservativeCollapse: true,
+      removeRedundantAttributes: true,
+      collapseBooleanAttributes: true,
+      minifyJS: true,
+      sortAttributes: true
     }
   },
   pages: {
