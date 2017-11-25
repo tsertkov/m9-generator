@@ -15,7 +15,7 @@
     "test-example": "SITE=example bin/m9.js test"
   },
   "author": "Aleksandr Tsertkov <tsertkov@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "engines": {
     "node": "8.1"
   },
@@ -105,5 +105,5 @@
     "webpack-dev-server": "^2.5.1",
     "yargs": "^8.0.2"
   },
-  "repository": "https://bitbucket.org/tsertkov/m9-generator.git"
+  "repository": "https://github.com/tsertkov/m9-generator.git"
 }
