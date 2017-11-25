@@ -13,7 +13,6 @@ gulp.task('build', (callback) => {
     'build-clean',
     ['build-copy', 'build-webpack'],
     'build-metalsmith',
-    'build-htmlmin',
     callback
   )
 })

@@ -1,5 +1,5 @@
 import slug from 'slug-component'
-import matterInterpolate from './matter-interpolate'
+import matterInterpolate from '../matter-interpolate'
 export default m9metaToFiles
 
 const META_KEY = 'meta_to_files'
