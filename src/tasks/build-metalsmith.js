@@ -6,10 +6,11 @@ import layouts from 'metalsmith-layouts'
 import helpers from 'metalsmith-register-helpers'
 import handlebarsHelpers from 'handlebars-helpers'
 import debug from 'metalsmith-debug'
+import htmlmin from 'metalsmith-html-minifier'
 import loadContent from '../lib/load-content'
-import m9metaToFiles from '../lib/m9-meta-to-files'
-import m9matterInterpolate from '../lib/m9-matter-interpolate'
-import m9permalink from '../lib/m9-permalink'
+import m9metaToFiles from '../lib/metalsmith-plugins/m9-meta-to-files'
+import m9matterInterpolate from '../lib/metalsmith-plugins/m9-matter-interpolate'
+import m9permalink from '../lib/metalsmith-plugins/m9-permalink'
 import config from '../config'
 
 // register handlebars-helpers
@@ -31,6 +32,7 @@ gulp.task('build-metalsmith', callback => {
     .use(inplace(config.inplace))
     .use(layouts(config.layouts))
     .use(m9permalink())
+    .use(htmlmin(config.htmlmin.src, config.htmlmin.options))
     .build(error => {
       if (error) return callback(error)
       browserSync.reload()

@@ -1,4 +1,4 @@
-import matterInterpolate from './matter-interpolate'
+import matterInterpolate from '../matter-interpolate'
 export default m9matterInterpolate
 
 const EXCLUDE_PROPS = [

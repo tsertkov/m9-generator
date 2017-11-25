@@ -34,10 +34,9 @@ let config = {
     srcScripts: path.join(src, DIR_SCRIPTS)
   },
   htmlmin: {
-    src: path.join(dst, '**/*.html'),
+    src: '*.html',
     options: {
       collapseWhitespace: true,
-      conservativeCollapse: true,
       removeRedundantAttributes: true,
       collapseBooleanAttributes: true,
       minifyJS: true,
