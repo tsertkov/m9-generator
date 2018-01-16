@@ -51,22 +51,8 @@ function getReferencedEntity (content, refEntitySrc) {
 }
 
 function resolvePropertyReferences (content, propertyName, propertyValue) {
-  const resolvedValue = propertyValue.map(refEntitySrc =>
+  return propertyValue.map(refEntitySrc =>
     getReferencedEntity(content, refEntitySrc))
-
-  if (isSingleEntityReference(propertyName, propertyValue[0].post_type)) {
-    return resolvedValue[0]
-  }
-
-  return resolvedValue
-}
-
-function isSingleEntityReference (srcPropertyName, dstPropertyName) {
-  const regexp = /^(?:.*_)?(.+)$/
-  const src = regexp.exec(srcPropertyName)[1]
-  const dst = regexp.exec(dstPropertyName)[1]
-
-  return src === dst
 }
 
 function getById (entities, id) {
