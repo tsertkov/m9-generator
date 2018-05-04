@@ -34,14 +34,7 @@ let config = {
     srcScripts: path.join(src, DIR_SCRIPTS)
   },
   htmlmin: {
-    src: '*.html',
-    options: {
-      collapseWhitespace: true,
-      removeRedundantAttributes: true,
-      collapseBooleanAttributes: true,
-      minifyJS: true,
-      sortAttributes: true
-    }
+    pattern: "**/*.html"
   },
   pages: {
     directory: path.join(src, DIR_PAGES)

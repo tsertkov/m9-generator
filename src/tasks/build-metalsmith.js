@@ -32,7 +32,7 @@ gulp.task('build-metalsmith', callback => {
     .use(inplace(config.inplace))
     .use(layouts(config.layouts))
     .use(m9permalink())
-    .use(htmlmin(config.htmlmin.src, config.htmlmin.options))
+    .use(htmlmin(config.htmlmin))
     .build(error => {
       if (error) return callback(error)
       browserSync.reload()
