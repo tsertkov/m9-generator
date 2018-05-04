@@ -4,6 +4,7 @@ import webpack from 'webpack'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import AssetsPlugin from 'assets-webpack-plugin'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import postcssImport from 'postcss-import'
 import postcssCssnext from 'postcss-cssnext'
 
@@ -42,17 +43,15 @@ export default (config) => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: isDevelopment ? '[name].css' : '[name]-[contenthash].css'
+        filename: isDevelopment ? '[name].css' : '[name]-[hash].css',
+        chunkFilename: isDevelopment ? '[id].css' : '[id]-[hash].css'
       }),
       new AssetsPlugin({
         path: config.paths.dst,
         filename: config.assets.manifest,
         prettyPrint: true
       }),
-      new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.LoaderOptionsPlugin({
-        minimize: !isDevelopment
-      })
+      new webpack.optimize.ModuleConcatenationPlugin()
     ],
     optimization: {
       minimizer: [
@@ -65,7 +64,8 @@ export default (config) => {
             mangle: true
           },
           sourceMap: isDevelopment
-        })
+        }),
+        new OptimizeCSSAssetsPlugin({})
       ]
     }
   }

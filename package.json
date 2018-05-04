@@ -52,6 +52,7 @@
     "metalsmith-layouts": "^2.1.0",
     "metalsmith-register-helpers": "^0.4.0",
     "mini-css-extract-plugin": "^0.4.0",
+    "optimize-css-assets-webpack-plugin": "^4.0.1",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^11.1.0",
     "postcss-loader": "^2.1.4",
