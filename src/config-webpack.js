@@ -1,14 +1,16 @@
 import path from 'path'
 import glob from 'glob'
 import webpack from 'webpack'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import AssetsPlugin from 'assets-webpack-plugin'
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import postcssImport from 'postcss-import'
 import postcssCssnext from 'postcss-cssnext'
 
 export default (config) => {
   const { isDevelopment } = config
   const configWebpack = {
+    mode: 'none',
     context: config.paths.src,
     output: {
       filename: isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
@@ -21,10 +23,12 @@ export default (config) => {
         use: 'babel-loader'
       }, {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: [{
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
             loader: 'css-loader'
-          }, {
+          },
+          {
             loader: 'postcss-loader',
             options: {
               plugins: (loader) => [
@@ -32,12 +36,14 @@ export default (config) => {
                 postcssCssnext()
               ]
             }
-          }]
-        })
+          }
+        ]
       }]
     },
     plugins: [
-      new ExtractTextPlugin(isDevelopment ? '[name].css' : '[name]-[contenthash].css'),
+      new MiniCssExtractPlugin({
+        filename: isDevelopment ? '[name].css' : '[name]-[contenthash].css'
+      }),
       new AssetsPlugin({
         path: config.paths.dst,
         filename: config.assets.manifest,
@@ -47,7 +53,21 @@ export default (config) => {
       new webpack.LoaderOptionsPlugin({
         minimize: !isDevelopment
       })
-    ]
+    ],
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          uglifyOptions: {
+            compress: false,
+            ecma: 6,
+            mangle: true
+          },
+          sourceMap: isDevelopment
+        })
+      ]
+    }
   }
 
   configWebpack.entry = [
@@ -58,12 +78,6 @@ export default (config) => {
     acc[name] = filePath
     return acc
   }, {})
-
-  if (isDevelopment) {
-    configWebpack.devtool = 'inline-source-map'
-  } else {
-    configWebpack.plugins.push(new webpack.optimize.UglifyJsPlugin())
-  }
 
   config.webpack = configWebpack
   return config
