@@ -34,7 +34,7 @@ let config = {
     srcScripts: path.join(src, DIR_SCRIPTS)
   },
   htmlmin: {
-    pattern: "**/*.html"
+    pattern: '**/*.html'
   },
   pages: {
     directory: path.join(src, DIR_PAGES)
