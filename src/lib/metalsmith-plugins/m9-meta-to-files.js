@@ -1,11 +1,21 @@
-import slug from 'slug-component'
+import slugComponent from 'slug-component'
 import matterInterpolate from '../matter-interpolate'
 export default m9metaToFiles
 
 const META_KEY = 'meta_to_files'
 const INDEX_FILE = 'index.html'
 
-function m9metaToFiles () {
+function m9metaToFiles ({ slugOptions }) {
+
+  let slug
+  if (typeof slugOptions === 'function') {
+    slug = slugOptions
+  } else {
+    slug = function slug (v) {
+      return slugComponent(v, slugOptions)
+    }
+  }
+
   return (files, metalsmith, done) => {
     Object.keys(files).forEach(file => {
       const fileMeta = files[file]
@@ -36,7 +46,7 @@ function m9metaToFiles () {
           newFileMeta[key] = matterInterpolate(pluginMeta[key], data)
         })
 
-        const filename = buildFilename(filenamePattern, data, file)
+        const filename = buildFilename(filenamePattern, data, file, slug)
         files[filename] = newFileMeta
       })
 
@@ -48,8 +58,8 @@ function m9metaToFiles () {
   }
 }
 
-function buildFilename (filenamePattern, data, tplFilename) {
-  let filename = matterInterpolate(filenamePattern, data, slug)
+function buildFilename (filenamePattern, data, tplFilename, slugFn) {
+  let filename = matterInterpolate(filenamePattern, data, slugFn)
 
   if (isPermalink(filename)) {
     const extension = fileExtension(tplFilename, 1)

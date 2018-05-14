@@ -33,6 +33,11 @@ let config = {
     dst,
     srcScripts: path.join(src, DIR_SCRIPTS)
   },
+  metaToFiles: {
+    slugOptions: {
+      replace: /[^a-z0-9]/g
+    }
+  },
   htmlmin: {
     pattern: '**/*.html'
   },
