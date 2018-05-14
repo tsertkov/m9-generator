@@ -17,7 +17,7 @@ function matterInterpolate (input, metadata, processFn = v => v) {
 }
 
 function interpolateOne (variable, object, processFn) {
-  return processFn(resolve(variable, object){
+  return processFn(resolve(variable, object), {
     replace: /[^а-яa-z0-9]/g
   })
 }
