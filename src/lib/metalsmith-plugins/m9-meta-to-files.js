@@ -5,15 +5,17 @@ export default m9metaToFiles
 const META_KEY = 'meta_to_files'
 const INDEX_FILE = 'index.html'
 
-function m9metaToFiles ({ slugOptions = {} }) {
+function m9metaToFiles ({ slug }) {
 
-  let slug
-  if (typeof slugOptions === 'function') {
-    slug = slugOptions
-  } else {
-    slug = function slug (v) {
-      return dodoSlug(v, slugOptions)
+  let slugFn
+  if (typeof slug === 'function') {
+    slugFn = slug
+  } else if (slug) {
+    slugFn = function slugFn (v) {
+      return dodoSlug(v, slug)
     }
+  } else {
+    slugFn = dodoSlug
   }
 
   return (files, metalsmith, done) => {
@@ -46,7 +48,7 @@ function m9metaToFiles ({ slugOptions = {} }) {
           newFileMeta[key] = matterInterpolate(pluginMeta[key], data)
         })
 
-        const filename = buildFilename(filenamePattern, data, file, slug)
+        const filename = buildFilename(filenamePattern, data, file, slugFn)
         files[filename] = newFileMeta
       })
 
