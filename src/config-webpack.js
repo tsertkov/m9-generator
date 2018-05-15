@@ -39,6 +39,15 @@ export default (config) => {
             }
           }
         ]
+      }, {
+        test: /\.hbs$/,
+        use: [{
+          loader: 'handlebars-loader',
+          options: {
+            helperDirs: [config.paths.srcHelpers],
+            partialDirs: [config.paths.srcPartials]
+          }
+        }]
       }]
     },
     plugins: [
