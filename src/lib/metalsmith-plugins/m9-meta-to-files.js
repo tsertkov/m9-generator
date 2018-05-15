@@ -1,18 +1,18 @@
-import slugComponent from 'slug-component'
+import dodoSlug from 'slug'
 import matterInterpolate from '../matter-interpolate'
 export default m9metaToFiles
 
 const META_KEY = 'meta_to_files'
 const INDEX_FILE = 'index.html'
 
-function m9metaToFiles ({ slugOptions }) {
+function m9metaToFiles ({ slugOptions = {} }) {
 
   let slug
   if (typeof slugOptions === 'function') {
     slug = slugOptions
   } else {
     slug = function slug (v) {
-      return slugComponent(v, slugOptions)
+      return dodoSlug(v, slugOptions)
     }
   }
 
