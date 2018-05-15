@@ -23,16 +23,26 @@ const DIR_ASSETS = 'assets'
 const DIR_PUBLIC = 'public'
 const TPL_ENGINE = 'handlebars'
 
+const paths = {
+  root,
+  src,
+  dst,
+  dstAssets: path.join(dst, DIR_ASSETS),
+  srcPublic: path.join(src, DIR_PUBLIC),
+  srcScripts: path.join(src, DIR_SCRIPTS),
+  srcStyles: path.join(src, DIR_STYLES),
+  srcLayouts: path.join(src, DIR_LAYOUTS),
+  srcContent: path.join(src, DIR_CONTENT),
+  srcPages: path.join(src, DIR_PAGES),
+  srcHelpers: path.join(src, DIR_HELPERS),
+  srcPartials: path.join(src, DIR_PARTIALS)
+}
+
 let config = {
   isGulpDebug,
   isProduction,
   isDevelopment,
-  paths: {
-    root,
-    src,
-    dst,
-    srcScripts: path.join(src, DIR_SCRIPTS)
-  },
+  paths,
   metaToFiles: {
     slugOptions: {
       replace: /[^a-z0-9]/g
@@ -42,34 +52,34 @@ let config = {
     pattern: '**/*.html'
   },
   pages: {
-    directory: path.join(src, DIR_PAGES)
+    directory: paths.srcPages
   },
   contentDir: {
-    directory: path.join(src, DIR_CONTENT),
+    directory: paths.srcContent,
     transformer: 'wordpress'
   },
   helpers: {
-    directory: path.join(src, DIR_HELPERS)
+    directory: paths.srcHelpers
   },
   layouts: {
     engine: TPL_ENGINE,
-    directory: path.join(src, DIR_LAYOUTS),
-    partials: path.join(src, DIR_PARTIALS)
+    directory: paths.srcLayouts,
+    partials: paths.srcPartials
   },
   inplace: {
     engineOptions: {
-      partials: readPartialsDir(path.join(src, DIR_PARTIALS))
+      partials: readPartialsDir(paths.srcPartials)
     }
   },
   copy: {
-    src: path.join(src, DIR_PUBLIC, '**/*')
+    src: path.join(paths.srcPublic, '**/*')
   },
   assets: {
-    scripts: path.join(src, DIR_SCRIPTS, '*.js'),
-    styles: path.join(src, DIR_STYLES, '*.css'),
+    scripts: path.join(paths.srcScripts, '*.js'),
+    styles: path.join(paths.srcStyles, '*.css'),
     manifest: 'assets.json',
     publicPath: `/${DIR_ASSETS}/`,
-    dst: path.join(dst, DIR_ASSETS)
+    dst: paths.dstAssets
   },
   dev: {
     host: 'localhost',
