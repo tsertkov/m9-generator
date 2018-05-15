@@ -43,11 +43,6 @@ let config = {
   isProduction,
   isDevelopment,
   paths,
-  metaToFiles: {
-    slugOptions: {
-      replace: /[^a-z0-9]/g
-    }
-  },
   htmlmin: {
     pattern: '**/*.html'
   },

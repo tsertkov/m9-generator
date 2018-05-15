@@ -26,7 +26,7 @@ gulp.task('build-metalsmith', callback => {
       ...loadContent(config.contentDir),
       config
     })
-    .use(m9metaToFiles(config.metaToFiles))
+    .use(m9metaToFiles(config.metaToFiles || {}))
     .use(m9matterInterpolate())
     .use(helpers(config.helpers))
     .use(inplace(config.inplace))
