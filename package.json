@@ -5,6 +5,9 @@
   "bin": {
     "m9": "./bin/m9.js"
   },
+  "babel": {
+    "extends": "./.babelrc-generator"
+  },
   "scripts": {
     "build": "npm run build-dist && npm run build-example",
     "build-dist": "rm -rf dist/* && babel -s inline -d dist src",
