@@ -9,13 +9,13 @@
     "extends": "./.babelrc-generator"
   },
   "scripts": {
-    "build": "npm run build-dist && npm run build-example",
+    "build": "npm run build-dist && npm run build-docs",
     "build-dist": "rm -rf dist/* && babel -s inline -d dist src",
-    "build-example": "SITE=example NODE_ENV=production bin/m9.js build",
-    "dev": "SITE=example bin/m9.js dev",
-    "test": "npm run test-src && npm run test-example",
+    "build-docs": "SRC=docs-src DST=docs NODE_ENV=production bin/m9.js build",
+    "dev": "SRC=docs-src DST=docs bin/m9.js dev",
+    "test": "npm run test-src && npm run test-docs",
     "test-src": "standard --verbose src/*.js src/**/*.js | snazzy",
-    "test-example": "SITE=example bin/m9.js test"
+    "test-docs": "SRC=docs-src bin/m9.js test"
   },
   "author": "Aleksandr Tsertkov <tsertkov@gmail.com>",
   "license": "MIT",

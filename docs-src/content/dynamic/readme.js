@@ -9,7 +9,7 @@ module.exports = function (readmeProto, content, config) {
     get: () => (
       marked(
         fs.readFileSync(
-          path.join(config.paths.root, '..', 'README.md'),
+          path.join(config.paths.src, '..', 'README.md'),
           'utf8'
         )
       )
