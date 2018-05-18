@@ -17,7 +17,7 @@ import config from '../config'
 handlebarsHelpers()
 
 gulp.task('build-metalsmith', callback => {
-  return new Metalsmith(config.paths.root)
+  return new Metalsmith(config.paths.cwd)
     .use(debug())
     .clean(false)
     .source(config.pages.directory)

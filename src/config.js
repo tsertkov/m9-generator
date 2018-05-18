@@ -8,9 +8,9 @@ const isGulpDebug = process.env.GULP_DEBUG === 'true'
 const isProduction = process.env.NODE_ENV === 'production'
 const isDevelopment = !isProduction
 
-const root = argv.root
-const src = path.join(root, 'src')
-const dst = path.join(root, 'build')
+const cwd = argv.originalCwd
+const src = path.resolve(cwd, process.env.SRC || 'src')
+const dst = path.resolve(cwd, process.env.DST || 'build')
 
 const DIR_PAGES = 'pages'
 const DIR_CONTENT = 'content'
@@ -24,7 +24,7 @@ const DIR_PUBLIC = 'public'
 const TPL_ENGINE = 'handlebars'
 
 const paths = {
-  root,
+  cwd,
   src,
   dst,
   dstAssets: path.join(dst, DIR_ASSETS),
@@ -84,6 +84,6 @@ let config = {
 }
 
 config = webpackConfig(config)
-loadConfigs(config, root)
+loadConfigs(config, src)
 
 export default config
