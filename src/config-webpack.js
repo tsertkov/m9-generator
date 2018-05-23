@@ -7,6 +7,7 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import postcssImport from 'postcss-import'
 import postcssCssnext from 'postcss-cssnext'
+import Visualizer from 'webpack-visualizer-plugin'
 
 export default (config) => {
   const { isDevelopment } = config
@@ -87,6 +88,12 @@ export default (config) => {
     acc[name] = filePath
     return acc
   }, {})
+
+  if (isDevelopment) {
+    configWebpack.plugins.push(
+      new Visualizer({ filename: '../webpack-visualizer.html' })
+    )
+  }
 
   config.webpack = configWebpack
   return config
