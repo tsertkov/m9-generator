@@ -21,7 +21,7 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "marked": "^0.3.19",
+    "marked": "^0.4.0",
     "snazzy": "^7.1.1"
   },
   "dependencies": {
@@ -42,7 +42,7 @@
     "gulp-cli": "^2.0.1",
     "gulp-debug": "^4.0.0",
     "gulp-if": "^2.0.2",
-    "gulp-standard": "^10.1.2",
+    "gulp-standard": "^11.0.0",
     "gulp-task-listing": "^1.0.1",
     "handlebars": "^4.0.11",
     "handlebars-helpers": "^0.10.0",
@@ -66,6 +66,7 @@
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.7.0",
     "webpack-dev-server": "^3.1.4",
+    "webpack-visualizer-plugin": "^0.1.11",
     "yargs": "^11.0.0"
   },
   "peerDependencies": {
@@ -86,7 +87,7 @@
     "gulp-cli": "^2.0.1",
     "gulp-debug": "^4.0.0",
     "gulp-if": "^2.0.2",
-    "gulp-standard": "^10.1.2",
+    "gulp-standard": "^11.0.0",
     "gulp-task-listing": "^1.0.1",
     "handlebars": "^4.0.11",
     "handlebars-helpers": "^0.10.0",
@@ -110,6 +111,7 @@
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.7.0",
     "webpack-dev-server": "^3.1.4",
+    "webpack-visualizer-plugin": "^0.1.11",
     "yargs": "^11.0.0"
   },
   "repository": "https://github.com/tsertkov/m9-generator.git"
