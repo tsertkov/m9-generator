@@ -18,7 +18,5 @@ gulp.task('dev-webpack', (callback) => {
     if (err) throw new gutil.PluginError('webpack-dev-server', err)
   })
 
-  webpackDevServer.middleware.waitUntilValid(() => {
-    callback()
-  })
+  webpackDevServer.middleware.waitUntilValid(() => callback())
 })
