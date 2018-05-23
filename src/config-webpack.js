@@ -91,7 +91,7 @@ export default (config) => {
 
   if (isDevelopment) {
     configWebpack.plugins.push(
-      new Visualizer({ filename: '../webpack-visualizer.html' })
+      new Visualizer({ filename: '../webpack-visualizer/index.html' })
     )
   }
 
