@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>{{title}}</title>
@@ -7,11 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="alternate" type="application/rss+xml" title="{{title}}" href="feed.xml">
-  <link rel="stylesheet" href="{{assets.styles.css}}" type="text/css">
+  <link rel="stylesheet" href="{{assets.styles.css}}">
 </head>
 <body>
   {{> header}}
-  {{{contents}}}
+  <section class="content">
+    {{{contents}}}
+  </section>
   {{> footer}}
   {{#if config.isProduction}}
     {{> gtm}}

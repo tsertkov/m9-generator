@@ -5,5 +5,11 @@ module.exports = function (siteProto, content) {
     get: () => '© 2016-' + new Date().getFullYear()
   })
 
+  Object.defineProperty(siteProto, 'repository', {
+    configurable: true,
+    enumerable: true,
+    get: () => require('../../../package.json').repository
+  })
+
   return siteProto
 }

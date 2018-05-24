@@ -1,7 +1,40 @@
-p {
-  font-size: 1rem;
+@import 'variables.css';
+
+body {
+  font-weight: 300;
+  font-size: 16px;
+  padding: 0; margin: 0;
+  line-height: 1.2;
 }
 
-h1 {
-  font-size: 2rem;
+body, a {
+  color: var(--textColor);
+}
+
+code {
+  font-family: 'Anonymous Pro', monospace;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+article, aside, figure, footer, header, hgroup, nav, section {
+  display: block;
+}
+
+pre {
+  white-space: pre; /* CSS2 */
+  white-space: pre-wrap; /* CSS 2.1 */
+  white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+  word-wrap: break-word; /* IE */
+}
+
+/* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */
+::-moz-selection{background: var(--altColor); color: #fff; text-shadow: none;}
+::selection {background: var(--altColor); color: #fff; text-shadow: none;}
+
+/*  j.mp/webkit-tap-highlight-color */
+a:link {-webkit-tap-highlight-color: var(--altColor);}
+
+.clear {
+  height: 1px; clear: both;
 }

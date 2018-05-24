@@ -1,3 +1,9 @@
 :root {
-  --color: blue;
+  --textColor: #272727;
+  --altColor: #178B42;
+  --btnColor: #FEE2AF;
 }
+
+@custom-media --small-viewport (max-width: 560px);
+@custom-media --medium-viewport (min-width: 780px);
+@custom-media --large-viewport (min-width: 1250px);
