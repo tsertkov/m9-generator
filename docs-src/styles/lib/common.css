@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css?family=Aldrich|Amatic+SC|Sunflower:300');
+
+body {
+  font-family: 'Sunflower', sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+header,
+footer,
+.content {
+  width: auto;
+  margin: 1em;
+
+  @media (--medium-viewport) {
+    width: 40em;
+    margin: 0 auto;
+  }
+}
+
+header {
+  margin-top: 4em;
+  margin-bottom: 5em;
+
+  & h1 {
+    white-space: nowrap;
+    font-family: 'Aldrich', sans-serif;
+    font-size: 300%;
+    & img {
+      width: 20%;
+      margin-right: 0.5em;
+      vertical-align: top;
+    }
+    margin: 0.5em 0;
+  }
+
+  & h2 {
+    margin: 0.5em 0;
+    font-weight: 400;
+    font-size: 2.2em;
+    margin-left: 3.9em;
+  }
+
+  & hr {
+    display: none;
+  }
+
+  & .download {
+    margin: 1.2em 0;
+    line-height: 1.6;
+    & a {
+      font-size: 1.4em;
+      font-weight: 400;
+      display: inline-block;
+      text-decoration: none;
+      padding: 0 0.5em;
+      border-radius: 0.2em;
+      border: 0.1em solid color(var(--btnColor) blackness(10%));
+      background-color: color(var(--btnColor) lightness(85%));
+      &:hover {
+        background-color: color(var(--btnColor) lightness(85%));
+        border-color: color(var(--btnColor) blackness(10%));
+      }
+      & img {
+        width: 1.1em;
+        display: baseline;
+        vertical-align: sub;
+        margin-left: 0.5em;
+      }
+    }
+    @media (--medium-viewport) {
+      & a {
+        border: 0.1em solid color(var(--btnColor) blackness(0%));
+        background-color: #fff;
+      }
+    }
+  }
+}
+
+.intro {
+  font-family: 'Aldrich', sans-serif;
+  font-size: 1.4em;
+  font-style: italic;
+  margin: 1.4em 0 2em;
+
+  @media (--medium-viewport) {
+    font-size: 2.2em;
+  }
+}
+
+footer {
+  text-indent: 6.5em;
+  margin-top: 8em;
+
+  margin-bottom: 2em;
+  font-style: italic;
+  font-size: 0.9em;
+
+  & a {
+    color: color(var(--textColor) lightness(60%));
+    text-decoration: none;
+  }
+}
+
+@media (--small-viewport) {
+  header {
+    margin: 0;
+    & h1 { line-height: 1; }
+    & .download {
+      text-align: center;
+      margin: 0;
+      & a {
+        margin: 0.5em 0.2em;
+        display: block;
+      }
+    }
+    & hr {
+      display: block;
+      border: 0;
+      height: 0.25em;
+      margin: 1em -0.1em;
+      background: var(--textColor);
+      border-radius: 0.25em;
+    }
+  }
+  & .intro {
+    margin: 0;
+    text-align: center;
+    font-size: 1.4em;
+    & p {
+      margin: 1em 0;
+    }
+  }
+
+  footer {
+    padding-top: 5em;
+    text-indent: 0;
+    text-align: center;
+  }
+}
+
+@media (--medium-viewport) {
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (--large-viewport) {
+  body {
+    font-size: 20px;
+  }
+}

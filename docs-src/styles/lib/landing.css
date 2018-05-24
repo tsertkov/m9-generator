@@ -1,0 +1,27 @@
+article {
+  font-family: 'Sunflower', sans-serif;
+
+  & .body {
+    width: 32em;
+    & h1, & h2, & h3 {
+      font-family: 'Amatic SC', cursive;
+      margin: 0;
+      font-size: 1.7em;
+      font-weight: 400;
+      margin-bottom: 0.9em;
+    }
+    & p {
+      font-size: 1.1em;
+    }
+  }
+
+  margin-bottom: 2em;
+}
+
+@media (--small-viewport) {
+  article {
+    & .body {
+      width: auto;
+    }
+  }
+}
