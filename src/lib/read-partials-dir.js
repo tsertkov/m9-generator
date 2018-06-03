@@ -4,6 +4,10 @@ import fs from 'fs'
 export default readPartialsDir
 
 function readPartialsDir (dir) {
+  if (!fs.existsSync(dir)) {
+    return {}
+  }
+
   return fs.readdirSync(dir).reduce((partials, filename) => {
     const partialName = path.parse(filename)['name']
     const filePath = path.join(dir, filename)

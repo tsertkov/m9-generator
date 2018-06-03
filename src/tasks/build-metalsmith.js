@@ -7,6 +7,7 @@ import helpers from 'metalsmith-register-helpers'
 import handlebarsHelpers from 'handlebars-helpers'
 import debug from 'metalsmith-debug'
 import htmlmin from 'metalsmith-html-minifier'
+import log from 'fancy-log'
 import { readdirSync, existsSync } from 'fs'
 import loadContent from '../lib/load-content'
 import m9metaToFiles from '../lib/metalsmith-plugins/m9-meta-to-files'
@@ -18,6 +19,12 @@ import config from '../config'
 handlebarsHelpers()
 
 gulp.task('build-metalsmith', callback => {
+  if (!existsSync(config.pages.directory)) {
+    log.warn('[metalsmith] no pages to build')
+    callback()
+    return
+  }
+
   const metalsmith = new Metalsmith(config.paths.cwd)
     .use(debug())
     .clean(false)

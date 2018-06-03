@@ -1,5 +1,6 @@
 import path from 'path'
 import requireDir from 'require-dir'
+import { existsSync } from 'fs'
 import config from '../config'
 
 export default loadContent
@@ -21,10 +22,17 @@ function loadContent (options) {
 }
 
 function loadJsonContent (dir) {
-  return requireDir(dir)
+  if (existsSync(dir)) {
+    return requireDir(dir)
+  }
+  return {}
 }
 
 function runAugmentersFromDir (dir, content) {
+  if (!existsSync(dir)) {
+    return
+  }
+
   const augmenters = requireDir(dir)
   Object.keys(augmenters).forEach(contentType => {
     const augment = augmenters[contentType]

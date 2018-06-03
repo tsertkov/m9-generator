@@ -9,8 +9,8 @@ const isProduction = process.env.NODE_ENV === 'production'
 const isDevelopment = !isProduction
 
 const cwd = argv.originalCwd
-const src = path.resolve(cwd, process.env.SRC || 'src')
-const dst = path.resolve(cwd, process.env.DST || 'build')
+const src = path.resolve(cwd, argv.src || process.env.SRC || 'src')
+const dst = path.resolve(cwd, argv.dst || process.env.DST || 'build')
 
 const DIR_PAGES = 'pages'
 const DIR_CONTENT = 'content'
