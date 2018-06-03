@@ -1,36 +1,34 @@
 import gulp from 'gulp'
 import path from 'path'
 import requireDir from 'require-dir'
-import runSequence from 'run-sequence'
 
 requireDir(path.join(__dirname, '/tasks'))
 
-gulp.task('default', ['help'])
-gulp.task('deploy', ['build', 'deploy-aws'])
+gulp.task('build', gulp.series(
+  'build-clean',
+  'build-copy',
+  'build-webpack',
+  'build-metalsmith'
+))
 
-gulp.task('build', (callback) => {
-  runSequence(
-    'build-clean',
-    ['build-copy', 'build-webpack'],
-    'build-metalsmith',
-    callback
-  )
-})
+gulp.task('dev', gulp.series(
+  'build-clean',
+  'build-copy',
+  'dev-webpack',
+  'build-metalsmith',
+  'dev-browsersync',
+  'dev-watch'
+))
 
-gulp.task('dev', (callback) => {
-  runSequence(
-    'build-clean',
-    ['build-copy', 'dev-webpack'],
-    'build-metalsmith',
-    'dev-browsersync',
-    'dev-watch',
-    callback
-  )
-})
+gulp.task('deploy', gulp.series(
+  'build',
+  'deploy-aws'
+))
 
-gulp.task('test', (callback) => {
-  runSequence(
-    'test-standard',
-    callback
-  )
-})
+gulp.task('test', gulp.series(
+  'test-standard'
+))
+
+gulp.task('default', gulp.series(
+  'dev'
+))
