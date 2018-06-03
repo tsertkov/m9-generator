@@ -20,7 +20,7 @@ handlebarsHelpers()
 
 gulp.task('build-metalsmith', callback => {
   if (!existsSync(config.pages.directory)) {
-    log('[metalsmith] no pages to build')
+    log.warn('[metalsmith] no pages to build')
     callback()
     return
   }
