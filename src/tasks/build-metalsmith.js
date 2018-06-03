@@ -7,6 +7,7 @@ import helpers from 'metalsmith-register-helpers'
 import handlebarsHelpers from 'handlebars-helpers'
 import debug from 'metalsmith-debug'
 import htmlmin from 'metalsmith-html-minifier'
+import { readdirSync, existsSync } from 'fs'
 import loadContent from '../lib/load-content'
 import m9metaToFiles from '../lib/metalsmith-plugins/m9-meta-to-files'
 import m9matterInterpolate from '../lib/metalsmith-plugins/m9-matter-interpolate'
@@ -17,7 +18,7 @@ import config from '../config'
 handlebarsHelpers()
 
 gulp.task('build-metalsmith', callback => {
-  return new Metalsmith(config.paths.cwd)
+  const metalsmith = new Metalsmith(config.paths.cwd)
     .use(debug())
     .clean(false)
     .source(config.pages.directory)
@@ -30,7 +31,15 @@ gulp.task('build-metalsmith', callback => {
     .use(m9matterInterpolate())
     .use(helpers(config.helpers))
     .use(inplace(config.inplace))
-    .use(layouts(config.layouts))
+
+  if (
+    existsSync(config.layouts.directory) &&
+    readdirSync(config.layouts.directory).length
+  ) {
+    metalsmith.use(layouts(config.layouts))
+  }
+
+  metalsmith
     .use(m9permalink())
     .use(htmlmin(config.htmlmin))
     .build(error => {
@@ -38,4 +47,6 @@ gulp.task('build-metalsmith', callback => {
       browserSync.reload()
       callback()
     })
+
+  return metalsmith
 })
