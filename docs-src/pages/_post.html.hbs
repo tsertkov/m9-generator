@@ -1,9 +1,10 @@
 ---
-layout: default.hbs
 meta_to_files:
   title: ${site.title} | ${post.title}
   model_name: post
   model: ${post}
   filename_pattern: ${post.slug}/
 ---
+{{#> layout-default}}
 model: <pre>{{json model}}</pre>
+{{/layout-default}}

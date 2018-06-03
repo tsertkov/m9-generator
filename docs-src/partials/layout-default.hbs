@@ -12,7 +12,7 @@
 <body>
   {{> header}}
   <section class="content">
-    {{{contents}}}
+    {{> @partial-block}}
   </section>
   {{> footer}}
   {{#if config.isProduction}}
