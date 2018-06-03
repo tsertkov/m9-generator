@@ -9,7 +9,7 @@
     "extends": "./.babelrc-generator"
   },
   "scripts": {
-    "gulp-tasks": "SRC=docs-src npx m9 --tasks",
+    "gulp-tasks": "npx m9 --tasks",
     "build": "npm run build-dist && npm run build-docs",
     "build-dist": "rm -rf dist/* && babel -s inline -d dist src",
     "build-docs": "SRC=docs-src DST=docs NODE_ENV=production npx m9 build",
