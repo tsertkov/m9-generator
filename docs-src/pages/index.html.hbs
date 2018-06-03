@@ -1,10 +1,10 @@
 ---
-layout: default.hbs
 title: ${site.title}
 ---
-
+{{#> layout-default}}
 <article class="m9-readme">
   <div class="body">
     {{{readme.content}}}
   </div>
 </article>
+{{/layout-default}}
