@@ -11,11 +11,11 @@
   "scripts": {
     "build": "npm run build-dist && npm run build-docs",
     "build-dist": "rm -rf dist/* && babel -s inline -d dist src",
-    "build-docs": "SRC=docs-src DST=docs NODE_ENV=production bin/m9.js build",
-    "dev": "SRC=docs-src DST=docs bin/m9.js dev",
+    "build-docs": "SRC=docs-src DST=docs NODE_ENV=production npx m9 build",
+    "dev": "SRC=docs-src DST=docs npx m9 dev",
     "test": "npm run test-src && npm run test-docs",
     "test-src": "standard --verbose src/*.js src/**/*.js | snazzy",
-    "test-docs": "SRC=docs-src bin/m9.js test"
+    "test-docs": "SRC=docs-src npx m9 test"
   },
   "author": "Aleksandr Tsertkov <tsertkov@gmail.com>",
   "license": "MIT",
