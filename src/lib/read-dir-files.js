@@ -1,9 +1,9 @@
 import path from 'path'
 import fs from 'fs'
 
-export default readPartialsDir
+export default readDirFiles
 
-function readPartialsDir (dir) {
+function readDirFiles (dir) {
   if (!fs.existsSync(dir)) {
     return {}
   }
