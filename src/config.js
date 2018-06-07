@@ -1,7 +1,6 @@
 import path from 'path'
 import { argv } from 'yargs'
 import loadConfigs from './lib/load-configs'
-import readPartialsDir from './lib/read-partials-dir'
 import webpackConfig from './config-webpack'
 
 const isGulpDebug = process.env.GULP_DEBUG === 'true'
@@ -63,7 +62,8 @@ let config = {
   },
   inplace: {
     engineOptions: {
-      partials: readPartialsDir(paths.srcPartials)
+      partials: paths.srcPartials,
+      helpers: paths.srcHelpers
     }
   },
   copy: {
