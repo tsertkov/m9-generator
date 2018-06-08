@@ -1,5 +1,5 @@
 import path from 'path'
-import { argv } from 'yargs'
+import yargs from 'yargs'
 import loadConfigs from './lib/load-configs'
 import webpackConfig from './config-webpack'
 
@@ -7,7 +7,8 @@ const isGulpDebug = process.env.GULP_DEBUG === 'true'
 const isProduction = process.env.NODE_ENV === 'production'
 const isDevelopment = !isProduction
 
-const cwd = argv.originalCwd
+const argv = yargs.parse(process.argv)
+const cwd = argv['m9-initial-cwd']
 const src = path.resolve(cwd, argv.src || process.env.SRC || 'src')
 const dst = path.resolve(cwd, argv.dst || process.env.DST || 'build')
 
