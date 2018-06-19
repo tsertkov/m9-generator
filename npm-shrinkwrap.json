@@ -6558,6 +6558,11 @@
         }
       }
     },
+    "gulp-color": {
+      "version": "0.0.2",
+      "resolved": "https://registry.npmjs.org/gulp-color/-/gulp-color-0.0.2.tgz",
+      "integrity": "sha512-xT1RrFyQn4Wqp8NYEZjoE3JBPMs4fsxo1RRV+CHsnx0QkCt3ZYfPhSaZRIff5FXSD8IrN9yRY/1WNM6oOAGI4g=="
+    },
     "gulp-debug": {
       "version": "4.0.0",
       "resolved": "https://registry.npmjs.org/gulp-debug/-/gulp-debug-4.0.0.tgz",
