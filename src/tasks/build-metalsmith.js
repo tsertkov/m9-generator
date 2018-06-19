@@ -9,6 +9,7 @@ import handlebarsHelpers from 'handlebars-helpers'
 import debug from 'metalsmith-debug'
 import htmlmin from 'metalsmith-html-minifier'
 import log from 'fancy-log'
+import color from 'gulp-color'
 import { readdirSync, existsSync } from 'fs'
 import loadContent from '../lib/load-content'
 import m9metaToFiles from '../lib/metalsmith-plugins/m9-meta-to-files'
@@ -33,7 +34,8 @@ function metalsmithInplaceConfig () {
 
 gulp.task('build-metalsmith', callback => {
   if (!existsSync(config.pages.directory)) {
-    log.warn('[metalsmith] no pages to build')
+    const msg = `No templates to compile found:\n - ${config.pages.directory}`
+    log.warn(color(msg, 'YELLOW'))
     callback()
     return
   }
