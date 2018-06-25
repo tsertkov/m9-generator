@@ -81,22 +81,12 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "f2qp");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-"use strict";
-
-
-__webpack_require__(1);
-
-console.log('Hello from index');
-
-/***/ }),
-/* 1 */
+/***/ "EbCl":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -104,5 +94,18 @@ console.log('Hello from index');
 
 console.log('Hello from script1.js');
 
+/***/ }),
+
+/***/ "f2qp":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__("EbCl");
+
+console.log('Hello from index');
+
 /***/ })
-/******/ ]);
+
+/******/ });
