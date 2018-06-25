@@ -14,12 +14,9 @@ gulp.task('build', gulp.series(
 gulp.task('dev', gulp.series(
   'build-clean',
   'build-copy',
-  'dev-webpack',
+  'dev-browsersync',
   'build-metalsmith',
-  gulp.parallel(
-    'dev-browsersync',
-    'dev-watch'
-  )
+  'dev-watch'
 ))
 
 gulp.task('deploy', gulp.series(

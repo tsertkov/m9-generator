@@ -73,7 +73,7 @@ let config = {
   assets: {
     scripts: path.join(paths.srcScripts, '*.js'),
     styles: path.join(paths.srcStyles, '*.css'),
-    manifest: 'assets.json',
+    manifest: 'manifest.json',
     publicPath: `/${DIR_ASSETS}/`,
     dst: paths.dstAssets
   },

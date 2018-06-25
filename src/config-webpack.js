@@ -2,9 +2,9 @@ import path from 'path'
 import glob from 'glob'
 import webpack from 'webpack'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import AssetsPlugin from 'assets-webpack-plugin'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import ManifestPlugin from 'webpack-manifest-plugin'
 import postcssImport from 'postcss-import'
 import postcssCssnext from 'postcss-cssnext'
 import Visualizer from 'webpack-visualizer-plugin'
@@ -26,10 +26,10 @@ export default (config) => {
       }, {
         test: /\.css$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader'
-          },
+          isDevelopment
+            ? 'style-loader'
+            : MiniCssExtractPlugin.loader,
+          'css-loader',
           {
             loader: 'postcss-loader',
             options: {
@@ -56,11 +56,11 @@ export default (config) => {
         filename: isDevelopment ? '[name].css' : '[name]-[hash].css',
         chunkFilename: isDevelopment ? '[id].css' : '[id]-[hash].css'
       }),
-      new AssetsPlugin({
-        path: config.paths.dst,
-        filename: config.assets.manifest,
-        prettyPrint: true
+      new ManifestPlugin({
+        writeToFileEmit: true,
+        filename: config.assets.manifest
       }),
+      new webpack.HashedModuleIdsPlugin(),
       new webpack.optimize.ModuleConcatenationPlugin()
     ],
     optimization: {
@@ -92,6 +92,13 @@ export default (config) => {
   if (isDevelopment) {
     configWebpack.plugins.push(
       new Visualizer({ filename: '../webpack-visualizer/index.html' })
+    )
+
+    configWebpack.entry['webpack-hot-middleware-client'] =
+      'webpack-hot-middleware/client'
+
+    configWebpack.plugins.unshift(
+      new webpack.HotModuleReplacementPlugin()
     )
   }
 
