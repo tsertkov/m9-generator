@@ -22,14 +22,26 @@ import config from '../config'
 handlebarsHelpers()
 
 function metalsmithInplaceConfig () {
-  return {
+  const inplaceConfig = {
     ...config.inplace,
     engineOptions: {
-      ...config.inplace.engineOptions,
-      partials: readDirFiles(config.inplace.engineOptions.partials),
-      helpers: requireDir(config.inplace.engineOptions.helpers)
+      ...config.inplace.engineOptions
     }
   }
+
+  if (existsSync(inplaceConfig.engineOptions['partials'])) {
+    inplaceConfig.engineOptions['partials'] = readDirFiles(
+      inplaceConfig.engineOptions['partials']
+    )
+  }
+
+  if (existsSync(inplaceConfig.engineOptions['helpers'])) {
+    inplaceConfig.engineOptions['helpers'] = requireDir(
+      inplaceConfig.engineOptions['helpers']
+    )
+  }
+
+  return inplaceConfig
 }
 
 gulp.task('build-metalsmith', callback => {
@@ -51,8 +63,15 @@ gulp.task('build-metalsmith', callback => {
     })
     .use(m9metaToFiles(config.metaToFiles || {}))
     .use(m9matterInterpolate())
-    .use(helpers(config.helpers))
-    .use(inplace(metalsmithInplaceConfig()))
+
+  if (
+    existsSync(config.helpers.directory) &&
+    readdirSync(config.helpers.directory).length
+  ) {
+    metalsmith.use(helpers(config.helpers))
+  }
+
+  metalsmith.use(inplace(metalsmithInplaceConfig()))
 
   if (
     existsSync(config.layouts.directory) &&
