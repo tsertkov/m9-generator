@@ -1,5 +1,5 @@
 {
-  "scripts.js": "/assets/scripts-de282bf3303a5de13b85.js",
-  "styles.css": "/assets/styles-f89056a98041e40082ed.css",
-  "styles.js": "/assets/styles-6b7c2e9ab62210646651.js"
+  "scripts.js": "/assets/scripts.js",
+  "styles.js": "/assets/styles.js",
+  "webpack-hot-middleware-client.js": "/assets/webpack-hot-middleware-client.js"
 }
