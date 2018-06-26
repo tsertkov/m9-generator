@@ -7,7 +7,6 @@ import path from 'path'
 import config from '../config'
 
 const bsServer = browserSync.create()
-const compiler = webpack(config.webpack)
 const webpackHMRSnippet = '<script async src="/assets/webpack-hot-middleware-client.js"></script>'
 
 gulp.task('dev-browsersync', (callback) => {
@@ -25,6 +24,8 @@ gulp.task('dev-browsersync', (callback) => {
     launchBrowserSync(bsConfig, callback)
     return
   }
+
+  const compiler = webpack(config.webpack)
 
   bsConfig.snippetOptions = {
     rule: {
