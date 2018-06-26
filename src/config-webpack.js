@@ -89,7 +89,7 @@ export default (config) => {
     return acc
   }, {})
 
-  if (isDevelopment) {
+  if (isDevelopment && configWebpack.entry.length) {
     configWebpack.plugins.push(
       new Visualizer({ filename: '../webpack-visualizer/index.html' })
     )
