@@ -1,28 +1,21 @@
-'use strict';
+"use strict";
 
-var _gulp = require('gulp');
+var _gulp = _interopRequireDefault(require("gulp"));
 
-var _gulp2 = _interopRequireDefault(_gulp);
+var _path = _interopRequireDefault(require("path"));
 
-var _path = require('path');
-
-var _path2 = _interopRequireDefault(_path);
-
-var _requireDir = require('require-dir');
-
-var _requireDir2 = _interopRequireDefault(_requireDir);
+var _requireDir = _interopRequireDefault(require("require-dir"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _requireDir2.default)(_path2.default.join(__dirname, '/tasks'));
+(0, _requireDir.default)(_path.default.join(__dirname, '/tasks'));
 
-_gulp2.default.task('build', _gulp2.default.series('build-clean', 'build-copy', 'build-webpack', 'build-metalsmith'));
+_gulp.default.task('build', _gulp.default.series('build-clean', 'build-copy', 'build-webpack', 'build-metalsmith'));
 
-_gulp2.default.task('dev', _gulp2.default.series('build-clean', 'build-copy', 'dev-browsersync', 'build-metalsmith', 'dev-watch'));
+_gulp.default.task('dev', _gulp.default.series('build-clean', 'build-copy', 'dev-browsersync', 'build-metalsmith', 'dev-watch'));
 
-_gulp2.default.task('deploy', _gulp2.default.series('build', 'deploy-aws'));
+_gulp.default.task('deploy', _gulp.default.series('build', 'deploy-aws'));
 
-_gulp2.default.task('test', _gulp2.default.series('test-standard'));
+_gulp.default.task('test', _gulp.default.series('test-standard'));
 
-_gulp2.default.task('default', _gulp2.default.series('dev'));
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9ndWxwZmlsZS5qcyJdLCJuYW1lcyI6WyJwYXRoIiwiam9pbiIsIl9fZGlybmFtZSIsImd1bHAiLCJ0YXNrIiwic2VyaWVzIl0sIm1hcHBpbmdzIjoiOztBQUFBOzs7O0FBQ0E7Ozs7QUFDQTs7Ozs7O0FBRUEsMEJBQVdBLGVBQUtDLElBQUwsQ0FBVUMsU0FBVixFQUFxQixRQUFyQixDQUFYOztBQUVBQyxlQUFLQyxJQUFMLENBQVUsT0FBVixFQUFtQkQsZUFBS0UsTUFBTCxDQUNqQixhQURpQixFQUVqQixZQUZpQixFQUdqQixlQUhpQixFQUlqQixrQkFKaUIsQ0FBbkI7O0FBT0FGLGVBQUtDLElBQUwsQ0FBVSxLQUFWLEVBQWlCRCxlQUFLRSxNQUFMLENBQ2YsYUFEZSxFQUVmLFlBRmUsRUFHZixpQkFIZSxFQUlmLGtCQUplLEVBS2YsV0FMZSxDQUFqQjs7QUFRQUYsZUFBS0MsSUFBTCxDQUFVLFFBQVYsRUFBb0JELGVBQUtFLE1BQUwsQ0FDbEIsT0FEa0IsRUFFbEIsWUFGa0IsQ0FBcEI7O0FBS0FGLGVBQUtDLElBQUwsQ0FBVSxNQUFWLEVBQWtCRCxlQUFLRSxNQUFMLENBQ2hCLGVBRGdCLENBQWxCOztBQUlBRixlQUFLQyxJQUFMLENBQVUsU0FBVixFQUFxQkQsZUFBS0UsTUFBTCxDQUNuQixLQURtQixDQUFyQiIsImZpbGUiOiJndWxwZmlsZS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBndWxwIGZyb20gJ2d1bHAnXG5pbXBvcnQgcGF0aCBmcm9tICdwYXRoJ1xuaW1wb3J0IHJlcXVpcmVEaXIgZnJvbSAncmVxdWlyZS1kaXInXG5cbnJlcXVpcmVEaXIocGF0aC5qb2luKF9fZGlybmFtZSwgJy90YXNrcycpKVxuXG5ndWxwLnRhc2soJ2J1aWxkJywgZ3VscC5zZXJpZXMoXG4gICdidWlsZC1jbGVhbicsXG4gICdidWlsZC1jb3B5JyxcbiAgJ2J1aWxkLXdlYnBhY2snLFxuICAnYnVpbGQtbWV0YWxzbWl0aCdcbikpXG5cbmd1bHAudGFzaygnZGV2JywgZ3VscC5zZXJpZXMoXG4gICdidWlsZC1jbGVhbicsXG4gICdidWlsZC1jb3B5JyxcbiAgJ2Rldi1icm93c2Vyc3luYycsXG4gICdidWlsZC1tZXRhbHNtaXRoJyxcbiAgJ2Rldi13YXRjaCdcbikpXG5cbmd1bHAudGFzaygnZGVwbG95JywgZ3VscC5zZXJpZXMoXG4gICdidWlsZCcsXG4gICdkZXBsb3ktYXdzJ1xuKSlcblxuZ3VscC50YXNrKCd0ZXN0JywgZ3VscC5zZXJpZXMoXG4gICd0ZXN0LXN0YW5kYXJkJ1xuKSlcblxuZ3VscC50YXNrKCdkZWZhdWx0JywgZ3VscC5zZXJpZXMoXG4gICdkZXYnXG4pKVxuIl19
+_gulp.default.task('default', _gulp.default.series('dev'));

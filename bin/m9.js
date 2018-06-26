@@ -21,5 +21,5 @@ process.argv.push(
   `--m9-initial-cwd=${m9InitialCwd}`
 )
 
-require('babel-register')
+require('@babel/register')
 require('gulp/bin/gulp')

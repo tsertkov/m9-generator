@@ -6,7 +6,7 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import ManifestPlugin from 'webpack-manifest-plugin'
 import postcssImport from 'postcss-import'
-import postcssCssnext from 'postcss-cssnext'
+import postcssPresetEnv from 'postcss-preset-env'
 import Visualizer from 'webpack-visualizer-plugin'
 
 export default (config) => {
@@ -22,7 +22,21 @@ export default (config) => {
     module: {
       rules: [{
         test: /\.js$/,
-        use: 'babel-loader'
+        loader: 'babel-loader',
+        options: {
+          'presets': [
+            ['@babel/preset-env', {
+              'targets': {
+                'browsers': [
+                  '>0.25%',
+                  'not ie 11',
+                  'not op_mini all'
+                ]
+              }
+            }],
+            '@babel/preset-stage-3'
+          ]
+        }
       }, {
         test: /\.css$/,
         use: [
@@ -33,9 +47,18 @@ export default (config) => {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: (loader) => [
+              plugins: () => [
                 postcssImport(),
-                postcssCssnext()
+                postcssPresetEnv({
+                  stage: 2,
+                  features: {
+                    'custom-properties': {
+                      preserve: false
+                    },
+                    'nesting-rules': true,
+                    'custom-media-queries': true
+                  }
+                })
               ]
             }
           }
@@ -89,7 +112,7 @@ export default (config) => {
     return acc
   }, {})
 
-  if (isDevelopment && configWebpack.entry.length) {
+  if (isDevelopment && Object.keys(configWebpack.entry).length) {
     configWebpack.plugins.push(
       new Visualizer({ filename: '../webpack-visualizer/index.html' })
     )

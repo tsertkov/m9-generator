@@ -1,46 +1,33 @@
-'use strict';
+"use strict";
 
-var _gulp = require('gulp');
+var _gulp = _interopRequireDefault(require("gulp"));
 
-var _gulp2 = _interopRequireDefault(_gulp);
+var _browserSync = _interopRequireDefault(require("browser-sync"));
 
-var _browserSync = require('browser-sync');
+var _webpack = _interopRequireDefault(require("webpack"));
 
-var _browserSync2 = _interopRequireDefault(_browserSync);
+var _webpackDevMiddleware = _interopRequireDefault(require("webpack-dev-middleware"));
 
-var _webpack = require('webpack');
+var _webpackHotMiddleware = _interopRequireDefault(require("webpack-hot-middleware"));
 
-var _webpack2 = _interopRequireDefault(_webpack);
+var _path = _interopRequireDefault(require("path"));
 
-var _webpackDevMiddleware = require('webpack-dev-middleware');
-
-var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
-
-var _webpackHotMiddleware = require('webpack-hot-middleware');
-
-var _webpackHotMiddleware2 = _interopRequireDefault(_webpackHotMiddleware);
-
-var _path = require('path');
-
-var _path2 = _interopRequireDefault(_path);
-
-var _config = require('../config');
-
-var _config2 = _interopRequireDefault(_config);
+var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const bsServer = _browserSync2.default.create();
+const bsServer = _browserSync.default.create();
+
 const webpackHMRSnippet = '<script async src="/assets/webpack-hot-middleware-client.js"></script>';
 
-_gulp2.default.task('dev-browsersync', callback => {
-  const noWebpack = !Object.keys(_config2.default.webpack.entry).length;
+_gulp.default.task('dev-browsersync', callback => {
+  const noWebpack = !Object.keys(_config.default.webpack.entry).length;
   const bsConfig = {
     open: false,
     notify: false,
     server: {
       https: true,
-      baseDir: _config2.default.paths.dst
+      baseDir: _config.default.paths.dst
     }
   };
 
@@ -49,29 +36,24 @@ _gulp2.default.task('dev-browsersync', callback => {
     return;
   }
 
-  const compiler = (0, _webpack2.default)(_config2.default.webpack);
-
+  const compiler = (0, _webpack.default)(_config.default.webpack);
   bsConfig.snippetOptions = {
     rule: {
       match: /<body[^>]*>/i,
       fn: (snippet, match) => match + snippet + webpackHMRSnippet
     }
   };
-
-  const devMiddleware = (0, _webpackDevMiddleware2.default)(compiler, {
-    publicPath: _config2.default.assets.publicPath,
+  const devMiddleware = (0, _webpackDevMiddleware.default)(compiler, {
+    publicPath: _config.default.assets.publicPath,
     stats: {
       colors: true,
-      context: _config2.default.paths.src
+      context: _config.default.paths.src
     }
   });
-
-  bsConfig.server.middleware = [devMiddleware, (0, _webpackHotMiddleware2.default)(compiler)];
-
+  bsConfig.server.middleware = [devMiddleware, (0, _webpackHotMiddleware.default)(compiler)];
   devMiddleware.waitUntilValid(() => {
-    launchBrowserSync(bsConfig, callback)
-    // FIME remove following line when HMR works again
-    .watch(_path2.default.join(_config2.default.assets.dst, _config2.default.assets.manifest)).on('change', bsServer.reload);
+    launchBrowserSync(bsConfig, callback) // FIME remove following line when HMR works again
+    .watch(_path.default.join(_config.default.assets.dst, _config.default.assets.manifest)).on('change', bsServer.reload);
   });
 });
 
@@ -80,9 +62,6 @@ function launchBrowserSync(options, callback) {
   // and start browserSync in background
   callback();
   bsServer.init(options);
-
-  bsServer.watch(_path2.default.join(_config2.default.paths.dst, '**/*.html')).on('change', bsServer.reload);
-
+  bsServer.watch(_path.default.join(_config.default.paths.dst, '**/*.html')).on('change', bsServer.reload);
   return bsServer;
 }
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy90YXNrcy9kZXYtYnJvd3NlcnN5bmMuanMiXSwibmFtZXMiOlsiYnNTZXJ2ZXIiLCJicm93c2VyU3luYyIsImNyZWF0ZSIsIndlYnBhY2tITVJTbmlwcGV0IiwiZ3VscCIsInRhc2siLCJjYWxsYmFjayIsIm5vV2VicGFjayIsIk9iamVjdCIsImtleXMiLCJjb25maWciLCJ3ZWJwYWNrIiwiZW50cnkiLCJsZW5ndGgiLCJic0NvbmZpZyIsIm9wZW4iLCJub3RpZnkiLCJzZXJ2ZXIiLCJodHRwcyIsImJhc2VEaXIiLCJwYXRocyIsImRzdCIsImxhdW5jaEJyb3dzZXJTeW5jIiwiY29tcGlsZXIiLCJzbmlwcGV0T3B0aW9ucyIsInJ1bGUiLCJtYXRjaCIsImZuIiwic25pcHBldCIsImRldk1pZGRsZXdhcmUiLCJwdWJsaWNQYXRoIiwiYXNzZXRzIiwic3RhdHMiLCJjb2xvcnMiLCJjb250ZXh0Iiwic3JjIiwibWlkZGxld2FyZSIsIndhaXRVbnRpbFZhbGlkIiwid2F0Y2giLCJwYXRoIiwiam9pbiIsIm1hbmlmZXN0Iiwib24iLCJyZWxvYWQiLCJvcHRpb25zIiwiaW5pdCJdLCJtYXBwaW5ncyI6Ijs7QUFBQTs7OztBQUNBOzs7O0FBQ0E7Ozs7QUFDQTs7OztBQUNBOzs7O0FBQ0E7Ozs7QUFDQTs7Ozs7O0FBRUEsTUFBTUEsV0FBV0Msc0JBQVlDLE1BQVosRUFBakI7QUFDQSxNQUFNQyxvQkFBb0Isd0VBQTFCOztBQUVBQyxlQUFLQyxJQUFMLENBQVUsaUJBQVYsRUFBOEJDLFFBQUQsSUFBYztBQUN6QyxRQUFNQyxZQUFZLENBQUNDLE9BQU9DLElBQVAsQ0FBWUMsaUJBQU9DLE9BQVAsQ0FBZUMsS0FBM0IsRUFBa0NDLE1BQXJEO0FBQ0EsUUFBTUMsV0FBVztBQUNmQyxVQUFNLEtBRFM7QUFFZkMsWUFBUSxLQUZPO0FBR2ZDLFlBQVE7QUFDTkMsYUFBTyxJQUREO0FBRU5DLGVBQVNULGlCQUFPVSxLQUFQLENBQWFDO0FBRmhCO0FBSE8sR0FBakI7O0FBU0EsTUFBSWQsU0FBSixFQUFlO0FBQ2JlLHNCQUFrQlIsUUFBbEIsRUFBNEJSLFFBQTVCO0FBQ0E7QUFDRDs7QUFFRCxRQUFNaUIsV0FBVyx1QkFBUWIsaUJBQU9DLE9BQWYsQ0FBakI7O0FBRUFHLFdBQVNVLGNBQVQsR0FBMEI7QUFDeEJDLFVBQU07QUFDSkMsYUFBTyxjQURIO0FBRUpDLFVBQUksQ0FBQ0MsT0FBRCxFQUFVRixLQUFWLEtBQXFCQSxRQUFRRSxPQUFSLEdBQWtCekI7QUFGdkM7QUFEa0IsR0FBMUI7O0FBT0EsUUFBTTBCLGdCQUFnQixvQ0FBcUJOLFFBQXJCLEVBQStCO0FBQ25ETyxnQkFBWXBCLGlCQUFPcUIsTUFBUCxDQUFjRCxVQUR5QjtBQUVuREUsV0FBTztBQUNMQyxjQUFRLElBREg7QUFFTEMsZUFBU3hCLGlCQUFPVSxLQUFQLENBQWFlO0FBRmpCO0FBRjRDLEdBQS9CLENBQXRCOztBQVFBckIsV0FBU0csTUFBVCxDQUFnQm1CLFVBQWhCLEdBQTZCLENBQzNCUCxhQUQyQixFQUUzQixvQ0FBcUJOLFFBQXJCLENBRjJCLENBQTdCOztBQUtBTSxnQkFBY1EsY0FBZCxDQUE2QixNQUFNO0FBQ2pDZixzQkFBa0JSLFFBQWxCLEVBQTRCUixRQUE1QjtBQUNFO0FBREYsS0FFR2dDLEtBRkgsQ0FFU0MsZUFBS0MsSUFBTCxDQUFVOUIsaUJBQU9xQixNQUFQLENBQWNWLEdBQXhCLEVBQTZCWCxpQkFBT3FCLE1BQVAsQ0FBY1UsUUFBM0MsQ0FGVCxFQUdHQyxFQUhILENBR00sUUFITixFQUdnQjFDLFNBQVMyQyxNQUh6QjtBQUlELEdBTEQ7QUFNRCxDQTVDRDs7QUE4Q0EsU0FBU3JCLGlCQUFULENBQTRCc0IsT0FBNUIsRUFBcUN0QyxRQUFyQyxFQUErQztBQUM3QztBQUNBO0FBQ0FBO0FBQ0FOLFdBQVM2QyxJQUFULENBQWNELE9BQWQ7O0FBRUE1QyxXQUNHc0MsS0FESCxDQUNTQyxlQUFLQyxJQUFMLENBQVU5QixpQkFBT1UsS0FBUCxDQUFhQyxHQUF2QixFQUE0QixXQUE1QixDQURULEVBRUdxQixFQUZILENBRU0sUUFGTixFQUVnQjFDLFNBQVMyQyxNQUZ6Qjs7QUFJQSxTQUFPM0MsUUFBUDtBQUNEIiwiZmlsZSI6ImRldi1icm93c2Vyc3luYy5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBndWxwIGZyb20gJ2d1bHAnXG5pbXBvcnQgYnJvd3NlclN5bmMgZnJvbSAnYnJvd3Nlci1zeW5jJ1xuaW1wb3J0IHdlYnBhY2sgZnJvbSAnd2VicGFjaydcbmltcG9ydCB3ZWJwYWNrRGV2TWlkZGxld2FyZSBmcm9tICd3ZWJwYWNrLWRldi1taWRkbGV3YXJlJ1xuaW1wb3J0IHdlYnBhY2tIb3RNaWRkbGV3YXJlIGZyb20gJ3dlYnBhY2staG90LW1pZGRsZXdhcmUnXG5pbXBvcnQgcGF0aCBmcm9tICdwYXRoJ1xuaW1wb3J0IGNvbmZpZyBmcm9tICcuLi9jb25maWcnXG5cbmNvbnN0IGJzU2VydmVyID0gYnJvd3NlclN5bmMuY3JlYXRlKClcbmNvbnN0IHdlYnBhY2tITVJTbmlwcGV0ID0gJzxzY3JpcHQgYXN5bmMgc3JjPVwiL2Fzc2V0cy93ZWJwYWNrLWhvdC1taWRkbGV3YXJlLWNsaWVudC5qc1wiPjwvc2NyaXB0PidcblxuZ3VscC50YXNrKCdkZXYtYnJvd3NlcnN5bmMnLCAoY2FsbGJhY2spID0+IHtcbiAgY29uc3Qgbm9XZWJwYWNrID0gIU9iamVjdC5rZXlzKGNvbmZpZy53ZWJwYWNrLmVudHJ5KS5sZW5ndGhcbiAgY29uc3QgYnNDb25maWcgPSB7XG4gICAgb3BlbjogZmFsc2UsXG4gICAgbm90aWZ5OiBmYWxzZSxcbiAgICBzZXJ2ZXI6IHtcbiAgICAgIGh0dHBzOiB0cnVlLFxuICAgICAgYmFzZURpcjogY29uZmlnLnBhdGhzLmRzdFxuICAgIH1cbiAgfVxuXG4gIGlmIChub1dlYnBhY2spIHtcbiAgICBsYXVuY2hCcm93c2VyU3luYyhic0NvbmZpZywgY2FsbGJhY2spXG4gICAgcmV0dXJuXG4gIH1cblxuICBjb25zdCBjb21waWxlciA9IHdlYnBhY2soY29uZmlnLndlYnBhY2spXG5cbiAgYnNDb25maWcuc25pcHBldE9wdGlvbnMgPSB7XG4gICAgcnVsZToge1xuICAgICAgbWF0Y2g6IC88Ym9keVtePl0qPi9pLFxuICAgICAgZm46IChzbmlwcGV0LCBtYXRjaCkgPT4gKG1hdGNoICsgc25pcHBldCArIHdlYnBhY2tITVJTbmlwcGV0KVxuICAgIH1cbiAgfVxuXG4gIGNvbnN0IGRldk1pZGRsZXdhcmUgPSB3ZWJwYWNrRGV2TWlkZGxld2FyZShjb21waWxlciwge1xuICAgIHB1YmxpY1BhdGg6IGNvbmZpZy5hc3NldHMucHVibGljUGF0aCxcbiAgICBzdGF0czoge1xuICAgICAgY29sb3JzOiB0cnVlLFxuICAgICAgY29udGV4dDogY29uZmlnLnBhdGhzLnNyY1xuICAgIH1cbiAgfSlcblxuICBic0NvbmZpZy5zZXJ2ZXIubWlkZGxld2FyZSA9IFtcbiAgICBkZXZNaWRkbGV3YXJlLFxuICAgIHdlYnBhY2tIb3RNaWRkbGV3YXJlKGNvbXBpbGVyKVxuICBdXG5cbiAgZGV2TWlkZGxld2FyZS53YWl0VW50aWxWYWxpZCgoKSA9PiB7XG4gICAgbGF1bmNoQnJvd3NlclN5bmMoYnNDb25maWcsIGNhbGxiYWNrKVxuICAgICAgLy8gRklNRSByZW1vdmUgZm9sbG93aW5nIGxpbmUgd2hlbiBITVIgd29ya3MgYWdhaW5cbiAgICAgIC53YXRjaChwYXRoLmpvaW4oY29uZmlnLmFzc2V0cy5kc3QsIGNvbmZpZy5hc3NldHMubWFuaWZlc3QpKVxuICAgICAgLm9uKCdjaGFuZ2UnLCBic1NlcnZlci5yZWxvYWQpXG4gIH0pXG59KVxuXG5mdW5jdGlvbiBsYXVuY2hCcm93c2VyU3luYyAob3B0aW9ucywgY2FsbGJhY2spIHtcbiAgLy8gcmV0dXJuIGVhcmx5IGZyb20gdGFza1xuICAvLyBhbmQgc3RhcnQgYnJvd3NlclN5bmMgaW4gYmFja2dyb3VuZFxuICBjYWxsYmFjaygpXG4gIGJzU2VydmVyLmluaXQob3B0aW9ucylcblxuICBic1NlcnZlclxuICAgIC53YXRjaChwYXRoLmpvaW4oY29uZmlnLnBhdGhzLmRzdCwgJyoqLyouaHRtbCcpKVxuICAgIC5vbignY2hhbmdlJywgYnNTZXJ2ZXIucmVsb2FkKVxuXG4gIHJldHVybiBic1NlcnZlclxufVxuIl19
