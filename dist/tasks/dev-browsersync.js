@@ -21,7 +21,6 @@ const bsServer = _browserSync.default.create();
 const webpackHMRSnippet = '<script async src="/assets/webpack-hot-middleware-client.js"></script>';
 
 _gulp.default.task('dev-browsersync', callback => {
-  const noWebpack = !Object.keys(_config.default.webpack.entry).length;
   const bsConfig = {
     open: false,
     notify: false,
@@ -31,7 +30,7 @@ _gulp.default.task('dev-browsersync', callback => {
     }
   };
 
-  if (noWebpack) {
+  if (!_config.default.webpack) {
     launchBrowserSync(bsConfig, callback);
     return;
   }
