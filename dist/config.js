@@ -13,15 +13,19 @@ var _loadConfigs = _interopRequireDefault(require("./lib/load-configs"));
 
 var _configWebpack = _interopRequireDefault(require("./config-webpack"));
 
+var _gulpRunner = require("./gulp-runner");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const isGulpDebug = process.env.GULP_DEBUG === 'true';
-const isProduction = process.env.NODE_ENV === 'production';
-const isDevelopment = !isProduction;
+// Get original cwd
+const {
+  cwd,
+  isDevTask
+} = _gulpRunner.registry; // Stage site is building for
+
+const stage = process.env.STAGE || 'development';
 
 const argv = _yargs.default.parse(process.argv);
-
-const cwd = argv['m9-initial-cwd'];
 
 const src = _path.default.resolve(cwd, argv.src || process.env.SRC || 'src');
 
@@ -52,9 +56,8 @@ const paths = {
   srcPartials: _path.default.join(src, DIR_PARTIALS)
 };
 let config = {
-  isGulpDebug,
-  isProduction,
-  isDevelopment,
+  stage,
+  isDevTask,
   paths,
   htmlmin: {
     pattern: '**/*.html'

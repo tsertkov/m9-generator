@@ -29,13 +29,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = config => {
   const {
-    isDevelopment
+    isDevTask
   } = config;
   const configWebpack = {
     mode: 'none',
     context: config.paths.src,
     output: {
-      filename: isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
+      filename: isDevTask ? '[name].js' : '[name]-[chunkhash].js',
       path: config.assets.dst,
       publicPath: config.assets.publicPath
     },
@@ -52,7 +52,7 @@ var _default = config => {
         }
       }, {
         test: /\.css$/,
-        use: [isDevelopment ? 'style-loader' : _miniCssExtractPlugin.default.loader, 'css-loader', {
+        use: [isDevTask ? 'style-loader' : _miniCssExtractPlugin.default.loader, 'css-loader', {
           loader: 'postcss-loader',
           options: {
             plugins: () => [(0, _postcssImport.default)(), (0, _postcssPresetEnv.default)({
@@ -79,8 +79,8 @@ var _default = config => {
       }]
     },
     plugins: [new _miniCssExtractPlugin.default({
-      filename: isDevelopment ? '[name].css' : '[name]-[hash].css',
-      chunkFilename: isDevelopment ? '[id].css' : '[id]-[hash].css'
+      filename: isDevTask ? '[name].css' : '[name]-[hash].css',
+      chunkFilename: isDevTask ? '[id].css' : '[id]-[hash].css'
     }), new _webpackManifestPlugin.default({
       writeToFileEmit: true,
       filename: config.assets.manifest
@@ -94,7 +94,7 @@ var _default = config => {
           ecma: 6,
           mangle: true
         },
-        sourceMap: isDevelopment
+        sourceMap: isDevTask
       }), new _optimizeCssAssetsWebpackPlugin.default({})]
     }
   };
@@ -107,7 +107,7 @@ var _default = config => {
     return acc;
   }, {});
 
-  if (isDevelopment && Object.keys(configWebpack.entry).length) {
+  if (isDevTask && Object.keys(configWebpack.entry).length) {
     configWebpack.plugins.push(new _webpackVisualizerPlugin.default({
       filename: '../webpack-visualizer/index.html'
     }));

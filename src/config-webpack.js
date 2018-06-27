@@ -10,12 +10,12 @@ import postcssPresetEnv from 'postcss-preset-env'
 import Visualizer from 'webpack-visualizer-plugin'
 
 export default (config) => {
-  const { isDevelopment } = config
+  const { isDevTask } = config
   const configWebpack = {
     mode: 'none',
     context: config.paths.src,
     output: {
-      filename: isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
+      filename: isDevTask ? '[name].js' : '[name]-[chunkhash].js',
       path: config.assets.dst,
       publicPath: config.assets.publicPath
     },
@@ -40,7 +40,7 @@ export default (config) => {
       }, {
         test: /\.css$/,
         use: [
-          isDevelopment
+          isDevTask
             ? 'style-loader'
             : MiniCssExtractPlugin.loader,
           'css-loader',
@@ -76,8 +76,8 @@ export default (config) => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: isDevelopment ? '[name].css' : '[name]-[hash].css',
-        chunkFilename: isDevelopment ? '[id].css' : '[id]-[hash].css'
+        filename: isDevTask ? '[name].css' : '[name]-[hash].css',
+        chunkFilename: isDevTask ? '[id].css' : '[id]-[hash].css'
       }),
       new ManifestPlugin({
         writeToFileEmit: true,
@@ -96,7 +96,7 @@ export default (config) => {
             ecma: 6,
             mangle: true
           },
-          sourceMap: isDevelopment
+          sourceMap: isDevTask
         }),
         new OptimizeCSSAssetsPlugin({})
       ]
@@ -112,7 +112,7 @@ export default (config) => {
     return acc
   }, {})
 
-  if (isDevelopment && Object.keys(configWebpack.entry).length) {
+  if (isDevTask && Object.keys(configWebpack.entry).length) {
     configWebpack.plugins.push(
       new Visualizer({ filename: '../webpack-visualizer/index.html' })
     )

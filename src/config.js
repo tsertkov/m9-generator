@@ -2,13 +2,15 @@ import path from 'path'
 import yargs from 'yargs'
 import loadConfigs from './lib/load-configs'
 import webpackConfig from './config-webpack'
+import { registry } from './gulp-runner'
 
-const isGulpDebug = process.env.GULP_DEBUG === 'true'
-const isProduction = process.env.NODE_ENV === 'production'
-const isDevelopment = !isProduction
+// Get original cwd
+const { cwd, isDevTask } = registry
+
+// Stage site is building for
+const stage = process.env.STAGE || 'development'
 
 const argv = yargs.parse(process.argv)
-const cwd = argv['m9-initial-cwd']
 const src = path.resolve(cwd, argv.src || process.env.SRC || 'src')
 const dst = path.resolve(cwd, argv.dst || process.env.DST || 'build')
 
@@ -39,9 +41,8 @@ const paths = {
 }
 
 let config = {
-  isGulpDebug,
-  isProduction,
-  isDevelopment,
+  stage,
+  isDevTask,
   paths,
   htmlmin: {
     pattern: '**/*.html'
