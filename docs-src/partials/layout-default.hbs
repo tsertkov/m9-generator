@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="alternate" type="application/rss+xml" title="{{title}}" href="feed.xml">
-  {{#if config.isDevelopment}}
-    <script src="{{assets.[styles.js]}}"></script>
-  {{else}}
+  {{#if assets.[styles.css]}}
     <link rel="stylesheet" href="{{assets.[styles.css]}}">
+  {{else if assets.[styles.js]}}
+    <script src="{{assets.[styles.js]}}"></script>
   {{/if}}
 </head>
 <body>
@@ -19,9 +19,6 @@
     {{> @partial-block}}
   </section>
   {{> footer}}
-  {{#if config.isProduction}}
-    {{> gtm}}
-  {{/if}}
   <script src="{{assets.[scripts.js]}}"></script>
 </body>
 </html>
