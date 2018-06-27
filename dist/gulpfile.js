@@ -18,4 +18,4 @@ _gulp.default.task('deploy', _gulp.default.series('build', 'deploy-aws'));
 
 _gulp.default.task('test', _gulp.default.series('test-standard'));
 
-_gulp.default.task('default', _gulp.default.series('dev'));
+_gulp.default.task('default', _gulp.default.series('help'));
