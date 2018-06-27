@@ -5,7 +5,7 @@ gulp.task('help', async () => {
     .tree({ deep: true })
     .nodes
     .reduce((acc, { label, nodes }) => {
-      if (label !== 'default') {
+      if (!['default', 'help'].includes(label)) {
         acc[nodes.length ? 'tasks' : 'subTasks'].push(label)
       }
       return acc

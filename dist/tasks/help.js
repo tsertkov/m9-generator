@@ -14,7 +14,7 @@ _gulp.default.task('help', async () => {
     label,
     nodes
   }) => {
-    if (label !== 'default') {
+    if (!['default', 'help'].includes(label)) {
       acc[nodes.length ? 'tasks' : 'subTasks'].push(label);
     }
 
