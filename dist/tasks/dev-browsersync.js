@@ -61,7 +61,8 @@ function launchBrowserSync(options, callback) {
   // return early from task
   // and start browserSync in background
   callback();
-  bsServer.init(options);
-  bsServer.watch(_path.default.join(_config.default.paths.dst, '**/*.html')).on('change', bsServer.reload);
+  bsServer.init(options, () => {
+    bsServer.watch(_path.default.join(_config.default.paths.dst, '**/*.html')).on('change', bsServer.reload);
+  });
   return bsServer;
 }
