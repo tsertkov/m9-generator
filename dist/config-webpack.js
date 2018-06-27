@@ -13,10 +13,6 @@ var _webpack = _interopRequireDefault(require("webpack"));
 
 var _miniCssExtractPlugin = _interopRequireDefault(require("mini-css-extract-plugin"));
 
-var _uglifyjsWebpackPlugin = _interopRequireDefault(require("uglifyjs-webpack-plugin"));
-
-var _optimizeCssAssetsWebpackPlugin = _interopRequireDefault(require("optimize-css-assets-webpack-plugin"));
-
 var _webpackManifestPlugin = _interopRequireDefault(require("webpack-manifest-plugin"));
 
 var _postcssImport = _interopRequireDefault(require("postcss-import"));
@@ -28,14 +24,26 @@ var _webpackVisualizerPlugin = _interopRequireDefault(require("webpack-visualize
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = config => {
-  const {
-    isDevTask
-  } = config;
+  const entry = [..._glob.default.sync(config.assets.scripts), ..._glob.default.sync(config.assets.styles)].reduce((acc, filePath) => {
+    const {
+      name
+    } = _path.default.parse(filePath);
+
+    acc[name] = filePath;
+    return acc;
+  }, {}); // Return null config when no entrypoints found
+
+  if (!Object.keys(entry).length) {
+    return null;
+  }
+
+  const isDevelopment = config.isDevTask;
   const configWebpack = {
-    mode: 'none',
+    entry,
+    mode: isDevelopment ? 'development' : 'production',
     context: config.paths.src,
     output: {
-      filename: isDevTask ? '[name].js' : '[name]-[chunkhash].js',
+      filename: isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
       path: config.assets.dst,
       publicPath: config.assets.publicPath
     },
@@ -52,7 +60,7 @@ var _default = config => {
         }
       }, {
         test: /\.css$/,
-        use: [isDevTask ? 'style-loader' : _miniCssExtractPlugin.default.loader, 'css-loader', {
+        use: [isDevelopment ? 'style-loader' : _miniCssExtractPlugin.default.loader, 'css-loader', {
           loader: 'postcss-loader',
           options: {
             plugins: () => [(0, _postcssImport.default)(), (0, _postcssPresetEnv.default)({
@@ -78,45 +86,25 @@ var _default = config => {
         }]
       }]
     },
-    plugins: [new _miniCssExtractPlugin.default({
-      filename: isDevTask ? '[name].css' : '[name]-[hash].css',
-      chunkFilename: isDevTask ? '[id].css' : '[id]-[hash].css'
-    }), new _webpackManifestPlugin.default({
+    plugins: [new _webpackManifestPlugin.default({
       writeToFileEmit: true,
       filename: config.assets.manifest
-    }), new _webpack.default.HashedModuleIdsPlugin(), new _webpack.default.optimize.ModuleConcatenationPlugin()],
-    optimization: {
-      minimizer: [new _uglifyjsWebpackPlugin.default({
-        cache: true,
-        parallel: true,
-        uglifyOptions: {
-          compress: false,
-          ecma: 6,
-          mangle: true
-        },
-        sourceMap: isDevTask
-      }), new _optimizeCssAssetsWebpackPlugin.default({})]
-    }
+    })]
   };
-  configWebpack.entry = [..._glob.default.sync(config.assets.scripts), ..._glob.default.sync(config.assets.styles)].reduce((acc, filePath) => {
-    const {
-      name
-    } = _path.default.parse(filePath);
 
-    acc[name] = filePath;
-    return acc;
-  }, {});
-
-  if (isDevTask && Object.keys(configWebpack.entry).length) {
-    configWebpack.plugins.push(new _webpackVisualizerPlugin.default({
+  if (isDevelopment) {
+    configWebpack.entry['webpack-hot-middleware-client'] = 'webpack-hot-middleware/client';
+    configWebpack.plugins.push(new _webpack.default.HotModuleReplacementPlugin(), new _webpackVisualizerPlugin.default({
       filename: '../webpack-visualizer/index.html'
     }));
-    configWebpack.entry['webpack-hot-middleware-client'] = 'webpack-hot-middleware/client';
-    configWebpack.plugins.unshift(new _webpack.default.HotModuleReplacementPlugin());
+  } else {
+    configWebpack.plugins.push(new _miniCssExtractPlugin.default({
+      filename: '[name]-[hash].css',
+      chunkFilename: '[id]-[hash].css'
+    }));
   }
 
-  config.webpack = configWebpack;
-  return config;
+  return configWebpack;
 };
 
 exports.default = _default;

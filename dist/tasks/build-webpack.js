@@ -13,7 +13,7 @@ var _config = _interopRequireDefault(require("../config"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _gulp.default.task('build-webpack', callback => {
-  if (!Object.keys(_config.default.webpack.entry).length) {
+  if (!_config.default.webpack) {
     _fancyLog.default.warn(['webpack] nothing to compile yet...']);
 
     callback();

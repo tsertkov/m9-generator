@@ -99,7 +99,7 @@ let config = {
     browsersyncPort: 3000
   }
 };
-config = (0, _configWebpack.default)(config);
+config.webpack = (0, _configWebpack.default)(config);
 (0, _loadConfigs.default)(config, src);
 var _default = config;
 exports.default = _default;

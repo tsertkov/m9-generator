@@ -85,7 +85,7 @@ let config = {
   }
 }
 
-config = webpackConfig(config)
+config.webpack = webpackConfig(config)
 loadConfigs(config, src)
 
 export default config
