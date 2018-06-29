@@ -22,6 +22,21 @@ process.argv = process.argv.slice(0, 2).concat(
 const m9UseSrc = process.argv.includes('--m9-use-src')
 const m9Dir = path.join(__dirname, '..', m9UseSrc ? 'src' : 'dist')
 
-require('@babel/register')
+// Register require hook to transpile files on the fly
+require('@babel/register')({
+  ignore: [
+    'node_modules',
+    path.join(__dirname, '..', 'dist')
+  ],
+  presets: [
+    ['@babel/preset-env', {
+      targets: {
+        node: 'current'
+      }
+    }],
+    '@babel/preset-stage-3'
+  ]
+})
+
 require(path.join(m9Dir, 'gulp-runner'))
   .runGulp(process.cwd())
