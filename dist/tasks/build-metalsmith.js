@@ -6,11 +6,7 @@ var _metalsmith = _interopRequireDefault(require("metalsmith"));
 
 var _metalsmithInPlace = _interopRequireDefault(require("metalsmith-in-place"));
 
-var _metalsmithLayouts = _interopRequireDefault(require("metalsmith-layouts"));
-
 var _requireDir = _interopRequireDefault(require("require-dir"));
-
-var _metalsmithRegisterHelpers = _interopRequireDefault(require("metalsmith-register-helpers"));
 
 var _handlebarsHelpers = _interopRequireDefault(require("handlebars-helpers"));
 
@@ -73,17 +69,6 @@ _gulp.default.task('build-metalsmith', done => {
 
   const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).clean(false).source(_config.default.pages.directory).destination(_config.default.paths.dst).metadata(_objectSpread({}, (0, _loadContent.default)(_config.default.contentDir), {
     config: _config.default
-  })).use((0, _m9MetaToFiles.default)(_config.default.metaToFiles || {})).use((0, _m9MatterInterpolate.default)());
-
-  if ((0, _fs.existsSync)(_config.default.helpers.directory) && (0, _fs.readdirSync)(_config.default.helpers.directory).length) {
-    metalsmith.use((0, _metalsmithRegisterHelpers.default)(_config.default.helpers));
-  }
-
-  metalsmith.use((0, _metalsmithInPlace.default)(metalsmithInplaceConfig()));
-
-  if ((0, _fs.existsSync)(_config.default.layouts.directory) && (0, _fs.readdirSync)(_config.default.layouts.directory).length) {
-    metalsmith.use((0, _metalsmithLayouts.default)(_config.default.layouts));
-  }
-
+  })).use((0, _m9MetaToFiles.default)(_config.default.metaToFiles || {})).use((0, _m9MatterInterpolate.default)()).use((0, _metalsmithInPlace.default)(metalsmithInplaceConfig()));
   metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.htmlmin)).build(done);
 });
