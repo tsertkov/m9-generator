@@ -61,7 +61,7 @@ function metalsmithInplaceConfig() {
 
 function getTplContext() {
   const context = _objectSpread({}, (0, _loadContent.default)(_config.default.contentDir), {
-    config: _config.default
+    __config: _config.default
   });
 
   const manifestPath = _path.default.join(_config.default.assets.dst, _config.default.assets.manifest);
