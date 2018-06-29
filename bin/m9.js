@@ -23,20 +23,29 @@ const m9UseSrc = process.argv.includes('--m9-use-src')
 const m9Dir = path.join(__dirname, '..', m9UseSrc ? 'src' : 'dist')
 
 // Register require hook to transpile files on the fly
-require('@babel/register')({
-  ignore: [
-    'node_modules',
-    path.join(__dirname, '..', 'dist')
-  ],
-  presets: [
-    ['@babel/preset-env', {
-      targets: {
-        node: 'current'
-      }
-    }],
-    '@babel/preset-stage-3'
-  ]
-})
+require('@babel/register')(Object.assign(
+  {
+    ignore: [
+      'node_modules',
+      path.join(__dirname, '..', 'dist')
+    ]
+  },
+  // For some reason babel seems to ignore .babelrc when integrated with
+  // register hook. Implementing here conditional babel configuration
+  // logic to workaround this issue.
+  m9UseSrc
+    ? { extends: path.join(m9Dir, '.babelrc') }
+    : {
+      presets: [
+        ['@babel/preset-env', {
+          targets: {
+            node: 'current'
+          }
+        }],
+        '@babel/preset-stage-3'
+      ]
+    }
+))
 
 require(path.join(m9Dir, 'gulp-runner'))
   .runGulp(process.cwd())
