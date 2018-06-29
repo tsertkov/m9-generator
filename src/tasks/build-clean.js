@@ -4,6 +4,6 @@ import config from '../config'
 
 const { dst } = config.paths
 
-gulp.task('build-clean', () => (
-  del([dst], { force: true })
-))
+gulp.task('build-clean', () => {
+  return del([dst], { force: true })
+})
