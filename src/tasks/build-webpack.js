@@ -5,7 +5,7 @@ import webpack from 'webpack'
 import config from '../config'
 
 gulp.task('build-webpack', (callback) => {
-  if (!Object.keys(config.webpack.entry).length) {
+  if (!config.webpack) {
     log.warn(['webpack] nothing to compile yet...'])
     callback()
     return

@@ -1,13 +1,13 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "node": "8.10"
         }
       }
     ],
-    "stage-3"
+    "@babel/preset-stage-3"
   ]
 }

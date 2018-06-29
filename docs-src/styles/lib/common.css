@@ -55,11 +55,11 @@ header {
       text-decoration: none;
       padding: 0 0.5em;
       border-radius: 0.2em;
-      border: 0.1em solid color(var(--btnColor) blackness(10%));
-      background-color: color(var(--btnColor) lightness(85%));
+      border: 0.1em solid color-mod(var(--btnColor) blackness(10%));
+      background-color: color-mod(var(--btnColor) lightness(85%));
       &:hover {
-        background-color: color(var(--btnColor) lightness(85%));
-        border-color: color(var(--btnColor) blackness(10%));
+        background-color: color-mod(var(--btnColor) lightness(85%));
+        border-color: color-mod(var(--btnColor) blackness(10%));
       }
       & img {
         width: 1.1em;
@@ -70,7 +70,7 @@ header {
     }
     @media (--medium-viewport) {
       & a {
-        border: 0.1em solid color(var(--btnColor) blackness(0%));
+        border: 0.1em solid color-mod(var(--btnColor) blackness(0%));
         background-color: #fff;
       }
     }
@@ -97,7 +97,7 @@ footer {
   font-size: 0.9em;
 
   & a {
-    color: color(var(--textColor) lightness(60%));
+    color: color-mod(var(--textColor) lightness(60%));
     text-decoration: none;
   }
 }
@@ -122,13 +122,13 @@ footer {
       background: var(--textColor);
       border-radius: 0.25em;
     }
-  }
-  & .intro {
-    margin: 0;
-    text-align: center;
-    font-size: 1.4em;
-    & p {
-      margin: 1em 0;
+    & .intro {
+      margin: 0;
+      text-align: center;
+      font-size: 1.4em;
+      & p {
+        margin: 1em 0;
+      }
     }
   }
 
