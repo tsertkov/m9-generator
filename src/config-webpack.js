@@ -23,6 +23,16 @@ export default (config) => {
     return null
   }
 
+  // For some reason babel seems to ignore .browserlistrc files. Manually
+  // loading .browserslistrc from site src to use it by babel and posstcss.
+  const browsers = existsSync(path.join(config.paths.src, '.browserslistrc'))
+    ? readFileSync(path.join(config.paths.src, '.browserslistrc'))
+      .toString()
+      .trim()
+      .split(/\n|\r\n/)
+    // default browserslist query if .browserslistcrc is missing
+    : [ '>0.25%', 'not ie 11', 'not op_mini all' ]
+
   const isDevelopment = config.isDevTask
   const configWebpack = {
     entry,
@@ -41,17 +51,7 @@ export default (config) => {
           presets: [
             ['@babel/preset-env', {
               debug: true,
-              // For some reason babel seems to ignore .browserlistrc file.
-              // Manually applying .browserlistrc to workaround this issue.
-              targets: {
-                browsers:
-                  existsSync(path.join(config.paths.src, '.browserslistrc'))
-                    ? readFileSync(path.join(config.paths.src, '.browserslistrc'))
-                      .toString()
-                      .trim()
-                      .split(/\n|\r\n/)
-                    : [ '>0.25%', 'not ie 11', 'not op_mini all' ]
-              }
+              targets: { browsers }
             }],
             '@babel/preset-stage-3'
           ]
@@ -70,6 +70,7 @@ export default (config) => {
                 postcssImport(),
                 postcssPresetEnv({
                   stage: 2,
+                  browsers,
                   features: {
                     'custom-properties': {
                       preserve: false
