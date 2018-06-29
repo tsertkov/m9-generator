@@ -1,4 +1,5 @@
 import gulp from 'gulp'
+import path from 'path'
 import Metalsmith from 'metalsmith'
 import inplace from 'metalsmith-in-place'
 import requireDir from 'require-dir'
@@ -41,6 +42,20 @@ function metalsmithInplaceConfig () {
   return inplaceConfig
 }
 
+function getTplContext () {
+  const context = {
+    ...loadContent(config.contentDir),
+    config
+  }
+
+  const manifestPath = path.join(config.assets.dst, config.assets.manifest)
+  if (existsSync(manifestPath)) {
+    context.__assets = require(manifestPath)
+  }
+
+  return context
+}
+
 gulp.task('build-metalsmith', (done) => {
   if (!existsSync(config.pages.directory)) {
     const msg = `No templates to compile found:\n - ${config.pages.directory}`
@@ -54,10 +69,7 @@ gulp.task('build-metalsmith', (done) => {
     .clean(false)
     .source(config.pages.directory)
     .destination(config.paths.dst)
-    .metadata({
-      ...loadContent(config.contentDir),
-      config
-    })
+    .metadata(getTplContext())
     .use(m9metaToFiles(config.metaToFiles || {}))
     .use(m9matterInterpolate())
     .use(inplace(metalsmithInplaceConfig()))

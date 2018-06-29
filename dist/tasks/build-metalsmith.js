@@ -2,6 +2,8 @@
 
 var _gulp = _interopRequireDefault(require("gulp"));
 
+var _path = _interopRequireDefault(require("path"));
+
 var _metalsmith = _interopRequireDefault(require("metalsmith"));
 
 var _metalsmithInPlace = _interopRequireDefault(require("metalsmith-in-place"));
@@ -57,6 +59,20 @@ function metalsmithInplaceConfig() {
   return inplaceConfig;
 }
 
+function getTplContext() {
+  const context = _objectSpread({}, (0, _loadContent.default)(_config.default.contentDir), {
+    config: _config.default
+  });
+
+  const manifestPath = _path.default.join(_config.default.assets.dst, _config.default.assets.manifest);
+
+  if ((0, _fs.existsSync)(manifestPath)) {
+    context.__assets = require(manifestPath);
+  }
+
+  return context;
+}
+
 _gulp.default.task('build-metalsmith', done => {
   if (!(0, _fs.existsSync)(_config.default.pages.directory)) {
     const msg = `No templates to compile found:\n - ${_config.default.pages.directory}`;
@@ -67,8 +83,6 @@ _gulp.default.task('build-metalsmith', done => {
     return;
   }
 
-  const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).clean(false).source(_config.default.pages.directory).destination(_config.default.paths.dst).metadata(_objectSpread({}, (0, _loadContent.default)(_config.default.contentDir), {
-    config: _config.default
-  })).use((0, _m9MetaToFiles.default)(_config.default.metaToFiles || {})).use((0, _m9MatterInterpolate.default)()).use((0, _metalsmithInPlace.default)(metalsmithInplaceConfig()));
+  const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).clean(false).source(_config.default.pages.directory).destination(_config.default.paths.dst).metadata(getTplContext()).use((0, _m9MetaToFiles.default)(_config.default.metaToFiles || {})).use((0, _m9MatterInterpolate.default)()).use((0, _metalsmithInPlace.default)(metalsmithInplaceConfig()));
   metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.htmlmin)).build(done);
 });
