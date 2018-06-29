@@ -50,8 +50,9 @@ export default (config) => {
         options: {
           presets: [
             ['@babel/preset-env', {
-              debug: true,
-              targets: { browsers }
+              targets: {
+                browsers
+              }
             }],
             '@babel/preset-stage-3'
           ]

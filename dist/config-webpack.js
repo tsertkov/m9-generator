@@ -59,7 +59,6 @@ var _default = config => {
         loader: 'babel-loader',
         options: {
           presets: [['@babel/preset-env', {
-            debug: true,
             targets: {
               browsers
             }
