@@ -12,11 +12,11 @@ var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_gulp.default.task('build-webpack', callback => {
+_gulp.default.task('build-webpack', done => {
   if (!_config.default.webpack) {
     _fancyLog.default.warn(['webpack] nothing to compile yet...']);
 
-    callback();
+    done();
     return;
   }
 
@@ -25,6 +25,6 @@ _gulp.default.task('build-webpack', callback => {
 
     _fancyLog.default.info('[webpack]', '\n' + stats.toString());
 
-    callback();
+    done();
   });
 });

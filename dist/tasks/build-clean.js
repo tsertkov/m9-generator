@@ -12,6 +12,8 @@ const {
   dst
 } = _config.default.paths;
 
-_gulp.default.task('build-clean', () => (0, _del.default)([dst], {
-  force: true
-}));
+_gulp.default.task('build-clean', () => {
+  return (0, _del.default)([dst], {
+    force: true
+  });
+});

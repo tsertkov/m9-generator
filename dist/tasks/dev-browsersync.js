@@ -8,19 +8,13 @@ var _webpack = _interopRequireDefault(require("webpack"));
 
 var _webpackDevMiddleware = _interopRequireDefault(require("webpack-dev-middleware"));
 
-var _webpackHotMiddleware = _interopRequireDefault(require("webpack-hot-middleware"));
-
 var _path = _interopRequireDefault(require("path"));
 
 var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const bsServer = _browserSync.default.create();
-
-const webpackHMRSnippet = '<script async src="/assets/webpack-hot-middleware-client.js"></script>';
-
-_gulp.default.task('dev-browsersync', callback => {
+_gulp.default.task('dev-browsersync', done => {
   const bsConfig = {
     open: false,
     notify: false,
@@ -31,17 +25,14 @@ _gulp.default.task('dev-browsersync', callback => {
   };
 
   if (!_config.default.webpack) {
-    launchBrowserSync(bsConfig, callback);
+    done();
+
+    _browserSync.default.init(bsConfig);
+
     return;
   }
 
   const compiler = (0, _webpack.default)(_config.default.webpack);
-  bsConfig.snippetOptions = {
-    rule: {
-      match: /<body[^>]*>/i,
-      fn: (snippet, match) => match + snippet + webpackHMRSnippet
-    }
-  };
   const devMiddleware = (0, _webpackDevMiddleware.default)(compiler, {
     publicPath: _config.default.assets.publicPath,
     stats: {
@@ -49,19 +40,16 @@ _gulp.default.task('dev-browsersync', callback => {
       context: _config.default.paths.src
     }
   });
-  bsConfig.server.middleware = [devMiddleware, (0, _webpackHotMiddleware.default)(compiler)];
   devMiddleware.waitUntilValid(() => {
-    launchBrowserSync(bsConfig, callback) // FIME remove following line when HMR works again
-    .watch(_path.default.join(_config.default.assets.dst, _config.default.assets.manifest)).on('change', bsServer.reload);
-  });
-});
+    done();
 
-function launchBrowserSync(options, callback) {
-  // return early from task
-  // and start browserSync in background
-  callback();
-  bsServer.init(options, () => {
-    bsServer.watch(_path.default.join(_config.default.paths.dst, '**/*.html')).on('change', bsServer.reload);
+    _browserSync.default.init(bsConfig).watch(_path.default.join(_config.default.assets.dst, _config.default.assets.manifest)).on('change', () => {
+      // Could not find out which bundle was actually updated here
+      // since devMiddleware.context.webpackStats contains details
+      // of all bundles. Trying our best and reloading css files with
+      // browserSync on all webpack re-compilations including js-only
+      _browserSync.default.reload(['*.css']);
+    });
   });
-  return bsServer;
-}
+  bsConfig.server.middleware = [devMiddleware];
+});

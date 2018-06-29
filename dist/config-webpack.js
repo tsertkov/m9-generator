@@ -9,8 +9,6 @@ var _path = _interopRequireDefault(require("path"));
 
 var _glob = _interopRequireDefault(require("glob"));
 
-var _webpack = _interopRequireDefault(require("webpack"));
-
 var _miniCssExtractPlugin = _interopRequireDefault(require("mini-css-extract-plugin"));
 
 var _webpackManifestPlugin = _interopRequireDefault(require("webpack-manifest-plugin"));
@@ -66,7 +64,7 @@ var _default = config => {
         }
       }, {
         test: /\.css$/,
-        use: [isDevelopment ? 'style-loader' : _miniCssExtractPlugin.default.loader, 'css-loader', {
+        use: [_miniCssExtractPlugin.default.loader, 'css-loader', {
           loader: 'postcss-loader',
           options: {
             plugins: () => [(0, _postcssImport.default)(), (0, _postcssPresetEnv.default)({
@@ -96,18 +94,18 @@ var _default = config => {
     plugins: [new _webpackManifestPlugin.default({
       writeToFileEmit: true,
       filename: config.assets.manifest
+    }), new _miniCssExtractPlugin.default(isDevelopment ? {
+      filename: '[name].css',
+      chunkFilename: '[id].css'
+    } : {
+      filename: '[name]-[hash].css',
+      chunkFilename: '[id]-[hash].css'
     })]
   };
 
   if (isDevelopment) {
-    configWebpack.entry['webpack-hot-middleware-client'] = 'webpack-hot-middleware/client';
-    configWebpack.plugins.push(new _webpack.default.HotModuleReplacementPlugin(), new _webpackVisualizerPlugin.default({
+    configWebpack.plugins.push(new _webpackVisualizerPlugin.default({
       filename: '../webpack-visualizer/index.html'
-    }));
-  } else {
-    configWebpack.plugins.push(new _miniCssExtractPlugin.default({
-      filename: '[name]-[hash].css',
-      chunkFilename: '[id]-[hash].css'
     }));
   }
 

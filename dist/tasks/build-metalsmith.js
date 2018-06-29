@@ -4,8 +4,6 @@ var _gulp = _interopRequireDefault(require("gulp"));
 
 var _metalsmith = _interopRequireDefault(require("metalsmith"));
 
-var _browserSync = _interopRequireDefault(require("browser-sync"));
-
 var _metalsmithInPlace = _interopRequireDefault(require("metalsmith-in-place"));
 
 var _metalsmithLayouts = _interopRequireDefault(require("metalsmith-layouts"));
@@ -63,13 +61,13 @@ function metalsmithInplaceConfig() {
   return inplaceConfig;
 }
 
-_gulp.default.task('build-metalsmith', callback => {
+_gulp.default.task('build-metalsmith', done => {
   if (!(0, _fs.existsSync)(_config.default.pages.directory)) {
     const msg = `No templates to compile found:\n - ${_config.default.pages.directory}`;
 
     _fancyLog.default.warn((0, _gulpColor.default)(msg, 'YELLOW'));
 
-    callback();
+    done();
     return;
   }
 
@@ -87,12 +85,5 @@ _gulp.default.task('build-metalsmith', callback => {
     metalsmith.use((0, _metalsmithLayouts.default)(_config.default.layouts));
   }
 
-  metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.htmlmin)).build(error => {
-    if (error) return callback(error);
-
-    _browserSync.default.reload();
-
-    callback();
-  });
-  return metalsmith;
+  metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.htmlmin)).build(done);
 });
