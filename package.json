@@ -10,7 +10,7 @@
     "m9-tasks": "./bin/m9.js --tasks --src=docs-src --m9-use-src",
     "build": "npm run build-dist && npm run build-docs",
     "build-dist": "rm -rf dist/* && babel -d dist src",
-    "build-docs": "NODE_ENV=production ./bin/m9.js build --src=docs-src --dst=docs",
+    "build-docs": "./bin/m9.js build --src=docs-src --dst=docs",
     "dev": "./bin/m9.js dev --src=docs-src --dst=docs --m9-use-src",
     "test": "npm run test-src && npm run test-docs",
     "test-src": "standard --verbose src/*.js src/**/*.js | snazzy",
