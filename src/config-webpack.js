@@ -6,6 +6,7 @@ import ManifestPlugin from 'webpack-manifest-plugin'
 import postcssImport from 'postcss-import'
 import postcssPresetEnv from 'postcss-preset-env'
 import Visualizer from 'webpack-visualizer-plugin'
+import { existsSync, readFileSync } from 'fs'
 
 export default (config) => {
   const entry = [
@@ -37,14 +38,19 @@ export default (config) => {
         test: /\.js$/,
         loader: 'babel-loader',
         options: {
-          'presets': [
+          presets: [
             ['@babel/preset-env', {
-              'targets': {
-                'browsers': [
-                  '>0.25%',
-                  'not ie 11',
-                  'not op_mini all'
-                ]
+              debug: true,
+              // For some reason babel seems to ignore .browserlistrc file.
+              // Manually applying .browserlistrc to workaround this issue.
+              targets: {
+                browsers:
+                  existsSync(path.join(config.paths.src, '.browserslistrc'))
+                    ? readFileSync(path.join(config.paths.src, '.browserslistrc'))
+                      .toString()
+                      .trim()
+                      .split(/\n|\r\n/)
+                    : [ '>0.25%', 'not ie 11', 'not op_mini all' ]
               }
             }],
             '@babel/preset-stage-3'
