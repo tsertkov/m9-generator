@@ -2,6 +2,12 @@
   "name": "m9-generator",
   "version": "0.0.1",
   "description": "Static Site Generator",
+  "engines": {
+    "node": ">=8.10"
+  },
+  "os": [
+    "!win32"
+  ],
   "bin": {
     "m9": "./bin/m9.js"
   },
