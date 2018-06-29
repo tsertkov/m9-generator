@@ -21,6 +21,8 @@ var _postcssPresetEnv = _interopRequireDefault(require("postcss-preset-env"));
 
 var _webpackVisualizerPlugin = _interopRequireDefault(require("webpack-visualizer-plugin"));
 
+var _fs = require("fs");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = config => {
@@ -35,8 +37,12 @@ var _default = config => {
 
   if (!Object.keys(entry).length) {
     return null;
-  }
+  } // For some reason babel seems to ignore .browserlistrc files. Manually
+  // loading .browserslistrc from site src to use it by babel and posstcss.
 
+
+  const browsers = (0, _fs.existsSync)(_path.default.join(config.paths.src, '.browserslistrc')) ? (0, _fs.readFileSync)(_path.default.join(config.paths.src, '.browserslistrc')).toString().trim().split(/\n|\r\n/) // default browserslist query if .browserslistcrc is missing
+  : ['>0.25%', 'not ie 11', 'not op_mini all'];
   const isDevelopment = config.isDevTask;
   const configWebpack = {
     entry,
@@ -52,9 +58,10 @@ var _default = config => {
         test: /\.js$/,
         loader: 'babel-loader',
         options: {
-          'presets': [['@babel/preset-env', {
-            'targets': {
-              'browsers': ['>0.25%', 'not ie 11', 'not op_mini all']
+          presets: [['@babel/preset-env', {
+            debug: true,
+            targets: {
+              browsers
             }
           }], '@babel/preset-stage-3']
         }
@@ -65,6 +72,7 @@ var _default = config => {
           options: {
             plugins: () => [(0, _postcssImport.default)(), (0, _postcssPresetEnv.default)({
               stage: 2,
+              browsers,
               features: {
                 'custom-properties': {
                   preserve: false
