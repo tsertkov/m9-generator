@@ -1,6 +1,5 @@
 import path from 'path'
 import glob from 'glob'
-import webpack from 'webpack'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import ManifestPlugin from 'webpack-manifest-plugin'
 import postcssImport from 'postcss-import'
@@ -60,9 +59,7 @@ export default (config) => {
       }, {
         test: /\.css$/,
         use: [
-          isDevelopment
-            ? 'style-loader'
-            : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           'css-loader',
           {
             loader: 'postcss-loader',
@@ -99,25 +96,25 @@ export default (config) => {
       new ManifestPlugin({
         writeToFileEmit: true,
         filename: config.assets.manifest
-      })
+      }),
+      new MiniCssExtractPlugin(
+        isDevelopment
+          ? {
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+          }
+          : {
+            filename: '[name]-[hash].css',
+            chunkFilename: '[id]-[hash].css'
+          }
+      )
     ]
   }
 
   if (isDevelopment) {
-    configWebpack.entry['webpack-hot-middleware-client'] =
-      'webpack-hot-middleware/client'
-
     configWebpack.plugins.push(
-      new webpack.HotModuleReplacementPlugin(),
       new Visualizer({
         filename: '../webpack-visualizer/index.html'
-      })
-    )
-  } else {
-    configWebpack.plugins.push(
-      new MiniCssExtractPlugin({
-        filename: '[name]-[hash].css',
-        chunkFilename: '[id]-[hash].css'
       })
     )
   }

@@ -1,6 +1,5 @@
 import gulp from 'gulp'
 import Metalsmith from 'metalsmith'
-import browserSync from 'browser-sync'
 import inplace from 'metalsmith-in-place'
 import layouts from 'metalsmith-layouts'
 import requireDir from 'require-dir'
@@ -44,11 +43,11 @@ function metalsmithInplaceConfig () {
   return inplaceConfig
 }
 
-gulp.task('build-metalsmith', callback => {
+gulp.task('build-metalsmith', (done) => {
   if (!existsSync(config.pages.directory)) {
     const msg = `No templates to compile found:\n - ${config.pages.directory}`
     log.warn(color(msg, 'YELLOW'))
-    callback()
+    done()
     return
   }
 
@@ -83,11 +82,5 @@ gulp.task('build-metalsmith', callback => {
   metalsmith
     .use(m9permalink())
     .use(htmlmin(config.htmlmin))
-    .build(error => {
-      if (error) return callback(error)
-      browserSync.reload()
-      callback()
-    })
-
-  return metalsmith
+    .build(done)
 })

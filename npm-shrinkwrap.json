@@ -2168,11 +2168,6 @@
         "ansi-wrap": "0.1.0"
       }
     },
-    "ansi-html": {
-      "version": "0.0.7",
-      "resolved": "https://registry.npmjs.org/ansi-html/-/ansi-html-0.0.7.tgz",
-      "integrity": "sha1-gTWEAhliqenm/QOflA0S9WynhZ4="
-    },
     "ansi-inverse": {
       "version": "0.1.1",
       "resolved": "https://registry.npmjs.org/ansi-inverse/-/ansi-inverse-0.1.1.tgz",
@@ -7871,11 +7866,6 @@
       "version": "1.1.1",
       "resolved": "https://registry.npmjs.org/html-comment-regex/-/html-comment-regex-1.1.1.tgz",
       "integrity": "sha1-ZouTd26q5V696POtRkswekljYl4="
-    },
-    "html-entities": {
-      "version": "1.2.1",
-      "resolved": "https://registry.npmjs.org/html-entities/-/html-entities-1.2.1.tgz",
-      "integrity": "sha1-DfKTUfByEWNRXfueVUPl9u7VFi8="
     },
     "html-minifier": {
       "version": "3.5.16",
@@ -16258,17 +16248,6 @@
           "resolved": "https://registry.npmjs.org/mime/-/mime-2.3.1.tgz",
           "integrity": "sha512-OEUllcVoydBHGN1z84yfQDimn58pZNNNXgZlHXSboxMlFvgI6MXSWpWKpFRra7H1HxpVhHTkrghfRW49k6yjeg=="
         }
-      }
-    },
-    "webpack-hot-middleware": {
-      "version": "2.22.2",
-      "resolved": "https://registry.npmjs.org/webpack-hot-middleware/-/webpack-hot-middleware-2.22.2.tgz",
-      "integrity": "sha512-uccPS6b/UlXJoNCS+3fuc40z2KZgO0qQhnu+Ne1iZiHTy9s5fMCJAV+Vc8VTVkN203UphsxQmkumxYeHLiQ5jg==",
-      "requires": {
-        "ansi-html": "0.0.7",
-        "html-entities": "^1.2.0",
-        "querystring": "^0.2.0",
-        "strip-ansi": "^3.0.0"
       }
     },
     "webpack-log": {

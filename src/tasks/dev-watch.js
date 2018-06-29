@@ -1,8 +1,9 @@
 import path from 'path'
 import gulp from 'gulp'
+import browserSync from 'browser-sync'
 import config from '../config'
 
-function clearRequireCaches (callback) {
+function clearRequireCaches (done) {
   Object.keys(require.cache)
     .filter(modulePath => (
       modulePath.includes(config.paths.srcContent) ||
@@ -12,7 +13,12 @@ function clearRequireCaches (callback) {
       delete require.cache[modulePath]
     })
 
-  callback()
+  done()
+}
+
+function reloadBrowsers (done) {
+  browserSync.reload('*.html')
+  done()
 }
 
 gulp.task('dev-watch', () => {
@@ -25,6 +31,7 @@ gulp.task('dev-watch', () => {
     path.join(config.helpers.directory, '**/*.js')
   ], gulp.series(
     clearRequireCaches,
-    'build-metalsmith'
+    'build-metalsmith',
+    reloadBrowsers
   ))
 })

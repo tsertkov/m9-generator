@@ -2,14 +2,10 @@ import gulp from 'gulp'
 import browserSync from 'browser-sync'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
 import path from 'path'
 import config from '../config'
 
-const bsServer = browserSync.create()
-const webpackHMRSnippet = '<script async src="/assets/webpack-hot-middleware-client.js"></script>'
-
-gulp.task('dev-browsersync', (callback) => {
+gulp.task('dev-browsersync', (done) => {
   const bsConfig = {
     open: false,
     notify: false,
@@ -20,18 +16,12 @@ gulp.task('dev-browsersync', (callback) => {
   }
 
   if (!config.webpack) {
-    launchBrowserSync(bsConfig, callback)
+    done()
+    browserSync.init(bsConfig)
     return
   }
 
   const compiler = webpack(config.webpack)
-
-  bsConfig.snippetOptions = {
-    rule: {
-      match: /<body[^>]*>/i,
-      fn: (snippet, match) => (match + snippet + webpackHMRSnippet)
-    }
-  }
 
   const devMiddleware = webpackDevMiddleware(compiler, {
     publicPath: config.assets.publicPath,
@@ -41,29 +31,20 @@ gulp.task('dev-browsersync', (callback) => {
     }
   })
 
-  bsConfig.server.middleware = [
-    devMiddleware,
-    webpackHotMiddleware(compiler)
-  ]
-
   devMiddleware.waitUntilValid(() => {
-    launchBrowserSync(bsConfig, callback)
-      // FIME remove following line when HMR works again
+    done()
+    browserSync.init(bsConfig)
       .watch(path.join(config.assets.dst, config.assets.manifest))
-      .on('change', bsServer.reload)
+      .on('change', () => {
+        // Could not find out which bundle was actually updated here
+        // since devMiddleware.context.webpackStats contains details
+        // of all bundles. Trying our best and reloading css files with
+        // browserSync on all webpack re-compilations including js-only
+        browserSync.reload(['*.css'])
+      })
   })
+
+  bsConfig.server.middleware = [
+    devMiddleware
+  ]
 })
-
-function launchBrowserSync (options, callback) {
-  // return early from task
-  // and start browserSync in background
-  callback()
-
-  bsServer.init(options, () => {
-    bsServer
-      .watch(path.join(config.paths.dst, '**/*.html'))
-      .on('change', bsServer.reload)
-  })
-
-  return bsServer
-}
