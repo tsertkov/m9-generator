@@ -120,8 +120,5 @@
     "url": "https://github.com/tsertkov/m9-generator/issues"
   },
   "homepage": "https://m9-generator.com",
-  "main": "dist/gulpfile.js",
-  "directories": {
-    "doc": "docs"
-  }
+  "main": "dist/gulpfile.js"
 }
