@@ -14,7 +14,7 @@ Install `@tsertkov/m9-generator` as your local depencency by running:
 
 `yarn install @tsertkov/m9-generator --save`
 
-### Npm script automation
+### Yarn script automation
 
 Add following `scripts` in your site `package.json`:
 
