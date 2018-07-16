@@ -1,29 +1,30 @@
-'use strict';
+"use strict";
 
-var _path = require('path');
+var _path = _interopRequireDefault(require("path"));
 
-var _path2 = _interopRequireDefault(_path);
+var _gulp = _interopRequireDefault(require("gulp"));
 
-var _gulp = require('gulp');
+var _browserSync = _interopRequireDefault(require("browser-sync"));
 
-var _gulp2 = _interopRequireDefault(_gulp);
-
-var _config = require('../config');
-
-var _config2 = _interopRequireDefault(_config);
+var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function clearRequireCaches(callback) {
-  Object.keys(require.cache).filter(modulePath => modulePath.includes(_config2.default.paths.srcContent) || modulePath.includes(_config2.default.inplace.engineOptions.helpers)).forEach(modulePath => {
+function clearRequireCaches(done) {
+  Object.keys(require.cache).filter(modulePath => modulePath.includes(_config.default.paths.srcContent) || modulePath.includes(_config.default.inplace.engineOptions.helpers)).forEach(modulePath => {
     delete require.cache[modulePath];
   });
-
-  callback();
+  done();
 }
 
-_gulp2.default.task('dev-watch', () => {
-  _gulp2.default.watch(_config2.default.copy.src, _gulp2.default.parallel('build-copy'));
-  _gulp2.default.watch([_path2.default.join(_config2.default.contentDir.directory, '**/*'), _path2.default.join(_config2.default.pages.directory, '**/*'), _path2.default.join(_config2.default.layouts.directory, '**/*'), _path2.default.join(_config2.default.layouts.partials, '**/*'), _path2.default.join(_config2.default.helpers.directory, '**/*.js')], _gulp2.default.series(clearRequireCaches, 'build-metalsmith'));
+function reloadBrowsers(done) {
+  _browserSync.default.reload('*.html');
+
+  done();
+}
+
+_gulp.default.task('dev-watch', () => {
+  _gulp.default.watch(_config.default.copy.src, _gulp.default.parallel('build-copy'));
+
+  _gulp.default.watch([_path.default.join(_config.default.contentDir.directory, '**/*'), _path.default.join(_config.default.pages.directory, '**/*'), _path.default.join(_config.default.layouts.directory, '**/*'), _path.default.join(_config.default.layouts.partials, '**/*'), _path.default.join(_config.default.helpers.directory, '**/*.js')], _gulp.default.series(clearRequireCaches, 'build-metalsmith', reloadBrowsers));
 });
-//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy90YXNrcy9kZXYtd2F0Y2guanMiXSwibmFtZXMiOlsiY2xlYXJSZXF1aXJlQ2FjaGVzIiwiY2FsbGJhY2siLCJPYmplY3QiLCJrZXlzIiwicmVxdWlyZSIsImNhY2hlIiwiZmlsdGVyIiwibW9kdWxlUGF0aCIsImluY2x1ZGVzIiwiY29uZmlnIiwicGF0aHMiLCJzcmNDb250ZW50IiwiaW5wbGFjZSIsImVuZ2luZU9wdGlvbnMiLCJoZWxwZXJzIiwiZm9yRWFjaCIsImd1bHAiLCJ0YXNrIiwid2F0Y2giLCJjb3B5Iiwic3JjIiwicGFyYWxsZWwiLCJwYXRoIiwiam9pbiIsImNvbnRlbnREaXIiLCJkaXJlY3RvcnkiLCJwYWdlcyIsImxheW91dHMiLCJwYXJ0aWFscyIsInNlcmllcyJdLCJtYXBwaW5ncyI6Ijs7QUFBQTs7OztBQUNBOzs7O0FBQ0E7Ozs7OztBQUVBLFNBQVNBLGtCQUFULENBQTZCQyxRQUE3QixFQUF1QztBQUNyQ0MsU0FBT0MsSUFBUCxDQUFZQyxRQUFRQyxLQUFwQixFQUNHQyxNQURILENBQ1VDLGNBQ05BLFdBQVdDLFFBQVgsQ0FBb0JDLGlCQUFPQyxLQUFQLENBQWFDLFVBQWpDLEtBQ0FKLFdBQVdDLFFBQVgsQ0FBb0JDLGlCQUFPRyxPQUFQLENBQWVDLGFBQWYsQ0FBNkJDLE9BQWpELENBSEosRUFLR0MsT0FMSCxDQUtXUixjQUFjO0FBQ3JCLFdBQU9ILFFBQVFDLEtBQVIsQ0FBY0UsVUFBZCxDQUFQO0FBQ0QsR0FQSDs7QUFTQU47QUFDRDs7QUFFRGUsZUFBS0MsSUFBTCxDQUFVLFdBQVYsRUFBdUIsTUFBTTtBQUMzQkQsaUJBQUtFLEtBQUwsQ0FBV1QsaUJBQU9VLElBQVAsQ0FBWUMsR0FBdkIsRUFBNEJKLGVBQUtLLFFBQUwsQ0FBYyxZQUFkLENBQTVCO0FBQ0FMLGlCQUFLRSxLQUFMLENBQVcsQ0FDVEksZUFBS0MsSUFBTCxDQUFVZCxpQkFBT2UsVUFBUCxDQUFrQkMsU0FBNUIsRUFBdUMsTUFBdkMsQ0FEUyxFQUVUSCxlQUFLQyxJQUFMLENBQVVkLGlCQUFPaUIsS0FBUCxDQUFhRCxTQUF2QixFQUFrQyxNQUFsQyxDQUZTLEVBR1RILGVBQUtDLElBQUwsQ0FBVWQsaUJBQU9rQixPQUFQLENBQWVGLFNBQXpCLEVBQW9DLE1BQXBDLENBSFMsRUFJVEgsZUFBS0MsSUFBTCxDQUFVZCxpQkFBT2tCLE9BQVAsQ0FBZUMsUUFBekIsRUFBbUMsTUFBbkMsQ0FKUyxFQUtUTixlQUFLQyxJQUFMLENBQVVkLGlCQUFPSyxPQUFQLENBQWVXLFNBQXpCLEVBQW9DLFNBQXBDLENBTFMsQ0FBWCxFQU1HVCxlQUFLYSxNQUFMLENBQ0Q3QixrQkFEQyxFQUVELGtCQUZDLENBTkg7QUFVRCxDQVpEIiwiZmlsZSI6ImRldi13YXRjaC5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBwYXRoIGZyb20gJ3BhdGgnXG5pbXBvcnQgZ3VscCBmcm9tICdndWxwJ1xuaW1wb3J0IGNvbmZpZyBmcm9tICcuLi9jb25maWcnXG5cbmZ1bmN0aW9uIGNsZWFyUmVxdWlyZUNhY2hlcyAoY2FsbGJhY2spIHtcbiAgT2JqZWN0LmtleXMocmVxdWlyZS5jYWNoZSlcbiAgICAuZmlsdGVyKG1vZHVsZVBhdGggPT4gKFxuICAgICAgbW9kdWxlUGF0aC5pbmNsdWRlcyhjb25maWcucGF0aHMuc3JjQ29udGVudCkgfHxcbiAgICAgIG1vZHVsZVBhdGguaW5jbHVkZXMoY29uZmlnLmlucGxhY2UuZW5naW5lT3B0aW9ucy5oZWxwZXJzKVxuICAgICkpXG4gICAgLmZvckVhY2gobW9kdWxlUGF0aCA9PiB7XG4gICAgICBkZWxldGUgcmVxdWlyZS5jYWNoZVttb2R1bGVQYXRoXVxuICAgIH0pXG5cbiAgY2FsbGJhY2soKVxufVxuXG5ndWxwLnRhc2soJ2Rldi13YXRjaCcsICgpID0+IHtcbiAgZ3VscC53YXRjaChjb25maWcuY29weS5zcmMsIGd1bHAucGFyYWxsZWwoJ2J1aWxkLWNvcHknKSlcbiAgZ3VscC53YXRjaChbXG4gICAgcGF0aC5qb2luKGNvbmZpZy5jb250ZW50RGlyLmRpcmVjdG9yeSwgJyoqLyonKSxcbiAgICBwYXRoLmpvaW4oY29uZmlnLnBhZ2VzLmRpcmVjdG9yeSwgJyoqLyonKSxcbiAgICBwYXRoLmpvaW4oY29uZmlnLmxheW91dHMuZGlyZWN0b3J5LCAnKiovKicpLFxuICAgIHBhdGguam9pbihjb25maWcubGF5b3V0cy5wYXJ0aWFscywgJyoqLyonKSxcbiAgICBwYXRoLmpvaW4oY29uZmlnLmhlbHBlcnMuZGlyZWN0b3J5LCAnKiovKi5qcycpXG4gIF0sIGd1bHAuc2VyaWVzKFxuICAgIGNsZWFyUmVxdWlyZUNhY2hlcyxcbiAgICAnYnVpbGQtbWV0YWxzbWl0aCdcbiAgKSlcbn0pXG4iXX0=

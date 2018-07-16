@@ -1,18 +1,41 @@
 import path from 'path'
 import glob from 'glob'
-import webpack from 'webpack'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import AssetsPlugin from 'assets-webpack-plugin'
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import ManifestPlugin from 'webpack-manifest-plugin'
 import postcssImport from 'postcss-import'
-import postcssCssnext from 'postcss-cssnext'
+import postcssPresetEnv from 'postcss-preset-env'
 import Visualizer from 'webpack-visualizer-plugin'
+import { existsSync, readFileSync } from 'fs'
 
 export default (config) => {
-  const { isDevelopment } = config
+  const entry = [
+    ...glob.sync(config.assets.scripts),
+    ...glob.sync(config.assets.styles)
+  ].reduce((acc, filePath) => {
+    const { name } = path.parse(filePath)
+    acc[name] = filePath
+    return acc
+  }, {})
+
+  // Return null config when no entrypoints found
+  if (!Object.keys(entry).length) {
+    return null
+  }
+
+  // For some reason babel seems to ignore .browserlistrc files. Manually
+  // loading .browserslistrc from site src to use it by babel and posstcss.
+  const browsers = existsSync(path.join(config.paths.src, '.browserslistrc'))
+    ? readFileSync(path.join(config.paths.src, '.browserslistrc'))
+      .toString()
+      .trim()
+      .split(/\n|\r\n/)
+    // default browserslist query if .browserslistcrc is missing
+    : [ '>0.25%', 'not ie 11', 'not op_mini all' ]
+
+  const isDevelopment = config.isDevTask
   const configWebpack = {
-    mode: 'none',
+    entry,
+    mode: isDevelopment ? 'development' : 'production',
     context: config.paths.src,
     output: {
       filename: isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
@@ -22,20 +45,38 @@ export default (config) => {
     module: {
       rules: [{
         test: /\.js$/,
-        use: 'babel-loader'
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            ['@babel/preset-env', {
+              targets: {
+                browsers
+              }
+            }],
+            '@babel/preset-stage-3'
+          ]
+        }
       }, {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader'
-          },
+          'css-loader',
           {
             loader: 'postcss-loader',
             options: {
-              plugins: (loader) => [
+              plugins: () => [
                 postcssImport(),
-                postcssCssnext()
+                postcssPresetEnv({
+                  stage: 2,
+                  browsers,
+                  features: {
+                    'custom-properties': {
+                      preserve: false
+                    },
+                    'nesting-rules': true,
+                    'custom-media-queries': true
+                  }
+                })
               ]
             }
           }
@@ -52,49 +93,31 @@ export default (config) => {
       }]
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: isDevelopment ? '[name].css' : '[name]-[hash].css',
-        chunkFilename: isDevelopment ? '[id].css' : '[id]-[hash].css'
+      new ManifestPlugin({
+        writeToFileEmit: true,
+        filename: config.assets.manifest
       }),
-      new AssetsPlugin({
-        path: config.paths.dst,
-        filename: config.assets.manifest,
-        prettyPrint: true
-      }),
-      new webpack.optimize.ModuleConcatenationPlugin()
-    ],
-    optimization: {
-      minimizer: [
-        new UglifyJsPlugin({
-          cache: true,
-          parallel: true,
-          uglifyOptions: {
-            compress: false,
-            ecma: 6,
-            mangle: true
-          },
-          sourceMap: isDevelopment
-        }),
-        new OptimizeCSSAssetsPlugin({})
-      ]
-    }
+      new MiniCssExtractPlugin(
+        isDevelopment
+          ? {
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+          }
+          : {
+            filename: '[name]-[hash].css',
+            chunkFilename: '[id]-[hash].css'
+          }
+      )
+    ]
   }
-
-  configWebpack.entry = [
-    ...glob.sync(config.assets.scripts),
-    ...glob.sync(config.assets.styles)
-  ].reduce((acc, filePath) => {
-    const { name } = path.parse(filePath)
-    acc[name] = filePath
-    return acc
-  }, {})
 
   if (isDevelopment) {
     configWebpack.plugins.push(
-      new Visualizer({ filename: '../webpack-visualizer/index.html' })
+      new Visualizer({
+        filename: '../webpack-visualizer/index.html'
+      })
     )
   }
 
-  config.webpack = configWebpack
-  return config
+  return configWebpack
 }

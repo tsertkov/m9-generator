@@ -4,16 +4,16 @@ import PluginError from 'plugin-error'
 import webpack from 'webpack'
 import config from '../config'
 
-gulp.task('build-webpack', (callback) => {
-  if (!Object.keys(config.webpack.entry).length) {
+gulp.task('build-webpack', (done) => {
+  if (!config.webpack) {
     log.warn(['webpack] nothing to compile yet...'])
-    callback()
+    done()
     return
   }
 
   webpack(config.webpack, (err, stats) => {
     if (err) throw new PluginError('webpack', err)
     log.info('[webpack]', '\n' + stats.toString())
-    callback()
+    done()
   })
 })

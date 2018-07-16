@@ -1,16 +1,14 @@
 import gulp from 'gulp'
+import path from 'path'
 import Metalsmith from 'metalsmith'
-import browserSync from 'browser-sync'
 import inplace from 'metalsmith-in-place'
-import layouts from 'metalsmith-layouts'
 import requireDir from 'require-dir'
-import helpers from 'metalsmith-register-helpers'
 import handlebarsHelpers from 'handlebars-helpers'
 import debug from 'metalsmith-debug'
 import htmlmin from 'metalsmith-html-minifier'
 import log from 'fancy-log'
 import color from 'gulp-color'
-import { readdirSync, existsSync } from 'fs'
+import { existsSync } from 'fs'
 import loadContent from '../lib/load-content'
 import m9metaToFiles from '../lib/metalsmith-plugins/m9-meta-to-files'
 import m9matterInterpolate from '../lib/metalsmith-plugins/m9-matter-interpolate'
@@ -44,11 +42,25 @@ function metalsmithInplaceConfig () {
   return inplaceConfig
 }
 
-gulp.task('build-metalsmith', callback => {
+function getTplContext () {
+  const context = {
+    ...loadContent(config.contentDir),
+    __config: config
+  }
+
+  const manifestPath = path.join(config.assets.dst, config.assets.manifest)
+  if (existsSync(manifestPath)) {
+    context.__assets = require(manifestPath)
+  }
+
+  return context
+}
+
+gulp.task('build-metalsmith', (done) => {
   if (!existsSync(config.pages.directory)) {
     const msg = `No templates to compile found:\n - ${config.pages.directory}`
     log.warn(color(msg, 'YELLOW'))
-    callback()
+    done()
     return
   }
 
@@ -57,37 +69,13 @@ gulp.task('build-metalsmith', callback => {
     .clean(false)
     .source(config.pages.directory)
     .destination(config.paths.dst)
-    .metadata({
-      ...loadContent(config.contentDir),
-      config
-    })
+    .metadata(getTplContext())
     .use(m9metaToFiles(config.metaToFiles || {}))
     .use(m9matterInterpolate())
-
-  if (
-    existsSync(config.helpers.directory) &&
-    readdirSync(config.helpers.directory).length
-  ) {
-    metalsmith.use(helpers(config.helpers))
-  }
-
-  metalsmith.use(inplace(metalsmithInplaceConfig()))
-
-  if (
-    existsSync(config.layouts.directory) &&
-    readdirSync(config.layouts.directory).length
-  ) {
-    metalsmith.use(layouts(config.layouts))
-  }
+    .use(inplace(metalsmithInplaceConfig()))
 
   metalsmith
     .use(m9permalink())
     .use(htmlmin(config.htmlmin))
-    .build(error => {
-      if (error) return callback(error)
-      browserSync.reload()
-      callback()
-    })
-
-  return metalsmith
+    .build(done)
 })

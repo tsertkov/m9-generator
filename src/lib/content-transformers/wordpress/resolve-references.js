@@ -41,8 +41,11 @@ function isReference (entity) {
 function getReferencedEntity (content, refEntitySrc) {
   const {
     ID: id,
-    post_type: postType
+    post_type: postType,
+    post_status: postStatus
   } = refEntitySrc
+
+  if (postStatus === 'draft') return null
 
   const entities = content[postType]
   return entities
@@ -51,8 +54,9 @@ function getReferencedEntity (content, refEntitySrc) {
 }
 
 function resolvePropertyReferences (content, propertyName, propertyValue) {
-  return propertyValue.map(refEntitySrc =>
-    getReferencedEntity(content, refEntitySrc))
+  return propertyValue
+    .map(refEntitySrc => getReferencedEntity(content, refEntitySrc))
+    .filter(v => v !== null)
 }
 
 function getById (entities, id) {
