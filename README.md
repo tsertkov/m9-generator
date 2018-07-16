@@ -8,17 +8,17 @@
 
 Use `yarn` instead of `npm`. m9-generator depends on peerDependencies in package.json and so far only `yarn` installs them.
 
-### Install m9-generator local dependemcy
+### Install m9-generator local dependency
 
 Install `@tsertkov/m9-generator` as your local depencency by running:
 
-`yarn install @tsertkov/m9-generator --save`
+`yarn add @tsertkov/m9-generator`
 
 ### Yarn script automation
 
 Add following `scripts` in your site `package.json`:
 
-```js
+```json
 "scripts": {
   "m9": "m9",
   "build": "m9 build",
@@ -29,7 +29,7 @@ Add following `scripts` in your site `package.json`:
 
 To run gulp tasks with `yarn` locally
 
-```
+```sh
 $ yarn test
 $ yarn run dev
 $ yarn run build
