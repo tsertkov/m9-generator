@@ -154,11 +154,16 @@ Stage can be set with command line argument `--stage` or `STAGE` environment var
 
 m9-generator uses `metalsmith` to build static files and `webpack` to bundle JavaScript and CSS. Both are relying on entrypoint files as their input.
 
-Each file matched by `<SRC>/pages/*.html` pattern is processed by `metalsmith` resulting in one of many files build in destination directory.
+Each file matched by `<SRC>/pages/**/*.hbs` pattern is processed by `metalsmith` resulting in one or many files build in destination directory. All other files in `<SRC>/pages/**/*` are copied as is.
 
 Each file matched by `<SRC>/scripts/*.js|.css` pattern is bundled in corresponding JS or CSS file in `<DST>/assets` directory.
 
 ## Target browsers
+
+Webpack loaders for JavaScript and CSS are respecting configured target browsers defined in [`.browserslistrc`](https://www.npmjs.com/package/browserslist) file.
+
+> NB! The most pragmatic browserlist query is used by default when `.browserslistrc` file is not given.
+
 ## Babel
 ### Node.js babel-register
 ### Webpack babel-loader
