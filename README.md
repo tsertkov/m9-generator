@@ -171,10 +171,64 @@ Two different babel transformation processes are running in m9-generator. One is
 Both transformations use the same presets `@babel/preset-stage-3` and `@babel/preset-env`, but differ in targets for `preset-env`.
 
 ## Handlebars
+
+Handlebars is simple, powerful and very extendable templating system. Custom Partials and Helpers allow building reusable components with easy. Read more on https://handlebarsjs.com/.
+
 ### Partials
+
+By default handlebars partials are loaded from `<SRC>/partials/*.hbs`. Read more about handlebars partials on https://handlebarsjs.com/partials.html.
+
 ### Layouts
+
+Layouts are implemented by native handlebars [partial blocks](https://handlebarsjs.com/partials.html#partial-block).
+
+Layout example `<SRC>/partials/layout-default.hbs`:
+
+```handlebars
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{__assets.[styles.css]}}">
+</head>
+<body>
+  {{> header}}
+  <section class="content">
+    {{> @partial-block}}
+  </section>
+  {{> footer}}
+  <script src="{{__assets.[scripts.js]}}"></script>
+</body>
+</html>
+```
+
+Page template example `<SRC>/pages/index.html.hbs`: 
+
+```handlebars
+---
+title: ${site.title}
+---
+{{#> layout-default}}
+<article>
+  <div class="body">
+    {{{readme.content}}}
+  </div>
+</article>
+{{/layout-default}}
+```
+
 ### Helpers
-### Embedded handlebars-helpers package
+
+Helpers are loaded with `<SRC>/helpers/*.js` pattern.
+
+These are native JavaScript files and must use `module.exports = (content) => 'output string'` format. To enable dynamic loading.
+
+### Embedded handlebars-helpers
+
+[`handlebars-helpers`](https://github.com/helpers/handlebars-helpers) are embedded with handlebars. 188 helpers! Before writing your own search in [handlebars-helpers](https://github.com/helpers/handlebars-helpers) first.
+
 ## Webpack
 ### Development and Production modes
 ### Loaders
