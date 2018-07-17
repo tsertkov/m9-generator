@@ -2,19 +2,34 @@
 
 > Static site generator powered by `gulp`, `webpack`, `metalsmith` and `handlebars`.
 
+## Overview
+
+TBD
+
+- Babel
+- PostCSS
+- Handlebars
+- Webpack
+- Metalsmith
+
 ## Installation
 
-### Yarn instead of Npm
+### Use Yarn instead of Npm
 
-Use `yarn` instead of `npm`. m9-generator depends on peerDependencies in package.json and so far only `yarn` installs them.
+Use `yarn` instead of `npm`. m9-generator depends on `peerDependencies` in `package.json` and so far only `yarn` installs them.
 
 ### Install m9-generator local dependency
 
 Install `@tsertkov/m9-generator` as your local depencency by running:
 
-`yarn add @tsertkov/m9-generator`
+```sh
+$ yarn add @tsertkov/m9-generator
+```
 
-### Yarn script automation
+## Stages
+## Command line tool
+### Commands overview
+### package.json scripts
 
 Add following `scripts` in your site `package.json`:
 
@@ -27,7 +42,7 @@ Add following `scripts` in your site `package.json`:
 }
 ```
 
-To run gulp tasks with `yarn` locally
+To run m9-generator tasks with `yarn` locally
 
 ```sh
 $ yarn test
@@ -37,18 +52,33 @@ $ yarn run m9
 $ yarn run m9 <task>
 ```
 
-## Usage
+## Source and Build directories
+## BrowserSync
+## Entry points
+### Webpack entry points
+### Static files entry points
+## Target browsers
+## Babel
+### Node.js babel-register
+### Webpack babel-loader
+## Handlebars
+### Partials
+### Layouts
+### Helpers
+### Embedded handlebars-helpers package
+## Webpack
+### Handlebars loader
+### Babel loader
+### PostCSS loader
+## Metalsmith
+### Static content
+### Dynamic content
+
+## Developing m9-generator
 
 TBD
 
-## Principles
-
-- Opinionated but provides generic alternative
-    - extending gulp and metalsmith workflows with local configs
-- Templates live next to Data they render (data snapshot)
-    - possibility to track template + data + build results in separate repo
-- Generator is decoupled from template and data
-    - designed to be used as npm module
-    - generator may be updated independently of templates
-- No tolerance for generation errors - no deploy for potentially broken builds
-- Prefer templates over plugins
+- src/ and dist/ directories
+- embedded docs site
+- npm link
+- publishing new package version
