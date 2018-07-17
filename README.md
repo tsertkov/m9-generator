@@ -53,7 +53,10 @@ $ yarn run m9 <task>
 ```
 
 ## Source and Build directories
-## BrowserSync
+## Development server
+
+BrowserSync and webpack dev middleware.
+
 ## Entry points
 ### Webpack entry points
 ### Static files entry points
@@ -67,9 +70,12 @@ $ yarn run m9 <task>
 ### Helpers
 ### Embedded handlebars-helpers package
 ## Webpack
-### Handlebars loader
-### Babel loader
-### PostCSS loader
+### Development and Production modes
+### Loaders
+#### Handlebars loader
+#### Babel loader
+#### PostCSS loader
+### Visualizer
 ## Metalsmith
 ### Static content
 ### Dynamic content
