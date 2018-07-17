@@ -223,7 +223,7 @@ title: ${site.title}
 
 Helpers are loaded with `<SRC>/helpers/*.js` pattern.
 
-These are native JavaScript files and must use `module.exports = (content) => 'output string'` format. To enable dynamic loading.
+These are native JavaScript files and must use `module.exports = (content) => 'output string'` format to enable dynamic loading.
 
 ### Embedded handlebars-helpers
 
