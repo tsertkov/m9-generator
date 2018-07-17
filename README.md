@@ -165,8 +165,11 @@ Webpack loaders for JavaScript and CSS are respecting configured target browsers
 > NB! The most pragmatic browserlist query is used by default when `.browserslistrc` file is not given.
 
 ## Babel
-### Node.js babel-register
-### Webpack babel-loader
+
+Two different babel transformation processes are running in m9-generator. One is done by `@babel/register` transpiling files on the fly for current node version using require hook. Another by webpack bundling client-side package with `babel-loader`.
+
+Both transformations use the same presets `@babel/preset-stage-3` and `@babel/preset-env`, but differ in targets for `preset-env`.
+
 ## Handlebars
 ### Partials
 ### Layouts
