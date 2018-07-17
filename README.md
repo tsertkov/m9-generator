@@ -227,7 +227,7 @@ These are native JavaScript files and must use `module.exports = (content) => 'o
 
 ### Embedded handlebars-helpers
 
-[`handlebars-helpers`](https://github.com/helpers/handlebars-helpers) are embedded with handlebars. 188 helpers! Before writing your own search in [handlebars-helpers](https://github.com/helpers/handlebars-helpers) first.
+188 helpers from [`handlebars-helpers`](https://github.com/helpers/handlebars-helpers) are available to handlebars engine. Before writing your own first consider searching similar in [handlebars-helpers](https://github.com/helpers/handlebars-helpers).
 
 ## Webpack
 
