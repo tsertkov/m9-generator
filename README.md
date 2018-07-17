@@ -230,12 +230,29 @@ These are native JavaScript files and must use `module.exports = (content) => 'o
 [`handlebars-helpers`](https://github.com/helpers/handlebars-helpers) are embedded with handlebars. 188 helpers! Before writing your own search in [handlebars-helpers](https://github.com/helpers/handlebars-helpers) first.
 
 ## Webpack
+
+Webpack searches for entry points in `<SRC>/scripts/*.js` and `<SRC>/styles/*.css` and write files in `<DST>/assets/`.
+
+There is `<DST>/assets/manifest.json` file with assets manifest pre-loaded into templating context as `__assets` variable.
+
 ### Development and Production modes
-### Loaders
-#### Handlebars loader
-#### Babel loader
-#### PostCSS loader
+
+`development` mode is enabled when `stage==='development'` is true. Otherwise `production` mode is active. Different optimizations and loader settings are enabled based on active mode.
+
+### Handlebars loader
+
+### Babel loader
+
+`*.js` files are processed by babel using browsers target defined in `.browserslistrc` or default one for browsers.
+
+### PostCSS loader
+
+`*.css` files are processed by PostCSS with `postcss-preset-env`.
+
 ### Visualizer
+
+In `development` mode [webpack-visualizer-plugin](https://github.com/chrisbateman/webpack-visualizer#readme) is enabled and results are avalable at `<SITE_URL>/webpack-visualizer/`.
+
 ## Metalsmith
 ### Static content
 ### Dynamic content
