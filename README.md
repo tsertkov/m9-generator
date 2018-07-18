@@ -254,6 +254,8 @@ There is `<DST>/assets/manifest.json` file with assets manifest pre-loaded into 
 In `development` mode [webpack-visualizer-plugin](https://github.com/chrisbateman/webpack-visualizer#readme) is enabled and results are avalable at `<SITE_URL>/webpack-visualizer/`.
 
 ## Metalsmith
+### Data context
+### Front-matter
 ### Static content
 ### Dynamic content
 
