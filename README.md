@@ -237,7 +237,7 @@ There is `<DST>/assets/manifest.json` file with assets manifest pre-loaded into 
 
 ### Development and Production modes
 
-`development` mode is enabled when `stage==='development'` is true. Otherwise `production` mode is active. Different optimizations and loader settings are enabled based on active mode.
+`development` mode is enabled when `stage === 'development'` is true. Otherwise `production` mode is active. Different optimizations and loader settings are enabled based on active mode.
 
 ### Handlebars loader
 
