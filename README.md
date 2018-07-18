@@ -172,7 +172,7 @@ Both transformations use the same presets `@babel/preset-stage-3` and `@babel/pr
 
 ## Handlebars
 
-Handlebars is simple, powerful and very extendable templating system. Custom Partials and Helpers allow building reusable components with easy. Read more on https://handlebarsjs.com/.
+Handlebars is simple, powerful and extendable templating system. Custom Partials and Helpers allow building reusable components with ease. Read more on https://handlebarsjs.com/.
 
 ### Partials
 
@@ -231,7 +231,7 @@ These are native JavaScript files and must use `module.exports = (content) => 'o
 
 ## Webpack
 
-Webpack searches for entry points in `<SRC>/scripts/*.js` and `<SRC>/styles/*.css` and write files in `<DST>/assets/`.
+Webpack searches for entry points in `<SRC>/scripts/*.js` and `<SRC>/styles/*.css` and writes files in `<DST>/assets/`.
 
 There is `<DST>/assets/manifest.json` file with assets manifest pre-loaded into templating context as `__assets` variable.
 
@@ -253,28 +253,67 @@ const html = itemCard(item)
 
 ```
 
-[Read more](https://github.com/pcardune/handlebars-loader#readme) about `handlebars-loader`.
+Read more about `handlebars-loader` at https://github.com/pcardune/handlebars-loader#readme.
 
 ### Babel loader
 
 `*.js` files are processed by babel using browsers target defined in `.browserslistrc` or default one for browsers.
 
-[Ream more](https://github.com/babel/babel-loader#readme) about `babel-loader`.
+Ream more about `babel-loader` at https://github.com/babel/babel-loader#readme.
 
 ### PostCSS loader
 
 `*.css` files are processed by PostCSS with `postcss-preset-env`.
 
-[Read more](https://github.com/postcss/postcss-loader#readme) about `postcss-loader`.
+Read more about `postcss-loader` at https://github.com/postcss/postcss-loader#readme.
 
 ### Visualizer
 
 In `development` mode [webpack-visualizer-plugin](https://github.com/chrisbateman/webpack-visualizer#readme) is enabled and results are avalable at `https://localhost:3000/webpack-visualizer/` or other domain/port you use locally.
 
 ## Metalsmith
+
+Metalsmith is compiling static files found in `<SRC>/pages/`. It extracts front-matter headerss and processing `*.hbs` files with Handlebars.
+
 ### Configuration
+
+m9-generator builds single configuration object internally. This object can be modified per site by exporting configuration function in `<SRC>/config.js`.
+
+Stage aware configuration file example:
+
+```JavaScript
+const config = {
+  default: {
+    apiEndpoint: 'https://staging-api.example.com'
+  },
+  development: {
+    site_url: 'https://localhost:3000'
+  },
+  staging: {
+    site_url: 'https://staging.example.com'
+  },
+  production: {
+    site_url: 'https://example.com',
+    apiEndpoint: 'https://api.example.com'
+  }
+}
+
+module.exports = m9config => Object.assign(
+  m9config,
+  Object.assign(
+    {},
+    config.default, 
+    config[m9config.stage]
+  )
+)
+```
+
+### Public directory
+
 ### Front-matter
+
 ### Template data context
+
 #### System data
 #### Static content
 #### Dynamic content
