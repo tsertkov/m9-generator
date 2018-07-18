@@ -308,15 +308,18 @@ module.exports = m9config => Object.assign(
 )
 ```
 
-### Public directory
-
 ### Front-matter
 
-### Template data context
+Metalsmith is parsing front-matter headers in template files using `---` as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.
 
+### Template data context
 #### System data
 #### Static content
 #### Dynamic content
+
+### Public directory
+
+All files and folders from `<SRC>/public/` directory are copied to destination `<DST>` directory. This is a good place to put static image files, favicons, etc.
 
 ## Developing m9-generator
 
