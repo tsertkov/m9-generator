@@ -241,23 +241,43 @@ There is `<DST>/assets/manifest.json` file with assets manifest pre-loaded into 
 
 ### Handlebars loader
 
+`*.hbs` files are converted to compiled handlebars template functions including resolved helpers, partials and runtime automatically.
+
+```JavaScript
+import itemCard from '../../partials/item-card.hbs'
+
+// ..
+const item = { key: "value" }
+const html = itemCard(item)
+// ..
+
+```
+
+[Read more](https://github.com/pcardune/handlebars-loader#readme) about `handlebars-loader`.
+
 ### Babel loader
 
 `*.js` files are processed by babel using browsers target defined in `.browserslistrc` or default one for browsers.
+
+[Ream more](https://github.com/babel/babel-loader#readme) about `babel-loader`.
 
 ### PostCSS loader
 
 `*.css` files are processed by PostCSS with `postcss-preset-env`.
 
+[Read more](https://github.com/postcss/postcss-loader#readme) about `postcss-loader`.
+
 ### Visualizer
 
-In `development` mode [webpack-visualizer-plugin](https://github.com/chrisbateman/webpack-visualizer#readme) is enabled and results are avalable at `<SITE_URL>/webpack-visualizer/`.
+In `development` mode [webpack-visualizer-plugin](https://github.com/chrisbateman/webpack-visualizer#readme) is enabled and results are avalable at `https://localhost:3000/webpack-visualizer/` or other domain/port you use locally.
 
 ## Metalsmith
-### Data context
+### Configuration
 ### Front-matter
-### Static content
-### Dynamic content
+### Template data context
+#### System data
+#### Static content
+#### Dynamic content
 
 ## Developing m9-generator
 
