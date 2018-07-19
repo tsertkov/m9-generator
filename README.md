@@ -331,36 +331,42 @@ Static content is loaded from JSON files found in `<SRC>/content/static` directo
 
 For example following static content files in `content/static` directory:
 
-```json
+```javascript
 // content/static/user.json
-{[
-  "name": "user2",
-  "email": "user2@example.com",
-  "group": [{
-    "ID": 1
-  }]
-], [
-  "name": "user2",
-  "email": "user2@example.com",
-  "group": [{
-    "ID": 2
-  }]
-]}
+{
+  [
+    "name": "user2",
+    "email": "user2@example.com",
+    "group": [{
+      "ID": 1
+    }
+  ],
+  [
+    "name": "user2",
+    "email": "user2@example.com",
+    "group": [{
+      "ID": 2
+    }
+  ]
+}
 
 // content/static/group.json
-{[
-  "id": 1,
-  "name": "group1"
-], [
-  "id": 2,
-  "name": "group2"
-]}
+{
+  [
+    "id": 1,
+    "name": "group1"
+  ], 
+  [
+    "id": 2,
+    "name": "group2"
+  ]
+}
 
 // content/static/site.json
 {
   "adminEmail": "admin@example.com",
-  "title: "site title",
-  "description: "site description"
+  "title": "site title",
+  "description": "site description"
 }
 ```
 
