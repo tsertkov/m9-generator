@@ -335,8 +335,8 @@ For example following static content files in `content/static` directory:
 // content/static/user.json
 {
   [
-    "name": "user2",
-    "email": "user2@example.com",
+    "name": "user1",
+    "email": "user1@example.com",
     "group": [{
       "ID": 1
     }
