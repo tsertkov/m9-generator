@@ -312,10 +312,73 @@ module.exports = m9config => Object.assign(
 
 Metalsmith is parsing front-matter headers in template files using `---` as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.
 
-### Template data context
+### Handlebars template data context
+
+m9-generator preloads data context and exponses it to Handlebars templating. There are two types of input data: **static content** in form of json files and **dynamic content** as JavaScript files.
+
 #### System data
+
+System variables avaialble in template context are prefixed with `__`.
+
+| Variable name | Description |
+| --- | --- |
+| `__assets` | Webpack assets manifest: `asset-name -> asset-filename` |
+| `__config` | Configuration object |
+
 #### Static content
+
+Static content is loaded from JSON files found in `<SRC>/content/static` directory.
+
+For example following static content files in `content/static` directory:
+
+```json
+// content/static/user.json
+{[
+  "name": "user2",
+  "email": "user2@example.com",
+  "group": [{
+    "ID": 1
+  }]
+], [
+  "name": "user2",
+  "email": "user2@example.com",
+  "group": [{
+    "ID": 2
+  }]
+]}
+
+// content/static/group.json
+{[
+  "id": 1,
+  "name": "group1"
+], [
+  "id": 2,
+  "name": "group2"
+]}
+
+// content/static/site.json
+{
+  "adminEmail": "admin@example.com",
+  "title: "site title",
+  "description: "site description"
+}
+```
+
+This content is accessible in handlebars templates as variables: `user`, `group` and `site` accordingly to JSON file names.
+
+```handlebars
+<pre>
+site title: {{site.title}}
+name property of first user in collection: {{user.[0].name}}
+name property of first group in collection: {{group.[0].name}}
+first user group name: {{user.[0].group.[0].name}}
+second user group name: {{user.[1].group.[0].name}}
+</pre>
+```
+
 #### Dynamic content
+
+TBD
 
 ### Public directory
 
