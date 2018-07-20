@@ -19,12 +19,10 @@ const DIR_PAGES = 'pages'
 const DIR_CONTENT = 'content'
 const DIR_HELPERS = 'helpers'
 const DIR_PARTIALS = 'partials'
-const DIR_LAYOUTS = 'layouts'
 const DIR_SCRIPTS = 'scripts'
 const DIR_STYLES = 'styles'
 const DIR_ASSETS = 'assets'
 const DIR_PUBLIC = 'public'
-const TPL_ENGINE = 'handlebars'
 
 const paths = {
   cwd,
@@ -34,7 +32,6 @@ const paths = {
   srcPublic: path.join(src, DIR_PUBLIC),
   srcScripts: path.join(src, DIR_SCRIPTS),
   srcStyles: path.join(src, DIR_STYLES),
-  srcLayouts: path.join(src, DIR_LAYOUTS),
   srcContent: path.join(src, DIR_CONTENT),
   srcPages: path.join(src, DIR_PAGES),
   srcHelpers: path.join(src, DIR_HELPERS),
@@ -57,11 +54,6 @@ let config = {
   },
   helpers: {
     directory: paths.srcHelpers
-  },
-  layouts: {
-    engine: TPL_ENGINE,
-    directory: paths.srcLayouts,
-    partials: paths.srcPartials
   },
   inplace: {
     engineOptions: {

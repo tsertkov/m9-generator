@@ -24,11 +24,10 @@ function reloadBrowsers (done) {
 gulp.task('dev-watch', () => {
   gulp.watch(config.copy.src, gulp.parallel('build-copy'))
   gulp.watch([
-    path.join(config.contentDir.directory, '**/*'),
-    path.join(config.pages.directory, '**/*'),
-    path.join(config.layouts.directory, '**/*'),
-    path.join(config.layouts.partials, '**/*'),
-    path.join(config.helpers.directory, '**/*.js')
+    path.join(config.paths.srcContent, '**/*'),
+    path.join(config.paths.srcPages, '**/*'),
+    path.join(config.paths.srcHelpers, '**/*'),
+    path.join(config.paths.srcPartials, '**/*.js')
   ], gulp.series(
     clearRequireCaches,
     'build-metalsmith',
