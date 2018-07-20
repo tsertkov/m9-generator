@@ -273,7 +273,7 @@ In `development` mode [webpack-visualizer-plugin](https://github.com/chrisbatema
 
 ## Metalsmith
 
-Metalsmith is compiling static files found in `<SRC>/pages/`. It extracts front-matter headerss and processing `*.hbs` files with Handlebars.
+Metalsmith compiles static files found in `<SRC>/pages/` into `<DST>/` directory. It extracts front-matter headers and passes `*.hbs` files through Handlebars templating system.
 
 ### Configuration
 
