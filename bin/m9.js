@@ -2,15 +2,26 @@
 
 const path = require('path')
 
+// Babel configuration used to transpile package client
+// local JavaScript files
+const BABEL_CONFIG_CLIENT = {
+  presets: [
+    ['@babel/preset-env', {
+      targets: {
+        node: 'current'
+      }
+    }],
+    '@babel/preset-stage-3'
+  ]
+}
+
 // Normalize arguments array by placing items which are not starting with '-'
 // to the beginning of array. This is necessary to allow specifying gulp task
 // after custom optional arguments and allow calling 'npm run m9 <task>'.
 process.argv = process.argv.slice(0, 2).concat(
   process.argv.slice(2).sort((a, b) => {
-    const a0 = a[0]
-    const b0 = b[0]
-    if (a0 === b0) return 0
-    if (a0 === '-') return 1
+    if (a[0] === b[0]) return 0
+    if (a[0] === '-') return 1
     return -1
   })
 )
@@ -35,16 +46,7 @@ require('@babel/register')(Object.assign(
   // logic to workaround this issue.
   m9UseSrc
     ? { extends: path.join(m9Dir, '.babelrc') }
-    : {
-      presets: [
-        ['@babel/preset-env', {
-          targets: {
-            node: 'current'
-          }
-        }],
-        '@babel/preset-stage-3'
-      ]
-    }
+    : BABEL_CONFIG_CLIENT
 ))
 
 require(path.join(m9Dir, 'gulp-runner'))

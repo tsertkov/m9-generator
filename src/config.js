@@ -7,10 +7,11 @@ import { registry } from './gulp-runner'
 // Get original cwd
 const { cwd, isDevTask } = registry
 
-// Stage site is building for
-const stage = process.env.STAGE || 'development'
-
 const argv = yargs.parse(process.argv)
+
+// Stage site is building for
+const stage = argv.stage || process.env.STAGE || 'development'
+
 const src = path.resolve(cwd, argv.src || process.env.SRC || 'src')
 const dst = path.resolve(cwd, argv.dst || process.env.DST || 'build')
 
