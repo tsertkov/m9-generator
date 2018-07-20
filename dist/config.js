@@ -21,11 +21,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const {
   cwd,
   isDevTask
-} = _gulpRunner.registry; // Stage site is building for
+} = _gulpRunner.registry;
 
-const stage = process.env.STAGE || 'development';
+const argv = _yargs.default.parse(process.argv); // Stage site is building for
 
-const argv = _yargs.default.parse(process.argv);
+
+const stage = argv.stage || process.env.STAGE || 'development';
 
 const src = _path.default.resolve(cwd, argv.src || process.env.SRC || 'src');
 
