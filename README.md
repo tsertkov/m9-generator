@@ -384,7 +384,26 @@ second user group name: {{user.[1].group.[0].name}}
 
 #### Dynamic content
 
-TBD
+It is possible to define dynamic (programmable) content and expose it to template data. Each JavaScript file in `<SRC>/dynamic` must follow pattern `<content-type>.js` and export function of a form:
+
+```javascript
+
+module.exports = function (proto, content, config) {
+  // do something with the proto (it is actual entity obj in fact)
+  Object.defineProperty(proto, 'content', {
+    configurable: true,
+    enumerable: true,
+    get: () => {
+      // return smth
+      return 'empty value'
+    }
+  })
+
+  return proto
+}
+```
+
+Augmenting initial content loaded from static JSON files with dynamic functions is a common integration method. In cases when static content of the same content type is not found new empty object is passed as `proto` to a content function.
 
 ### Public directory
 
