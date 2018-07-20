@@ -384,7 +384,7 @@ second user group name: {{user.[1].group.[0].name}}
 
 #### Dynamic content
 
-It is possible to define dynamic (programmable) content and expose it to template data. Each JavaScript file in `<SRC>/dynamic` must follow pattern `<content-type>.js` and export function of a form:
+It is possible to define dynamic (programmable) content and expose it to template data. Each JavaScript file in `<SRC>/content/dynamic` must follow pattern `<content-type>.js` and export function of a form:
 
 ```javascript
 
@@ -410,8 +410,6 @@ Augmenting initial content loaded from static JSON files with dynamic functions 
 All files and folders from `<SRC>/public/` directory are copied to destination `<DST>` directory. This is a good place to put static image files, favicons, etc.
 
 ## Developing m9-generator
-
-TBD
 
 - src/ and dist/ directories
 - embedded docs site
