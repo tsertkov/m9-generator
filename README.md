@@ -411,7 +411,9 @@ All files and folders from `<SRC>/public/` directory are copied to destination `
 
 ## Developing m9-generator
 
+Use `npm version` command to publish new version of npm package and push new git tag to remote.
+
+TDB
 - src/ and dist/ directories
 - embedded docs site
 - npm link
-- publishing new package version
