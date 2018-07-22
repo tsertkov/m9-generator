@@ -30,6 +30,8 @@ var _m9MatterInterpolate = _interopRequireDefault(require("../lib/metalsmith-plu
 
 var _m9Permalink = _interopRequireDefault(require("../lib/metalsmith-plugins/m9-permalink"));
 
+var _m9BuildManifest = _interopRequireDefault(require("../lib/metalsmith-plugins/m9-build-manifest"));
+
 var _readDirFiles = _interopRequireDefault(require("../lib/read-dir-files"));
 
 var _config = _interopRequireDefault(require("../config"));
@@ -84,5 +86,5 @@ _gulp.default.task('build-metalsmith', done => {
   }
 
   const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).clean(false).source(_config.default.pages.directory).destination(_config.default.paths.dst).metadata(getTplContext()).use((0, _m9MetaToFiles.default)(_config.default.metaToFiles || {})).use((0, _m9MatterInterpolate.default)()).use((0, _metalsmithInPlace.default)(metalsmithInplaceConfig()));
-  metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.htmlmin)).build(done);
+  metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.htmlmin)).use((0, _m9BuildManifest.default)('build.json')).build(done);
 });
