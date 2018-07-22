@@ -13,6 +13,7 @@ import loadContent from '../lib/load-content'
 import m9metaToFiles from '../lib/metalsmith-plugins/m9-meta-to-files'
 import m9matterInterpolate from '../lib/metalsmith-plugins/m9-matter-interpolate'
 import m9permalink from '../lib/metalsmith-plugins/m9-permalink'
+import m9buildManifest from '../lib/metalsmith-plugins/m9-build-manifest'
 import readDirFiles from '../lib/read-dir-files'
 import config from '../config'
 
@@ -77,5 +78,6 @@ gulp.task('build-metalsmith', (done) => {
   metalsmith
     .use(m9permalink())
     .use(htmlmin(config.htmlmin))
+    .use(m9buildManifest('build.json'))
     .build(done)
 })
