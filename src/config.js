@@ -1,6 +1,7 @@
 import path from 'path'
 import yargs from 'yargs'
 import loadConfigs from './lib/load-configs'
+import loadTasks from './lib/load-tasks'
 import webpackConfig from './config-webpack'
 import { registry } from './gulp-runner'
 
@@ -53,13 +54,28 @@ let config = {
     // TODO pluggable metalsmith plugins
     htmlmin: {
       pattern: '**/*.html'
-    }
+    },
+    plugins: [
+      {
+        name: 'htmlmin',
+        options: {
+          pattern: '**/*.html'
+        }
+      },
+      'm9-build-manifest',
+      'm9-matter-interpolate',
+      'm9-meta-to-files',
+      'm9-permalink'
+    ]
   },
   content: {
     contentPath: paths.srcContent,
     // TODO pluggable content sync gulp task
     // TODO pluggable content plugins
-    transformer: 'wordpress'
+    transformer: 'wordpress',
+    plugins: [
+      'wordpress'
+    ]
   },
   assets: {
     scripts: path.join(paths.srcScripts, '*.js'),
@@ -71,6 +87,7 @@ let config = {
 }
 
 config.__webpack = webpackConfig(config)
-loadConfigs(config, src)
+loadConfigs(src, config)
+loadTasks(src, config)
 
 export default config
