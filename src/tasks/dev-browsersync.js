@@ -11,17 +11,17 @@ gulp.task('dev-browsersync', (done) => {
     notify: false,
     server: {
       https: true,
-      baseDir: config.paths.dst
+      baseDir: config.templates.destinationPath
     }
   }
 
-  if (!config.webpack) {
+  if (!config.__webpack) {
     done()
     browserSync.init(bsConfig)
     return
   }
 
-  const compiler = webpack(config.webpack)
+  const compiler = webpack(config.__webpack)
 
   const devMiddleware = webpackDevMiddleware(compiler, {
     publicPath: config.assets.publicPath,
@@ -34,7 +34,10 @@ gulp.task('dev-browsersync', (done) => {
   devMiddleware.waitUntilValid(() => {
     done()
     browserSync.init(bsConfig)
-      .watch(path.join(config.assets.dst, config.assets.manifest))
+      .watch(path.join(
+        config.assets.destinationPath,
+        config.assets.manifestFile
+      ))
       .on('change', () => {
         // Could not find out which bundle was actually updated here
         // since devMiddleware.context.webpackStats contains details

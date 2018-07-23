@@ -7,12 +7,12 @@ export default loadContent
 
 function loadContent (options) {
   const {
-    directory,
+    contentPath,
     transformer
   } = options
 
-  const staticDir = path.join(directory, 'static')
-  const dynamicDir = path.join(directory, 'dynamic')
+  const staticDir = path.join(contentPath, 'static')
+  const dynamicDir = path.join(contentPath, 'dynamic')
 
   const content = loadJsonContent(staticDir)
   if (transformer) transformContent(content, transformer)

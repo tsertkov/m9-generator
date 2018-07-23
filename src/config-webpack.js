@@ -24,21 +24,21 @@ export default (config) => {
 
   // For some reason babel seems to ignore .browserlistrc files. Manually
   // loading .browserslistrc from site src to use it by babel and posstcss.
-  const browsers = existsSync(path.join(config.paths.src, '.browserslistrc'))
-    ? readFileSync(path.join(config.paths.src, '.browserslistrc'))
+  const browserslistRcFile = path.join(config.paths.src, '.browserslistrc')
+  const browsers = existsSync(browserslistRcFile)
+    ? readFileSync(browserslistRcFile)
       .toString()
       .trim()
       .split(/\n|\r\n/)
     // default browserslist query if .browserslistcrc is missing
     : [ '>0.25%', 'not ie 11', 'not op_mini all' ]
 
-  const isDevelopment = config.isDevTask
   const configWebpack = {
     entry,
-    mode: isDevelopment ? 'development' : 'production',
+    mode: config.isDevelopment ? 'development' : 'production',
     context: config.paths.src,
     output: {
-      filename: isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
+      filename: config.isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
       path: config.assets.dst,
       publicPath: config.assets.publicPath
     },
@@ -98,7 +98,7 @@ export default (config) => {
         filename: config.assets.manifest
       }),
       new MiniCssExtractPlugin(
-        isDevelopment
+        config.isDevelopment
           ? {
             filename: '[name].css',
             chunkFilename: '[id].css'
@@ -111,7 +111,7 @@ export default (config) => {
     ]
   }
 
-  if (isDevelopment) {
+  if (config.isDevelopment) {
     configWebpack.plugins.push(
       new Visualizer({
         filename: '../webpack-visualizer/index.html'
