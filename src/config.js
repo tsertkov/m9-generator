@@ -5,7 +5,7 @@ import webpackConfig from './config-webpack'
 import { registry } from './gulp-runner'
 
 // Get original cwd
-const { cwd, isDevTask } = registry
+const { cwd, isDevelopment } = registry
 
 const argv = yargs.parse(process.argv)
 
@@ -40,45 +40,37 @@ const paths = {
 
 let config = {
   stage,
-  isDevTask,
+  isDevelopment,
   paths,
-  htmlmin: {
-    pattern: '**/*.html'
-  },
-  pages: {
-    directory: paths.srcPages
-  },
-  contentDir: {
-    directory: paths.srcContent,
-    transformer: 'wordpress'
-  },
-  helpers: {
-    directory: paths.srcHelpers
-  },
-  inplace: {
-    engineOptions: {
-      partials: paths.srcPartials,
-      helpers: paths.srcHelpers
+  templates: {
+    destinationPath: paths.dst,
+    pagesPath: paths.srcPages,
+    publicPath: paths.srcPublic,
+    partialsPath: paths.srcPartials,
+    helpersPath: paths.srcHelpers,
+    metaToFiles: {},
+    buildManifestFile: 'build.json',
+    // TODO pluggable metalsmith plugins
+    htmlmin: {
+      pattern: '**/*.html'
     }
   },
-  copy: {
-    src: path.join(paths.srcPublic, '**/*')
+  content: {
+    contentPath: paths.srcContent,
+    // TODO pluggable content sync gulp task
+    // TODO pluggable content plugins
+    transformer: 'wordpress'
   },
   assets: {
     scripts: path.join(paths.srcScripts, '*.js'),
     styles: path.join(paths.srcStyles, '*.css'),
-    manifest: 'manifest.json',
+    manifestFile: 'assets.json',
     publicPath: `/${DIR_ASSETS}/`,
-    dst: paths.dstAssets
-  },
-  dev: {
-    host: 'localhost',
-    webpackPort: 9000,
-    browsersyncPort: 3000
+    destinationPath: paths.dstAssets
   }
 }
 
-config.webpack = webpackConfig(config)
+config.__webpack = webpackConfig(config)
 loadConfigs(config, src)
 
 export default config

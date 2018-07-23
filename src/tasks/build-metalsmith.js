@@ -21,23 +21,21 @@ import config from '../config'
 handlebarsHelpers()
 
 function metalsmithInplaceConfig () {
+  const {
+    partialsPath,
+    helpersPath
+  } = config.templates
+
   const inplaceConfig = {
-    ...config.inplace,
-    engineOptions: {
-      ...config.inplace.engineOptions
-    }
+    engineOptions: {}
   }
 
-  if (existsSync(inplaceConfig.engineOptions['partials'])) {
-    inplaceConfig.engineOptions['partials'] = readDirFiles(
-      inplaceConfig.engineOptions['partials']
-    )
+  if (existsSync(partialsPath)) {
+    inplaceConfig.engineOptions.partials = readDirFiles(partialsPath)
   }
 
-  if (existsSync(inplaceConfig.engineOptions['helpers'])) {
-    inplaceConfig.engineOptions['helpers'] = requireDir(
-      inplaceConfig.engineOptions['helpers']
-    )
+  if (existsSync(helpersPath)) {
+    inplaceConfig.engineOptions.helpers = requireDir(helpersPath)
   }
 
   return inplaceConfig
@@ -45,39 +43,44 @@ function metalsmithInplaceConfig () {
 
 function getTplContext () {
   const context = {
-    ...loadContent(config.contentDir),
+    ...loadContent(config.content),
     __config: config
   }
 
-  const manifestPath = path.join(config.assets.dst, config.assets.manifest)
-  if (existsSync(manifestPath)) {
-    context.__assets = require(manifestPath)
+  const assetsManifestFile = path.join(
+    config.assets.destinationPath,
+    config.assets.manifestFile
+  )
+
+  if (existsSync(assetsManifestFile)) {
+    context.__assets = require(assetsManifestFile)
   }
 
   return context
 }
 
 gulp.task('build-metalsmith', (done) => {
-  if (!existsSync(config.pages.directory)) {
-    const msg = `No templates to compile found:\n - ${config.pages.directory}`
+  if (!existsSync(config.templates.pagesPath)) {
+    const msg = `No templates to compile found:\n - ${config.templates.pagesPath}`
     log.warn(color(msg, 'YELLOW'))
     done()
     return
   }
 
+  const inplaceConfig = metalsmithInplaceConfig()
   const metalsmith = new Metalsmith(config.paths.cwd)
     .use(debug())
     .clean(false)
-    .source(config.pages.directory)
-    .destination(config.paths.dst)
+    .source(config.templates.pagesPath)
+    .destination(config.templates.destinationPath)
     .metadata(getTplContext())
-    .use(m9metaToFiles(config.metaToFiles || {}))
+    .use(m9metaToFiles(config.templates.metaToFiles))
     .use(m9matterInterpolate())
-    .use(inplace(metalsmithInplaceConfig()))
+    .use(inplace(inplaceConfig))
 
   metalsmith
     .use(m9permalink())
-    .use(htmlmin(config.htmlmin))
-    .use(m9buildManifest('build.json'))
+    .use(htmlmin(config.templates.htmlmin))
+    .use(m9buildManifest(config.templates.buildManifestFile))
     .build(done)
 })

@@ -46,38 +46,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 (0, _handlebarsHelpers.default)();
 
 function metalsmithInplaceConfig() {
-  const inplaceConfig = _objectSpread({}, _config.default.inplace, {
-    engineOptions: _objectSpread({}, _config.default.inplace.engineOptions)
-  });
+  const {
+    partialsPath,
+    helpersPath
+  } = _config.default.templates;
+  const inplaceConfig = {
+    engineOptions: {}
+  };
 
-  if ((0, _fs.existsSync)(inplaceConfig.engineOptions['partials'])) {
-    inplaceConfig.engineOptions['partials'] = (0, _readDirFiles.default)(inplaceConfig.engineOptions['partials']);
+  if ((0, _fs.existsSync)(partialsPath)) {
+    inplaceConfig.engineOptions.partials = (0, _readDirFiles.default)(partialsPath);
   }
 
-  if ((0, _fs.existsSync)(inplaceConfig.engineOptions['helpers'])) {
-    inplaceConfig.engineOptions['helpers'] = (0, _requireDir.default)(inplaceConfig.engineOptions['helpers']);
+  if ((0, _fs.existsSync)(helpersPath)) {
+    inplaceConfig.engineOptions.helpers = (0, _requireDir.default)(helpersPath);
   }
 
   return inplaceConfig;
 }
 
 function getTplContext() {
-  const context = _objectSpread({}, (0, _loadContent.default)(_config.default.contentDir), {
+  const context = _objectSpread({}, (0, _loadContent.default)(_config.default.content), {
     __config: _config.default
   });
 
-  const manifestPath = _path.default.join(_config.default.assets.dst, _config.default.assets.manifest);
+  const assetsManifestFile = _path.default.join(_config.default.assets.destinationPath, _config.default.assets.manifestFile);
 
-  if ((0, _fs.existsSync)(manifestPath)) {
-    context.__assets = require(manifestPath);
+  if ((0, _fs.existsSync)(assetsManifestFile)) {
+    context.__assets = require(assetsManifestFile);
   }
 
   return context;
 }
 
 _gulp.default.task('build-metalsmith', done => {
-  if (!(0, _fs.existsSync)(_config.default.pages.directory)) {
-    const msg = `No templates to compile found:\n - ${_config.default.pages.directory}`;
+  if (!(0, _fs.existsSync)(_config.default.templates.pagesPath)) {
+    const msg = `No templates to compile found:\n - ${_config.default.templates.pagesPath}`;
 
     _fancyLog.default.warn((0, _gulpColor.default)(msg, 'YELLOW'));
 
@@ -85,6 +89,7 @@ _gulp.default.task('build-metalsmith', done => {
     return;
   }
 
-  const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).clean(false).source(_config.default.pages.directory).destination(_config.default.paths.dst).metadata(getTplContext()).use((0, _m9MetaToFiles.default)(_config.default.metaToFiles || {})).use((0, _m9MatterInterpolate.default)()).use((0, _metalsmithInPlace.default)(metalsmithInplaceConfig()));
-  metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.htmlmin)).use((0, _m9BuildManifest.default)('build.json')).build(done);
+  const inplaceConfig = metalsmithInplaceConfig();
+  const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).clean(false).source(_config.default.templates.pagesPath).destination(_config.default.templates.destinationPath).metadata(getTplContext()).use((0, _m9MetaToFiles.default)(_config.default.templates.metaToFiles)).use((0, _m9MatterInterpolate.default)()).use((0, _metalsmithInPlace.default)(inplaceConfig));
+  metalsmith.use((0, _m9Permalink.default)()).use((0, _metalsmithHtmlMinifier.default)(_config.default.templates.htmlmin)).use((0, _m9BuildManifest.default)(_config.default.templates.buildManifestFile)).build(done);
 });

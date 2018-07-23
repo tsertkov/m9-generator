@@ -6,7 +6,6 @@ const META_KEY = 'meta_to_files'
 const INDEX_FILE = 'index.html'
 
 function m9metaToFiles ({ slug }) {
-
   let slugFn
   if (typeof slug === 'function') {
     slugFn = slug

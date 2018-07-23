@@ -6,8 +6,8 @@ import config from '../config'
 function clearRequireCaches (done) {
   Object.keys(require.cache)
     .filter(modulePath => (
-      modulePath.includes(config.paths.srcContent) ||
-      modulePath.includes(config.inplace.engineOptions.helpers)
+      modulePath.includes(config.content.contentPath) ||
+      modulePath.includes(config.templates.helpersPath)
     ))
     .forEach(modulePath => {
       delete require.cache[modulePath]
@@ -22,12 +22,12 @@ function reloadBrowsers (done) {
 }
 
 gulp.task('dev-watch', () => {
-  gulp.watch(config.copy.src, gulp.parallel('build-copy'))
+  gulp.watch(config.templates.publicPath, gulp.parallel('build-copy'))
   gulp.watch([
-    path.join(config.paths.srcContent, '**/*'),
-    path.join(config.paths.srcPages, '**/*'),
-    path.join(config.paths.srcHelpers, '**/*'),
-    path.join(config.paths.srcPartials, '**/*.js')
+    path.join(config.content.contentPath, '**/*'),
+    path.join(config.templates.pagesPath, '**/*'),
+    path.join(config.templates.helpersPath, '**/*'),
+    path.join(config.templates.partialsPath, '**/*')
   ], gulp.series(
     clearRequireCaches,
     'build-metalsmith',

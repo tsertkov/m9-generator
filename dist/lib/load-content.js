@@ -20,13 +20,13 @@ exports.default = _default;
 
 function loadContent(options) {
   const {
-    directory,
+    contentPath,
     transformer
   } = options;
 
-  const staticDir = _path.default.join(directory, 'static');
+  const staticDir = _path.default.join(contentPath, 'static');
 
-  const dynamicDir = _path.default.join(directory, 'dynamic');
+  const dynamicDir = _path.default.join(contentPath, 'dynamic');
 
   const content = loadJsonContent(staticDir);
   if (transformer) transformContent(content, transformer);

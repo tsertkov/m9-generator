@@ -12,7 +12,7 @@ export function runGulp (cwd) {
   registry.cwd = cwd
 
   // Define early dev mode as it is required before loading dynamic configuration
-  registry.isDevTask = process.argv.includes('dev')
+  registry.isDevelopment = process.argv.includes('dev')
 
   const gulpfile = path.join(__dirname, 'gulpfile.js')
   process.argv.push(`--gulpfile=${gulpfile}`)

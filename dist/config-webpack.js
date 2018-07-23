@@ -39,16 +39,17 @@ var _default = config => {
   // loading .browserslistrc from site src to use it by babel and posstcss.
 
 
-  const browsers = (0, _fs.existsSync)(_path.default.join(config.paths.src, '.browserslistrc')) ? (0, _fs.readFileSync)(_path.default.join(config.paths.src, '.browserslistrc')).toString().trim().split(/\n|\r\n/) // default browserslist query if .browserslistcrc is missing
+  const browserslistRcFile = _path.default.join(config.paths.src, '.browserslistrc');
+
+  const browsers = (0, _fs.existsSync)(browserslistRcFile) ? (0, _fs.readFileSync)(browserslistRcFile).toString().trim().split(/\n|\r\n/) // default browserslist query if .browserslistcrc is missing
   : ['>0.25%', 'not ie 11', 'not op_mini all'];
-  const isDevelopment = config.isDevTask;
   const configWebpack = {
     entry,
-    mode: isDevelopment ? 'development' : 'production',
+    mode: config.isDevelopment ? 'development' : 'production',
     context: config.paths.src,
     output: {
-      filename: isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
-      path: config.assets.dst,
+      filename: config.isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
+      path: config.assets.destinationPath,
       publicPath: config.assets.publicPath
     },
     module: {
@@ -85,16 +86,16 @@ var _default = config => {
         use: [{
           loader: 'handlebars-loader',
           options: {
-            helperDirs: [config.paths.srcHelpers],
-            partialDirs: [config.paths.srcPartials]
+            helperDirs: [config.templates.helpersPath],
+            partialDirs: [config.templates.partialsPath]
           }
         }]
       }]
     },
     plugins: [new _webpackManifestPlugin.default({
       writeToFileEmit: true,
-      filename: config.assets.manifest
-    }), new _miniCssExtractPlugin.default(isDevelopment ? {
+      fileName: config.assets.manifestFile
+    }), new _miniCssExtractPlugin.default(config.isDevelopment ? {
       filename: '[name].css',
       chunkFilename: '[id].css'
     } : {
@@ -103,7 +104,7 @@ var _default = config => {
     })]
   };
 
-  if (isDevelopment) {
+  if (config.isDevelopment) {
     configWebpack.plugins.push(new _webpackVisualizerPlugin.default({
       filename: '../webpack-visualizer/index.html'
     }));

@@ -20,7 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Get original cwd
 const {
   cwd,
-  isDevTask
+  isDevelopment
 } = _gulpRunner.registry;
 
 const argv = _yargs.default.parse(process.argv); // Stage site is building for
@@ -55,44 +55,36 @@ const paths = {
 };
 let config = {
   stage,
-  isDevTask,
+  isDevelopment,
   paths,
-  htmlmin: {
-    pattern: '**/*.html'
-  },
-  pages: {
-    directory: paths.srcPages
-  },
-  contentDir: {
-    directory: paths.srcContent,
-    transformer: 'wordpress'
-  },
-  helpers: {
-    directory: paths.srcHelpers
-  },
-  inplace: {
-    engineOptions: {
-      partials: paths.srcPartials,
-      helpers: paths.srcHelpers
+  templates: {
+    destinationPath: paths.dst,
+    pagesPath: paths.srcPages,
+    publicPath: paths.srcPublic,
+    partialsPath: paths.srcPartials,
+    helpersPath: paths.srcHelpers,
+    metaToFiles: {},
+    buildManifestFile: 'build.json',
+    // TODO pluggable metalsmith plugins
+    htmlmin: {
+      pattern: '**/*.html'
     }
   },
-  copy: {
-    src: _path.default.join(paths.srcPublic, '**/*')
+  content: {
+    contentPath: paths.srcContent,
+    // TODO pluggable content sync gulp task
+    // TODO pluggable content plugins
+    transformer: 'wordpress'
   },
   assets: {
     scripts: _path.default.join(paths.srcScripts, '*.js'),
     styles: _path.default.join(paths.srcStyles, '*.css'),
-    manifest: 'manifest.json',
+    manifestFile: 'assets.json',
     publicPath: `/${DIR_ASSETS}/`,
-    dst: paths.dstAssets
-  },
-  dev: {
-    host: 'localhost',
-    webpackPort: 9000,
-    browsersyncPort: 3000
+    destinationPath: paths.dstAssets
   }
 };
-config.webpack = (0, _configWebpack.default)(config);
+config.__webpack = (0, _configWebpack.default)(config);
 (0, _loadConfigs.default)(config, src);
 var _default = config;
 exports.default = _default;
