@@ -11,6 +11,8 @@ var _yargs = _interopRequireDefault(require("yargs"));
 
 var _loadConfigs = _interopRequireDefault(require("./lib/load-configs"));
 
+var _loadTasks = _interopRequireDefault(require("./lib/load-tasks"));
+
 var _configWebpack = _interopRequireDefault(require("./config-webpack"));
 
 var _gulpRunner = require("./gulp-runner");
@@ -68,13 +70,20 @@ let config = {
     // TODO pluggable metalsmith plugins
     htmlmin: {
       pattern: '**/*.html'
-    }
+    },
+    plugins: [{
+      name: 'htmlmin',
+      options: {
+        pattern: '**/*.html'
+      }
+    }, 'm9-build-manifest', 'm9-matter-interpolate', 'm9-meta-to-files', 'm9-permalink']
   },
   content: {
     contentPath: paths.srcContent,
     // TODO pluggable content sync gulp task
     // TODO pluggable content plugins
-    transformer: 'wordpress'
+    transformer: 'wordpress',
+    plugins: ['wordpress']
   },
   assets: {
     scripts: _path.default.join(paths.srcScripts, '*.js'),
@@ -85,6 +94,7 @@ let config = {
   }
 };
 config.__webpack = (0, _configWebpack.default)(config);
-(0, _loadConfigs.default)(config, src);
+(0, _loadConfigs.default)(src, config);
+(0, _loadTasks.default)(src, config);
 var _default = config;
 exports.default = _default;
