@@ -20,8 +20,7 @@ gulp.task('dev', gulp.series(
 ))
 
 gulp.task('deploy', gulp.series(
-  'build',
-  'deploy-aws'
+  'build'
 ))
 
 gulp.task('test', gulp.series(
