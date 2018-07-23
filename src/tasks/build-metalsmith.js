@@ -27,10 +27,7 @@ function metalsmithInplaceConfig () {
   } = config.templates
 
   const inplaceConfig = {
-    engineOptions: {
-      partials: partialsPath,
-      helpers: helpersPath
-    }
+    engineOptions: {}
   }
 
   if (existsSync(partialsPath)) {

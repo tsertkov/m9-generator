@@ -49,7 +49,7 @@ var _default = config => {
     context: config.paths.src,
     output: {
       filename: config.isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
-      path: config.assets.dst,
+      path: config.assets.destinationPath,
       publicPath: config.assets.publicPath
     },
     module: {
@@ -86,15 +86,15 @@ var _default = config => {
         use: [{
           loader: 'handlebars-loader',
           options: {
-            helperDirs: [config.paths.srcHelpers],
-            partialDirs: [config.paths.srcPartials]
+            helperDirs: [config.templates.helpersPath],
+            partialDirs: [config.templates.partialsPath]
           }
         }]
       }]
     },
     plugins: [new _webpackManifestPlugin.default({
       writeToFileEmit: true,
-      filename: config.assets.manifest
+      fileName: config.assets.manifestFile
     }), new _miniCssExtractPlugin.default(config.isDevelopment ? {
       filename: '[name].css',
       chunkFilename: '[id].css'

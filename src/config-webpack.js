@@ -39,7 +39,7 @@ export default (config) => {
     context: config.paths.src,
     output: {
       filename: config.isDevelopment ? '[name].js' : '[name]-[chunkhash].js',
-      path: config.assets.dst,
+      path: config.assets.destinationPath,
       publicPath: config.assets.publicPath
     },
     module: {
@@ -86,8 +86,8 @@ export default (config) => {
         use: [{
           loader: 'handlebars-loader',
           options: {
-            helperDirs: [config.paths.srcHelpers],
-            partialDirs: [config.paths.srcPartials]
+            helperDirs: [config.templates.helpersPath],
+            partialDirs: [config.templates.partialsPath]
           }
         }]
       }]
@@ -95,7 +95,7 @@ export default (config) => {
     plugins: [
       new ManifestPlugin({
         writeToFileEmit: true,
-        filename: config.assets.manifest
+        fileName: config.assets.manifestFile
       }),
       new MiniCssExtractPlugin(
         config.isDevelopment

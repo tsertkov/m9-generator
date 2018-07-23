@@ -79,10 +79,9 @@ let config = {
   assets: {
     scripts: _path.default.join(paths.srcScripts, '*.js'),
     styles: _path.default.join(paths.srcStyles, '*.css'),
-    manifestFile: 'manifest.json',
+    manifestFile: 'assets.json',
     publicPath: `/${DIR_ASSETS}/`,
-    destinationPath: paths.dstAssets,
-    dst: paths.dstAssets
+    destinationPath: paths.dstAssets
   }
 };
 config.__webpack = (0, _configWebpack.default)(config);

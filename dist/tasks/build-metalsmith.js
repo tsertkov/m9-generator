@@ -51,10 +51,7 @@ function metalsmithInplaceConfig() {
     helpersPath
   } = _config.default.templates;
   const inplaceConfig = {
-    engineOptions: {
-      partials: partialsPath,
-      helpers: helpersPath
-    }
+    engineOptions: {}
   };
 
   if ((0, _fs.existsSync)(partialsPath)) {

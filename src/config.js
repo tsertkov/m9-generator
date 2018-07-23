@@ -64,10 +64,9 @@ let config = {
   assets: {
     scripts: path.join(paths.srcScripts, '*.js'),
     styles: path.join(paths.srcStyles, '*.css'),
-    manifestFile: 'manifest.json',
+    manifestFile: 'assets.json',
     publicPath: `/${DIR_ASSETS}/`,
-    destinationPath: paths.dstAssets,
-    dst: paths.dstAssets
+    destinationPath: paths.dstAssets
   }
 }
 
