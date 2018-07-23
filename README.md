@@ -77,7 +77,6 @@ Sub Tasks
     build-webpack
     dev-browsersync
     dev-watch
-    dev-webpack
     test-standard
 ```
 
