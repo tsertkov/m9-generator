@@ -372,13 +372,11 @@ For example following static content files in `content/static` directory:
 This content is accessible in handlebars templates as variables: `user`, `group` and `site` accordingly to JSON file names.
 
 ```handlebars
-<pre>
-site title: {{site.title}}
-name property of first user in collection: {{user.[0].name}}
+site title:                                 {{site.title}}
+name property of first user in collection:  {{user.[0].name}}
 name property of first group in collection: {{group.[0].name}}
-first user group name: {{user.[0].group.[0].name}}
-second user group name: {{user.[1].group.[0].name}}
-</pre>
+first user group name:                      {{user.[0].group.[0].name}}
+second user group name:                     {{user.[1].group.[0].name}}
 ```
 
 #### Dynamic content
