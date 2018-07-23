@@ -22,7 +22,7 @@ function runGulp(cwd) {
   // Given cwd is stored in registry object for accing it under gulp environment.
   registry.cwd = cwd; // Define early dev mode as it is required before loading dynamic configuration
 
-  registry.isDevTask = process.argv.includes('dev');
+  registry.isDevelopment = process.argv.includes('dev');
 
   const gulpfile = _path.default.join(__dirname, 'gulpfile.js');
 

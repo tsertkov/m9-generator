@@ -20,11 +20,11 @@ _gulp.default.task('dev-browsersync', done => {
     notify: false,
     server: {
       https: true,
-      baseDir: _config.default.paths.dst
+      baseDir: _config.default.templates.destinationPath
     }
   };
 
-  if (!_config.default.webpack) {
+  if (!_config.default.__webpack) {
     done();
 
     _browserSync.default.init(bsConfig);
@@ -32,7 +32,7 @@ _gulp.default.task('dev-browsersync', done => {
     return;
   }
 
-  const compiler = (0, _webpack.default)(_config.default.webpack);
+  const compiler = (0, _webpack.default)(_config.default.__webpack);
   const devMiddleware = (0, _webpackDevMiddleware.default)(compiler, {
     publicPath: _config.default.assets.publicPath,
     stats: {
@@ -43,7 +43,7 @@ _gulp.default.task('dev-browsersync', done => {
   devMiddleware.waitUntilValid(() => {
     done();
 
-    _browserSync.default.init(bsConfig).watch(_path.default.join(_config.default.assets.dst, _config.default.assets.manifest)).on('change', () => {
+    _browserSync.default.init(bsConfig).watch(_path.default.join(_config.default.assets.destinationPath, _config.default.assets.manifestFile)).on('change', () => {
       // Could not find out which bundle was actually updated here
       // since devMiddleware.context.webpackStats contains details
       // of all bundles. Trying our best and reloading css files with
