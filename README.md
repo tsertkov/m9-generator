@@ -236,7 +236,7 @@ Layout example `<SRC>/partials/layout-default.hbs`:
 </html>
 ```
 
-Page template example `<SRC>/pages/index.html.hbs`: 
+Page template example `<SRC>/pages/index.html.hbs`:
 
 ```handlebars
 ---
@@ -334,7 +334,7 @@ module.exports = m9config => Object.assign(
   m9config,
   Object.assign(
     {},
-    config.default, 
+    config.default,
     config[m9config.stage]
   )
 )
@@ -344,7 +344,7 @@ module.exports = m9config => Object.assign(
 
 Metalsmith is parsing front-matter headers in template files using `---` as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.
 
-### Handlebars template data context
+### Data context
 
 m9-generator preloads data context and exponses it to Handlebars templating. There are two types of input data: **static content** in form of json files and **dynamic content** as JavaScript files.
 
@@ -357,7 +357,7 @@ System variables avaialble in template context are prefixed with `__`.
 | `__assets` | Webpack assets manifest: `asset-name -> asset-filename` |
 | `__config` | Configuration object |
 
-#### Static content
+#### Static content by `json-dir` content plugin
 
 Static content is loaded from JSON files found in `<SRC>/content/static` directory.
 
@@ -387,7 +387,7 @@ For example following static content files in `content/static` directory:
   [
     "id": 1,
     "name": "group1"
-  ], 
+  ],
   [
     "id": 2,
     "name": "group2"
@@ -412,7 +412,7 @@ first user group name:                      {{user.[0].group.[0].name}}
 second user group name:                     {{user.[1].group.[0].name}}
 ```
 
-#### Dynamic content
+#### Dynamic content by `js-dir` content plugin
 
 It is possible to define dynamic (programmable) content and expose it to template data. Each JavaScript file in `<SRC>/content/dynamic` must follow pattern `<content-type>.js` and export function of a form:
 
@@ -438,6 +438,17 @@ Augmenting initial content loaded from static JSON files with dynamic functions 
 ### Public directory
 
 All files and folders from `<SRC>/public/` directory are copied to destination `<DST>` directory. This is a good place to put static image files, favicons, etc.
+
+## Custom gulp tasks
+
+Gulp tasks found matching `<SRC>/tasks/*.js` are automatically registrered and available via m9 cli.
+
+For example `<SRC>/tasks/custom-task.js` to define `custom-task`:
+```javascript
+module.exports = async function customTask (config) {
+  console.log('Custom task test')
+}
+```
 
 ## Developing m9-generator
 
