@@ -26,5 +26,5 @@ function reloadBrowsers(done) {
 _gulp.default.task('dev-watch', () => {
   _gulp.default.watch(_config.default.templates.publicPath, _gulp.default.parallel('build-copy'));
 
-  _gulp.default.watch([_path.default.join(_config.default.content.contentPath, '**/*'), _path.default.join(_config.default.templates.pagesPath, '**/*'), _path.default.join(_config.default.templates.helpersPath, '**/*'), _path.default.join(_config.default.templates.partialsPath, '**/*')], _gulp.default.series(clearRequireCaches, 'build-metalsmith', reloadBrowsers));
+  _gulp.default.watch([_path.default.join(_config.default.content.contentPath, '**/*'), _path.default.join(_config.default.templates.pagesPath, '**/*'), _path.default.join(_config.default.templates.helpersPath, '**/*'), _path.default.join(_config.default.templates.partialsPath, '**/*'), _path.default.join(_config.default.paths.src, 'config.js'), _path.default.join(_config.default.paths.src, 'config.json'), _path.default.join(_config.default.paths.src, 'config.*.json')], _gulp.default.series(clearRequireCaches, 'build-metalsmith', reloadBrowsers));
 });

@@ -1,15 +1,20 @@
 import path from 'path'
 import yargs from 'yargs'
+import { existsSync } from 'fs'
+import requireDir from 'require-dir'
 import loadConfigs from './lib/load-configs'
+import loadTasks from './lib/load-tasks'
+import readDirFiles from './lib/read-dir-files'
 import webpackConfig from './config-webpack'
 import { registry } from './gulp-runner'
 
+// NB! Gulp has changed cwd to m9-generator package directory
 // Get original cwd
 const { cwd, isDevelopment } = registry
 
 const argv = yargs.parse(process.argv)
 
-// Stage site is building for
+// A stage site is building for
 const stage = argv.stage || process.env.STAGE || 'development'
 
 const src = path.resolve(cwd, argv.src || process.env.SRC || 'src')
@@ -38,28 +43,42 @@ const paths = {
   srcPartials: path.join(src, DIR_PARTIALS)
 }
 
+const metalsmithInPlaceOptions = ((options = { engineOptions: {} }) => {
+  if (existsSync(paths.srcPartials)) {
+    options.engineOptions.partials = readDirFiles(paths.srcPartials)
+  }
+  if (existsSync(paths.srcHelpers)) {
+    options.engineOptions.helpers = requireDir(paths.srcHelpers)
+  }
+  return options
+})()
+
 let config = {
   stage,
   isDevelopment,
   paths,
   templates: {
     destinationPath: paths.dst,
-    pagesPath: paths.srcPages,
     publicPath: paths.srcPublic,
+    pagesPath: paths.srcPages,
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
-    metaToFiles: {},
-    buildManifestFile: 'build.json',
-    // TODO pluggable metalsmith plugins
-    htmlmin: {
-      pattern: '**/*.html'
-    }
+    plugins: [
+      'm9-matter-interpolate',
+      'm9-permalink',
+      'm9-meta-to-files',
+      { name: 'metalsmith-in-place', options: metalsmithInPlaceOptions },
+      { name: 'm9-build-manifest', options: 'build.json' }
+    ]
   },
   content: {
     contentPath: paths.srcContent,
-    // TODO pluggable content sync gulp task
-    // TODO pluggable content plugins
-    transformer: 'wordpress'
+    plugins: [
+      { name: 'json-dir', options: path.join(paths.srcContent, 'static') },
+      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') },
+      'assets-manifest',
+      'transform-wp-json'
+    ]
   },
   assets: {
     scripts: path.join(paths.srcScripts, '*.js'),
@@ -71,6 +90,7 @@ let config = {
 }
 
 config.__webpack = webpackConfig(config)
-loadConfigs(config, src)
+loadConfigs(src, config)
+loadTasks(src, config)
 
 export default config

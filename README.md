@@ -2,6 +2,39 @@
 
 > Static site framework powered by `webpack` bundling, `handlebars` templating and `browser-sync` live-reloading.
 
+## Table of Contents
+
+* [Overview](#overview)
+* [Installation](#installation)
+  + [Yarn tasks as package.json scripts](#yarn-tasks-as-packagejson-scripts)
+* [Command line tool](#command-line-tool)
+* [Development mode](#development-mode)
+* [Source and Destination directories](#source-and-destination-directories)
+* [Stages](#stages)
+* [Entrypoint files](#entrypoint-files)
+* [Target browsers](#target-browsers)
+* [Babel](#babel)
+* [Handlebars](#handlebars)
+  + [Partials](#partials)
+  + [Layouts](#layouts)
+  + [Helpers](#helpers)
+  + [Embedded handlebars-helpers](#embedded-handlebars-helpers)
+* [Webpack](#webpack)
+  + [Development and Production modes](#development-and-production-modes)
+  + [Handlebars loader](#handlebars-loader)
+  + [Babel loader](#babel-loader)
+  + [PostCSS loader](#postcss-loader)
+  + [Visualizer](#visualizer)
+* [Metalsmith](#metalsmith)
+  + [Configuration](#configuration)
+  + [Front-matter](#front-matter)
+  + [Handlebars template data context](#handlebars-template-data-context)
+    - [System data](#system-data)
+    - [Static content](#static-content)
+    - [Dynamic content](#dynamic-content)
+  + [Public directory](#public-directory)
+* [Developing m9-generator](#developing-m9-generator)
+
 ## Overview
 
 m9-generator is static site framework relying on `handlebars` for static files templating, `webpack` for JavaScript and CSS bundling and `browser-sync` for local live-reload development server.

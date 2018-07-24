@@ -27,7 +27,10 @@ gulp.task('dev-watch', () => {
     path.join(config.content.contentPath, '**/*'),
     path.join(config.templates.pagesPath, '**/*'),
     path.join(config.templates.helpersPath, '**/*'),
-    path.join(config.templates.partialsPath, '**/*')
+    path.join(config.templates.partialsPath, '**/*'),
+    path.join(config.paths.src, 'config.js'),
+    path.join(config.paths.src, 'config.json'),
+    path.join(config.paths.src, 'config.*.json')
   ], gulp.series(
     clearRequireCaches,
     'build-metalsmith',

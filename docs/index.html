@@ -1,13 +1,74 @@
-<!DOCTYPE html><html lang=en><head><meta charset=utf-8><title>m9-generator</title><base href=""><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" href=favicon.ico type=image/x-icon><link rel=alternate type=application/rss+xml title=m9-generator href=feed.xml><link rel=stylesheet href=/assets/styles-d7faa248135ddf4f90dc.css></head><body><header><h1><img src=/images/m9-generator-logo.svg alt=m9-generator>generator</h1><hr><div class=download><a href="[object Object]">GitHub project<img src=/images/github.svg></a></div><div class=intro><p>Static site generator powered by gulp, metalsmith and webpack.</p></div></header><section class=content><article class=m9-readme><div class=body><h1 id=m9-generator>m9-generator</h1><blockquote><p>Static site framework powered by <code>webpack</code> bundling, <code>handlebars</code> templating and <code>browser-sync</code> live-reloading.</p></blockquote><h2 id=overview>Overview</h2><p>m9-generator is static site framework relying on <code>handlebars</code> for static files templating, <code>webpack</code> for JavaScript and CSS bundling and <code>browser-sync</code> for local live-reload development server.</p><p>m9-generator follows future-focused approach and provides support to new standard solutions when handling CSS and JavaScript.</p><ul><li>JavaScript: <a href=https://babeljs.io/docs/en/babel-preset-stage-3>Stage3</a></li><li>CSS: <a href=https://preset-env.cssdb.org/features>Stage2, nesting-rules, custom-media-queries</a></li></ul><h2 id=installation>Installation</h2><blockquote><p>NB! Use <code>yarn</code> instead of <code>npm</code>. m9-generator depends on <code>peerDependencies</code> in <code>package.json</code> and so far only <code>yarn</code> installs them.</p></blockquote><blockquote><p>NB! It is assumed that per-site directory layout with package.json is used in this documentation examples. Use <code>yarn init</code> to create one.</p></blockquote><p>Install <code>@tsertkov/m9-generator</code> as your local depencency:</p><pre><code class=language-sh>$ yarn add @tsertkov/m9-generator</code></pre><h3 id=yarn-tasks-as-package-json-scripts>Yarn tasks as package.json scripts</h3><p>Add following <code>scripts</code> in your site <code>package.json</code>:</p><pre><code class=language-json>&quot;scripts&quot;: {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>m9-generator</title>
+  <base href="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="alternate" type="application/rss+xml" title="m9-generator" href="feed.xml">
+  <link rel="stylesheet" href="/assets/styles-d7faa248135ddf4f90dc.css">
+</head>
+<body>
+  <header>
+    <h1><img src="/images/m9-generator-logo.svg" alt="m9-generator">generator</h1>
+    <hr>
+    <div class="download">
+      <a href="https://github.com/tsertkov/m9-generator.git">GitHub project<img src="/images/github.svg"></a>
+    </div>
+    <div class="intro">
+      <p>Static site generator powered by gulp, metalsmith and webpack.</p>
+    </div>
+  </header>
+  <section class="content">
+    <article class="m9-readme">
+      <div class="body">
+        <h1 id="m9-generator">m9-generator</h1>
+    <blockquote>
+    <p>Static site framework powered by <code>webpack</code> bundling, <code>handlebars</code> templating and <code>browser-sync</code> live-reloading.</p>
+    </blockquote>
+    <h2 id="overview">Overview</h2>
+    <p>m9-generator is static site framework relying on <code>handlebars</code> for static files templating, <code>webpack</code> for JavaScript and CSS bundling and <code>browser-sync</code> for local live-reload development server.</p>
+    <p>m9-generator follows future-focused approach and provides support to new standard solutions when handling CSS and JavaScript.</p>
+    <ul>
+    <li>JavaScript: <a href="https://babeljs.io/docs/en/babel-preset-stage-3">Stage3</a></li>
+    <li>CSS: <a href="https://preset-env.cssdb.org/features">Stage2, nesting-rules, custom-media-queries</a></li>
+    </ul>
+    <h2 id="installation">Installation</h2>
+    <blockquote>
+    <p>NB! Use <code>yarn</code> instead of <code>npm</code>. m9-generator depends on <code>peerDependencies</code> in <code>package.json</code> and so far only <code>yarn</code> installs them.</p>
+    </blockquote>
+    <blockquote>
+    <p>NB! It is assumed that per-site directory layout with package.json is used in this documentation examples. Use <code>yarn init</code> to create one.</p>
+    </blockquote>
+    <p>Install <code>@tsertkov/m9-generator</code> as your local depencency:</p>
+    <pre><code class="language-sh">$ yarn add @tsertkov/m9-generator</code></pre>
+    <h3 id="yarn-tasks-as-package-json-scripts">Yarn tasks as package.json scripts</h3>
+    <p>Add following <code>scripts</code> in your site <code>package.json</code>:</p>
+    <pre><code class="language-json">&quot;scripts&quot;: {
       &quot;m9&quot;: &quot;m9&quot;,
       &quot;test&quot;: &quot;m9 test&quot;,
       &quot;dev&quot;: &quot;m9 dev&quot;,
       &quot;build&quot;: &quot;m9 build&quot;
-    }</code></pre><p>To run m9-generator tasks with <code>yarn</code> locally</p><pre><code class=language-sh>$ yarn test
+    }</code></pre>
+    <p>To run m9-generator tasks with <code>yarn</code> locally</p>
+    <pre><code class="language-sh">$ yarn test
     $ yarn run dev
     $ yarn run build
     $ yarn run m9
-    $ yarn run m9 &lt;task&gt;</code></pre><h2 id=command-line-tool>Command line tool</h2><p>m9-generator comes with <code>m9</code> command line tool to execute <code>gulp</code> tasks.</p><p>Run <code>yarn run m9</code> to execute default help task printing complete list of available tasks to run with <code>yarn run m9 &lt;task&gt;</code>.</p><p>There are tasks and sub-tasks in m9-generator. Tasks are always a groups of sub-tasks.</p><p>Main tasks are:</p><ul><li><code>build</code>: build static site files into destination directory</li><li><code>dev</code>: continuously build and live-reload site with local development server</li><li><code>test</code>: test site</li></ul><p>Run <code>./node_modules/.bin/m9</code> to see default help screen:</p><pre><code>Main Tasks
+    $ yarn run m9 &lt;task&gt;</code></pre>
+    <h2 id="command-line-tool">Command line tool</h2>
+    <p>m9-generator comes with <code>m9</code> command line tool to execute <code>gulp</code> tasks.</p>
+    <p>Run <code>yarn run m9</code> to execute default help task printing complete list of available tasks to run with <code>yarn run m9 &lt;task&gt;</code>.</p>
+    <p>There are tasks and sub-tasks in m9-generator. Tasks are always a groups of sub-tasks.</p>
+    <p>Main tasks are:</p>
+    <ul>
+    <li><code>build</code>: build static site files into destination directory</li>
+    <li><code>dev</code>: continuously build and live-reload site with local development server</li>
+    <li><code>test</code>: test site</li>
+    </ul>
+    <p>Run <code>./node_modules/.bin/m9</code> to see default help screen:</p>
+    <pre><code>Main Tasks
     ------------------------------
         build
         dev
@@ -22,8 +83,8 @@
         build-webpack
         dev-browsersync
         dev-watch
-        dev-webpack
-        test-standard</code></pre><p>Run <code>./node_modules/.bin/m9 --tasks</code> to see complete task tree generated by <code>gulp</code>.</p><pre><code>[13:23:38] ├── build-clean
+        test-standard</code></pre><p>Run <code>./node_modules/.bin/m9 --tasks</code> to see complete task tree generated by <code>gulp</code>.</p>
+    <pre><code>[13:23:38] ├── build-clean
     [13:23:38] ├── build-copy
     [13:23:38] ├── build-metalsmith
     [13:23:38] ├── build-webpack
@@ -49,7 +110,10 @@
     [13:23:38] │   └── test-standard
     [13:23:38] └─┬ default
     [13:23:38]   └─┬ &lt;series&gt;
-    [13:23:38]     └── help</code></pre><h2 id=development-mode>Development mode</h2><p><code>yarn run dev</code> executes BrowserSync serving static files from build directory connected to webpack-dev-middleware for dynamic asset serving.</p><p>Look for BrowserSync details in output:</p><pre><code>[Browsersync] Access URLs:
+    [13:23:38]     └── help</code></pre><h2 id="development-mode">Development mode</h2>
+    <p><code>yarn run dev</code> executes BrowserSync serving static files from build directory connected to webpack-dev-middleware for dynamic asset serving.</p>
+    <p>Look for BrowserSync details in output:</p>
+    <pre><code>[Browsersync] Access URLs:
      --------------------------------------
            Local: https://localhost:3000
         External: https://192.168.0.1:3000
@@ -57,7 +121,38 @@
               UI: http://localhost:3001
      UI External: http://192.168.0.1:3001
      --------------------------------------
-    [Browsersync] Serving files from: /Users/example/Projects/example.com/build</code></pre><p>Updates to most of the <code>src/**/*</code> files must trigger recompilation and live-reload updated pages opened in browsers.</p><p>Run <code>yarn run test</code> to execute automated tests for current site.</p><h2 id=source-and-destination-directories>Source and Destination directories</h2><p><code>m9</code> works by reading input from files in source directory, builds site, then persists files in destination directory. By default source and destination directories are <code>./src</code> and <code>./build</code> accordingly.</p><p>Directories can be set with command line argument <code>--src=&lt;SRC&gt;</code>, <code>--dst=&lt;DST&gt;</code> or environment variable <code>SRC</code> and <code>DST</code>.</p><h2 id=stages>Stages</h2><p>Stage defaults to <code>development</code> and defines environment current site is building for.</p><p>Stage can be set with command line argument <code>--stage</code> or <code>STAGE</code> environment variable:</p><ul><li><code>STAGE=staging yarn run build</code></li><li><code>yarn run build --stage=staging</code></li></ul><h2 id=entrypoint-files>Entrypoint files</h2><p>m9-generator uses <code>metalsmith</code> to build static files and <code>webpack</code> to bundle JavaScript and CSS. Both are relying on entrypoint files as their input.</p><p>Each file matched by <code>&lt;SRC&gt;/pages/**/*.hbs</code> pattern is processed by <code>metalsmith</code> resulting in one or many files build in destination directory. All other files in <code>&lt;SRC&gt;/pages/**/*</code> are copied as is.</p><p>Each file matched by <code>&lt;SRC&gt;/scripts/*.js|.css</code> pattern is bundled in corresponding JS or CSS file in <code>&lt;DST&gt;/assets</code> directory.</p><h2 id=target-browsers>Target browsers</h2><p>Webpack loaders for JavaScript and CSS are respecting configured target browsers defined in <a href=https://www.npmjs.com/package/browserslist><code>.browserslistrc</code></a> file.</p><blockquote><p>NB! The most pragmatic browserlist query is used by default when <code>.browserslistrc</code> file is not given.</p></blockquote><h2 id=babel>Babel</h2><p>Two different babel transformation processes are running in m9-generator. One is done by <code>@babel/register</code> transpiling files on the fly for current node version using require hook. Another by webpack bundling client-side package with <code>babel-loader</code>.</p><p>Both transformations use the same presets <code>@babel/preset-stage-3</code> and <code>@babel/preset-env</code>, but differ in targets for <code>preset-env</code>.</p><h2 id=handlebars>Handlebars</h2><p>Handlebars is simple, powerful and extendable templating system. Custom Partials and Helpers allow building reusable components with ease. Read more on <a href=https://handlebarsjs.com/ >https://handlebarsjs.com/</a>.</p><h3 id=partials>Partials</h3><p>By default handlebars partials are loaded from <code>&lt;SRC&gt;/partials/*.hbs</code>. Read more about handlebars partials on <a href=https://handlebarsjs.com/partials.html>https://handlebarsjs.com/partials.html</a>.</p><h3 id=layouts>Layouts</h3><p>Layouts are implemented by native handlebars <a href=https://handlebarsjs.com/partials.html#partial-block>partial blocks</a>.</p><p>Layout example <code>&lt;SRC&gt;/partials/layout-default.hbs</code>:</p><pre><code class=language-handlebars>&lt;!DOCTYPE html&gt;
+    [Browsersync] Serving files from: /Users/example/Projects/example.com/build</code></pre><p>Updates to most of the <code>src/**/*</code> files must trigger recompilation and live-reload updated pages opened in browsers.</p>
+    <p>Run <code>yarn run test</code> to execute automated tests for current site.</p>
+    <h2 id="source-and-destination-directories">Source and Destination directories</h2>
+    <p><code>m9</code> works by reading input from files in source directory, builds site, then persists files in destination directory. By default source and destination directories are <code>./src</code> and <code>./build</code> accordingly.</p>
+    <p>Directories can be set with command line argument <code>--src=&lt;SRC&gt;</code>, <code>--dst=&lt;DST&gt;</code> or environment variable <code>SRC</code> and <code>DST</code>.</p>
+    <h2 id="stages">Stages</h2>
+    <p>Stage defaults to <code>development</code> and defines environment current site is building for.</p>
+    <p>Stage can be set with command line argument <code>--stage</code> or <code>STAGE</code> environment variable:</p>
+    <ul>
+    <li><code>STAGE=staging yarn run build</code></li>
+    <li><code>yarn run build --stage=staging</code></li>
+    </ul>
+    <h2 id="entrypoint-files">Entrypoint files</h2>
+    <p>m9-generator uses <code>metalsmith</code> to build static files and <code>webpack</code> to bundle JavaScript and CSS. Both are relying on entrypoint files as their input.</p>
+    <p>Each file matched by <code>&lt;SRC&gt;/pages/**/*.hbs</code> pattern is processed by <code>metalsmith</code> resulting in one or many files build in destination directory. All other files in <code>&lt;SRC&gt;/pages/**/*</code> are copied as is.</p>
+    <p>Each file matched by <code>&lt;SRC&gt;/scripts/*.js|.css</code> pattern is bundled in corresponding JS or CSS file in <code>&lt;DST&gt;/assets</code> directory.</p>
+    <h2 id="target-browsers">Target browsers</h2>
+    <p>Webpack loaders for JavaScript and CSS are respecting configured target browsers defined in <a href="https://www.npmjs.com/package/browserslist"><code>.browserslistrc</code></a> file.</p>
+    <blockquote>
+    <p>NB! The most pragmatic browserlist query is used by default when <code>.browserslistrc</code> file is not given.</p>
+    </blockquote>
+    <h2 id="babel">Babel</h2>
+    <p>Two different babel transformation processes are running in m9-generator. One is done by <code>@babel/register</code> transpiling files on the fly for current node version using require hook. Another by webpack bundling client-side package with <code>babel-loader</code>.</p>
+    <p>Both transformations use the same presets <code>@babel/preset-stage-3</code> and <code>@babel/preset-env</code>, but differ in targets for <code>preset-env</code>.</p>
+    <h2 id="handlebars">Handlebars</h2>
+    <p>Handlebars is simple, powerful and extendable templating system. Custom Partials and Helpers allow building reusable components with ease. Read more on <a href="https://handlebarsjs.com/">https://handlebarsjs.com/</a>.</p>
+    <h3 id="partials">Partials</h3>
+    <p>By default handlebars partials are loaded from <code>&lt;SRC&gt;/partials/*.hbs</code>. Read more about handlebars partials on <a href="https://handlebarsjs.com/partials.html">https://handlebarsjs.com/partials.html</a>.</p>
+    <h3 id="layouts">Layouts</h3>
+    <p>Layouts are implemented by native handlebars <a href="https://handlebarsjs.com/partials.html#partial-block">partial blocks</a>.</p>
+    <p>Layout example <code>&lt;SRC&gt;/partials/layout-default.hbs</code>:</p>
+    <pre><code class="language-handlebars">&lt;!DOCTYPE html&gt;
     &lt;html lang=&quot;en&quot;&gt;
     &lt;head&gt;
       &lt;meta charset=&quot;utf-8&quot;&gt;
@@ -73,7 +168,9 @@
       {{&gt; footer}}
       &lt;script src=&quot;{{__assets.[scripts.js]}}&quot;&gt;&lt;/script&gt;
     &lt;/body&gt;
-    &lt;/html&gt;</code></pre><p>Page template example <code>&lt;SRC&gt;/pages/index.html.hbs</code>:</p><pre><code class=language-handlebars>---
+    &lt;/html&gt;</code></pre>
+    <p>Page template example <code>&lt;SRC&gt;/pages/index.html.hbs</code>: </p>
+    <pre><code class="language-handlebars">---
     title: ${site.title}
     ---
     {{#&gt; layout-default}}
@@ -82,13 +179,41 @@
         {{{readme.content}}}
       &lt;/div&gt;
     &lt;/article&gt;
-    {{/layout-default}}</code></pre><h3 id=helpers>Helpers</h3><p>Helpers are loaded with <code>&lt;SRC&gt;/helpers/*.js</code> pattern.</p><p>These are native JavaScript files and must use <code>module.exports = (content) =&gt; &#39;output string&#39;</code> format to enable dynamic loading.</p><h3 id=embedded-handlebars-helpers>Embedded handlebars-helpers</h3><p>188 helpers from <a href=https://github.com/helpers/handlebars-helpers><code>handlebars-helpers</code></a> are available to handlebars engine. Before writing your own first consider searching similar in <a href=https://github.com/helpers/handlebars-helpers>handlebars-helpers</a>.</p><h2 id=webpack>Webpack</h2><p>Webpack searches for entry points in <code>&lt;SRC&gt;/scripts/*.js</code> and <code>&lt;SRC&gt;/styles/*.css</code> and writes files in <code>&lt;DST&gt;/assets/</code>.</p><p>There is <code>&lt;DST&gt;/assets/manifest.json</code> file with assets manifest pre-loaded into templating context as <code>__assets</code> variable.</p><h3 id=development-and-production-modes>Development and Production modes</h3><p><code>development</code> mode is enabled when <code>stage === &#39;development&#39;</code> is true. Otherwise <code>production</code> mode is active. Different optimizations and loader settings are enabled based on active mode.</p><h3 id=handlebars-loader>Handlebars loader</h3><p><code>*.hbs</code> files are converted to compiled handlebars template functions including resolved helpers, partials and runtime automatically.</p><pre><code class=language-JavaScript>import itemCard from &#39;../../partials/item-card.hbs&#39;
+    {{/layout-default}}</code></pre>
+    <h3 id="helpers">Helpers</h3>
+    <p>Helpers are loaded with <code>&lt;SRC&gt;/helpers/*.js</code> pattern.</p>
+    <p>These are native JavaScript files and must use <code>module.exports = (content) =&gt; &#39;output string&#39;</code> format to enable dynamic loading.</p>
+    <h3 id="embedded-handlebars-helpers">Embedded handlebars-helpers</h3>
+    <p>188 helpers from <a href="https://github.com/helpers/handlebars-helpers"><code>handlebars-helpers</code></a> are available to handlebars engine. Before writing your own first consider searching similar in <a href="https://github.com/helpers/handlebars-helpers">handlebars-helpers</a>.</p>
+    <h2 id="webpack">Webpack</h2>
+    <p>Webpack searches for entry points in <code>&lt;SRC&gt;/scripts/*.js</code> and <code>&lt;SRC&gt;/styles/*.css</code> and writes files in <code>&lt;DST&gt;/assets/</code>.</p>
+    <p>There is <code>&lt;DST&gt;/assets/manifest.json</code> file with assets manifest pre-loaded into templating context as <code>__assets</code> variable.</p>
+    <h3 id="development-and-production-modes">Development and Production modes</h3>
+    <p><code>development</code> mode is enabled when <code>stage === &#39;development&#39;</code> is true. Otherwise <code>production</code> mode is active. Different optimizations and loader settings are enabled based on active mode.</p>
+    <h3 id="handlebars-loader">Handlebars loader</h3>
+    <p><code>*.hbs</code> files are converted to compiled handlebars template functions including resolved helpers, partials and runtime automatically.</p>
+    <pre><code class="language-JavaScript">import itemCard from &#39;../../partials/item-card.hbs&#39;
     
     // ..
     const item = { key: &quot;value&quot; }
     const html = itemCard(item)
     // ..
-    </code></pre><p>Read more about <code>handlebars-loader</code> at <a href=https://github.com/pcardune/handlebars-loader#readme>https://github.com/pcardune/handlebars-loader#readme</a>.</p><h3 id=babel-loader>Babel loader</h3><p><code>*.js</code> files are processed by babel using browsers target defined in <code>.browserslistrc</code> or default one for browsers.</p><p>Ream more about <code>babel-loader</code> at <a href=https://github.com/babel/babel-loader#readme>https://github.com/babel/babel-loader#readme</a>.</p><h3 id=postcss-loader>PostCSS loader</h3><p><code>*.css</code> files are processed by PostCSS with <code>postcss-preset-env</code>.</p><p>Read more about <code>postcss-loader</code> at <a href=https://github.com/postcss/postcss-loader#readme>https://github.com/postcss/postcss-loader#readme</a>.</p><h3 id=visualizer>Visualizer</h3><p>In <code>development</code> mode <a href=https://github.com/chrisbateman/webpack-visualizer#readme>webpack-visualizer-plugin</a> is enabled and results are avalable at <code>https://localhost:3000/webpack-visualizer/</code> or other domain/port you use locally.</p><h2 id=metalsmith>Metalsmith</h2><p>Metalsmith compiles static files found in <code>&lt;SRC&gt;/pages/</code> into <code>&lt;DST&gt;/</code> directory. It extracts front-matter headers and passes <code>*.hbs</code> files through Handlebars templating system.</p><h3 id=configuration>Configuration</h3><p>m9-generator builds single configuration object internally. This object can be modified per site by exporting configuration function in <code>&lt;SRC&gt;/config.js</code>.</p><p>Stage aware configuration file example:</p><pre><code class=language-JavaScript>const config = {
+    </code></pre>
+    <p>Read more about <code>handlebars-loader</code> at <a href="https://github.com/pcardune/handlebars-loader#readme">https://github.com/pcardune/handlebars-loader#readme</a>.</p>
+    <h3 id="babel-loader">Babel loader</h3>
+    <p><code>*.js</code> files are processed by babel using browsers target defined in <code>.browserslistrc</code> or default one for browsers.</p>
+    <p>Ream more about <code>babel-loader</code> at <a href="https://github.com/babel/babel-loader#readme">https://github.com/babel/babel-loader#readme</a>.</p>
+    <h3 id="postcss-loader">PostCSS loader</h3>
+    <p><code>*.css</code> files are processed by PostCSS with <code>postcss-preset-env</code>.</p>
+    <p>Read more about <code>postcss-loader</code> at <a href="https://github.com/postcss/postcss-loader#readme">https://github.com/postcss/postcss-loader#readme</a>.</p>
+    <h3 id="visualizer">Visualizer</h3>
+    <p>In <code>development</code> mode <a href="https://github.com/chrisbateman/webpack-visualizer#readme">webpack-visualizer-plugin</a> is enabled and results are avalable at <code>https://localhost:3000/webpack-visualizer/</code> or other domain/port you use locally.</p>
+    <h2 id="metalsmith">Metalsmith</h2>
+    <p>Metalsmith compiles static files found in <code>&lt;SRC&gt;/pages/</code> into <code>&lt;DST&gt;/</code> directory. It extracts front-matter headers and passes <code>*.hbs</code> files through Handlebars templating system.</p>
+    <h3 id="configuration">Configuration</h3>
+    <p>m9-generator builds single configuration object internally. This object can be modified per site by exporting configuration function in <code>&lt;SRC&gt;/config.js</code>.</p>
+    <p>Stage aware configuration file example:</p>
+    <pre><code class="language-JavaScript">const config = {
       default: {
         apiEndpoint: &#39;https://staging-api.example.com&#39;
       },
@@ -111,7 +236,33 @@
         config.default, 
         config[m9config.stage]
       )
-    )</code></pre><h3 id=front-matter>Front-matter</h3><p>Metalsmith is parsing front-matter headers in template files using <code>---</code> as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.</p><h3 id=handlebars-template-data-context>Handlebars template data context</h3><p>m9-generator preloads data context and exponses it to Handlebars templating. There are two types of input data: <strong>static content</strong> in form of json files and <strong>dynamic content</strong> as JavaScript files.</p><h4 id=system-data>System data</h4><p>System variables avaialble in template context are prefixed with <code>__</code>.</p><table><thead><tr><th>Variable name</th><th>Description</th></tr></thead><tbody><tr><td><code>__assets</code></td><td>Webpack assets manifest: <code>asset-name -&gt; asset-filename</code></td></tr><tr><td><code>__config</code></td><td>Configuration object</td></tr></tbody></table><h4 id=static-content>Static content</h4><p>Static content is loaded from JSON files found in <code>&lt;SRC&gt;/content/static</code> directory.</p><p>For example following static content files in <code>content/static</code> directory:</p><pre><code class=language-javascript>// content/static/user.json
+    )</code></pre>
+    <h3 id="front-matter">Front-matter</h3>
+    <p>Metalsmith is parsing front-matter headers in template files using <code>---</code> as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.</p>
+    <h3 id="handlebars-template-data-context">Handlebars template data context</h3>
+    <p>m9-generator preloads data context and exponses it to Handlebars templating. There are two types of input data: <strong>static content</strong> in form of json files and <strong>dynamic content</strong> as JavaScript files.</p>
+    <h4 id="system-data">System data</h4>
+    <p>System variables avaialble in template context are prefixed with <code>__</code>.</p>
+    <table>
+    <thead>
+    <tr>
+    <th>Variable name</th>
+    <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+    <td><code>__assets</code></td>
+    <td>Webpack assets manifest: <code>asset-name -&gt; asset-filename</code></td>
+    </tr>
+    <tr>
+    <td><code>__config</code></td>
+    <td>Configuration object</td>
+    </tr>
+    </tbody></table>
+    <h4 id="static-content">Static content</h4>
+    <p>Static content is loaded from JSON files found in <code>&lt;SRC&gt;/content/static</code> directory.</p>
+    <p>For example following static content files in <code>content/static</code> directory:</p>
+    <pre><code class="language-javascript">// content/static/user.json
     {
       [
         &quot;name&quot;: &quot;user1&quot;,
@@ -146,13 +297,16 @@
       &quot;adminEmail&quot;: &quot;admin@example.com&quot;,
       &quot;title&quot;: &quot;site title&quot;,
       &quot;description&quot;: &quot;site description&quot;
-    }</code></pre><p>This content is accessible in handlebars templates as variables: <code>user</code>, <code>group</code> and <code>site</code> accordingly to JSON file names.</p><pre><code class=language-handlebars>&lt;pre&gt;
-    site title: {{site.title}}
-    name property of first user in collection: {{user.[0].name}}
+    }</code></pre>
+    <p>This content is accessible in handlebars templates as variables: <code>user</code>, <code>group</code> and <code>site</code> accordingly to JSON file names.</p>
+    <pre><code class="language-handlebars">site title:                                 {{site.title}}
+    name property of first user in collection:  {{user.[0].name}}
     name property of first group in collection: {{group.[0].name}}
-    first user group name: {{user.[0].group.[0].name}}
-    second user group name: {{user.[1].group.[0].name}}
-    &lt;/pre&gt;</code></pre><h4 id=dynamic-content>Dynamic content</h4><p>It is possible to define dynamic (programmable) content and expose it to template data. Each JavaScript file in <code>&lt;SRC&gt;/content/dynamic</code> must follow pattern <code>&lt;content-type&gt;.js</code> and export function of a form:</p><pre><code class=language-javascript>
+    first user group name:                      {{user.[0].group.[0].name}}
+    second user group name:                     {{user.[1].group.[0].name}}</code></pre>
+    <h4 id="dynamic-content">Dynamic content</h4>
+    <p>It is possible to define dynamic (programmable) content and expose it to template data. Each JavaScript file in <code>&lt;SRC&gt;/content/dynamic</code> must follow pattern <code>&lt;content-type&gt;.js</code> and export function of a form:</p>
+    <pre><code class="language-javascript">
     module.exports = function (proto, content, config) {
       // do something with the proto (it is actual entity obj in fact)
       Object.defineProperty(proto, &#39;content&#39;, {
@@ -165,4 +319,28 @@
       })
     
       return proto
-    }</code></pre><p>Augmenting initial content loaded from static JSON files with dynamic functions is a common integration method. In cases when static content of the same content type is not found new empty object is passed as <code>proto</code> to a content function.</p><h3 id=public-directory>Public directory</h3><p>All files and folders from <code>&lt;SRC&gt;/public/</code> directory are copied to destination <code>&lt;DST&gt;</code> directory. This is a good place to put static image files, favicons, etc.</p><h2 id=developing-m9-generator>Developing m9-generator</h2><p>Use <code>npm version</code> command to publish new version of npm package and push new git tag to remote.</p><p>TDB</p><ul><li>src/ and dist/ directories</li><li>embedded docs site</li><li>npm link</li></ul></div></article></section><footer><p>Copyright © 2016-2018 <a href=https://m9-generator.com>m9-generator</a></p></footer><script src=/assets/scripts-eb96bb5d586bfadff383.js></script></body></html>
+    }</code></pre>
+    <p>Augmenting initial content loaded from static JSON files with dynamic functions is a common integration method. In cases when static content of the same content type is not found new empty object is passed as <code>proto</code> to a content function.</p>
+    <h3 id="public-directory">Public directory</h3>
+    <p>All files and folders from <code>&lt;SRC&gt;/public/</code> directory are copied to destination <code>&lt;DST&gt;</code> directory. This is a good place to put static image files, favicons, etc.</p>
+    <h2 id="developing-m9-generator">Developing m9-generator</h2>
+    <p>Use <code>npm version</code> command to publish new version of npm package and push new git tag to remote.</p>
+    <p>TDB</p>
+    <ul>
+    <li>src/ and dist/ directories</li>
+    <li>embedded docs site</li>
+    <li>npm link</li>
+    </ul>
+    
+      </div>
+    </article>
+  </section>
+  <footer>
+    <p>
+      Copyright © 2016-2018
+      <a href="https://m9-generator.com">m9-generator</a>
+    </p>
+  </footer>
+  <script src="/assets/scripts-eb96bb5d586bfadff383.js"></script>
+</body>
+</html>
