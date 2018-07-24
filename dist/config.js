@@ -87,11 +87,11 @@ let config = {
     pagesPath: paths.srcPages,
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
-    plugins: ['m9-matter-interpolate', 'm9-permalink', 'm9-meta-to-files', {
+    plugins: ['matter-interpolate', 'permalink', 'meta-to-files', {
       name: 'metalsmith-in-place',
       options: metalsmithInPlaceOptions
     }, {
-      name: 'm9-build-manifest',
+      name: 'build-manifest',
       options: 'build.json'
     }]
   },

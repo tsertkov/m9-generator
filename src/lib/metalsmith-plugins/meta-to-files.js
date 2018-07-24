@@ -1,11 +1,11 @@
 import dodoSlug from 'slug'
 import matterInterpolate from '../matter-interpolate'
-export default m9metaToFiles
+export default metaToFiles
 
 const META_KEY = 'meta_to_files'
 const INDEX_FILE = 'index.html'
 
-function m9metaToFiles ({ slug }) {
+function metaToFiles ({ slug }) {
   let slugFn
   if (typeof slug === 'function') {
     slugFn = slug

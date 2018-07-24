@@ -27,6 +27,49 @@
     <blockquote>
     <p>Static site framework powered by <code>webpack</code> bundling, <code>handlebars</code> templating and <code>browser-sync</code> live-reloading.</p>
     </blockquote>
+    <h2 id="table-of-contents">Table of Contents</h2>
+    <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#installation">Installation</a><ul>
+    <li><a href="#yarn-tasks-as-packagejson-scripts">Yarn tasks as package.json scripts</a></li>
+    </ul>
+    </li>
+    <li><a href="#command-line-tool">Command line tool</a></li>
+    <li><a href="#development-mode">Development mode</a></li>
+    <li><a href="#source-and-destination-directories">Source and Destination directories</a></li>
+    <li><a href="#stages">Stages</a></li>
+    <li><a href="#entrypoint-files">Entrypoint files</a></li>
+    <li><a href="#target-browsers">Target browsers</a></li>
+    <li><a href="#babel">Babel</a></li>
+    <li><a href="#handlebars">Handlebars</a><ul>
+    <li><a href="#partials">Partials</a></li>
+    <li><a href="#layouts">Layouts</a></li>
+    <li><a href="#helpers">Helpers</a></li>
+    <li><a href="#embedded-handlebars-helpers">Embedded handlebars-helpers</a></li>
+    </ul>
+    </li>
+    <li><a href="#webpack">Webpack</a><ul>
+    <li><a href="#development-and-production-modes">Development and Production modes</a></li>
+    <li><a href="#handlebars-loader">Handlebars loader</a></li>
+    <li><a href="#babel-loader">Babel loader</a></li>
+    <li><a href="#postcss-loader">PostCSS loader</a></li>
+    <li><a href="#visualizer">Visualizer</a></li>
+    </ul>
+    </li>
+    <li><a href="#metalsmith">Metalsmith</a><ul>
+    <li><a href="#configuration">Configuration</a></li>
+    <li><a href="#front-matter">Front-matter</a></li>
+    <li><a href="#handlebars-template-data-context">Handlebars template data context</a><ul>
+    <li><a href="#system-data">System data</a></li>
+    <li><a href="#static-content">Static content</a></li>
+    <li><a href="#dynamic-content">Dynamic content</a></li>
+    </ul>
+    </li>
+    <li><a href="#public-directory">Public directory</a></li>
+    </ul>
+    </li>
+    <li><a href="#developing-m9-generator">Developing m9-generator</a></li>
+    </ul>
     <h2 id="overview">Overview</h2>
     <p>m9-generator is static site framework relying on <code>handlebars</code> for static files templating, <code>webpack</code> for JavaScript and CSS bundling and <code>browser-sync</code> for local live-reload development server.</p>
     <p>m9-generator follows future-focused approach and provides support to new standard solutions when handling CSS and JavaScript.</p>
@@ -169,7 +212,7 @@
       &lt;script src=&quot;{{__assets.[scripts.js]}}&quot;&gt;&lt;/script&gt;
     &lt;/body&gt;
     &lt;/html&gt;</code></pre>
-    <p>Page template example <code>&lt;SRC&gt;/pages/index.html.hbs</code>: </p>
+    <p>Page template example <code>&lt;SRC&gt;/pages/index.html.hbs</code>:</p>
     <pre><code class="language-handlebars">---
     title: ${site.title}
     ---
@@ -233,13 +276,13 @@
       m9config,
       Object.assign(
         {},
-        config.default, 
+        config.default,
         config[m9config.stage]
       )
     )</code></pre>
     <h3 id="front-matter">Front-matter</h3>
     <p>Metalsmith is parsing front-matter headers in template files using <code>---</code> as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.</p>
-    <h3 id="handlebars-template-data-context">Handlebars template data context</h3>
+    <h3 id="data-context">Data context</h3>
     <p>m9-generator preloads data context and exponses it to Handlebars templating. There are two types of input data: <strong>static content</strong> in form of json files and <strong>dynamic content</strong> as JavaScript files.</p>
     <h4 id="system-data">System data</h4>
     <p>System variables avaialble in template context are prefixed with <code>__</code>.</p>
@@ -259,7 +302,7 @@
     <td>Configuration object</td>
     </tr>
     </tbody></table>
-    <h4 id="static-content">Static content</h4>
+    <h4 id="static-content-by-json-dir-content-plugin">Static content by <code>json-dir</code> content plugin</h4>
     <p>Static content is loaded from JSON files found in <code>&lt;SRC&gt;/content/static</code> directory.</p>
     <p>For example following static content files in <code>content/static</code> directory:</p>
     <pre><code class="language-javascript">// content/static/user.json
@@ -285,7 +328,7 @@
       [
         &quot;id&quot;: 1,
         &quot;name&quot;: &quot;group1&quot;
-      ], 
+      ],
       [
         &quot;id&quot;: 2,
         &quot;name&quot;: &quot;group2&quot;
@@ -304,7 +347,7 @@
     name property of first group in collection: {{group.[0].name}}
     first user group name:                      {{user.[0].group.[0].name}}
     second user group name:                     {{user.[1].group.[0].name}}</code></pre>
-    <h4 id="dynamic-content">Dynamic content</h4>
+    <h4 id="dynamic-content-by-js-dir-content-plugin">Dynamic content by <code>js-dir</code> content plugin</h4>
     <p>It is possible to define dynamic (programmable) content and expose it to template data. Each JavaScript file in <code>&lt;SRC&gt;/content/dynamic</code> must follow pattern <code>&lt;content-type&gt;.js</code> and export function of a form:</p>
     <pre><code class="language-javascript">
     module.exports = function (proto, content, config) {
@@ -323,6 +366,12 @@
     <p>Augmenting initial content loaded from static JSON files with dynamic functions is a common integration method. In cases when static content of the same content type is not found new empty object is passed as <code>proto</code> to a content function.</p>
     <h3 id="public-directory">Public directory</h3>
     <p>All files and folders from <code>&lt;SRC&gt;/public/</code> directory are copied to destination <code>&lt;DST&gt;</code> directory. This is a good place to put static image files, favicons, etc.</p>
+    <h2 id="custom-gulp-tasks">Custom gulp tasks</h2>
+    <p>Gulp tasks found matching <code>&lt;SRC&gt;/tasks/*.js</code> are automatically registrered and available via m9 cli.</p>
+    <p>For example <code>&lt;SRC&gt;/tasks/custom-task.js</code> to define <code>custom-task</code>:</p>
+    <pre><code class="language-javascript">module.exports = async function customTask (config) {
+      console.log(&#39;Custom task test&#39;)
+    }</code></pre>
     <h2 id="developing-m9-generator">Developing m9-generator</h2>
     <p>Use <code>npm version</code> command to publish new version of npm package and push new git tag to remote.</p>
     <p>TDB</p>

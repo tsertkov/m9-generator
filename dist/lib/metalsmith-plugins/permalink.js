@@ -4,10 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _default = m9permalink;
+var _default = permalink;
 exports.default = _default;
 
-function m9permalink() {
+function permalink() {
   return (files, metalsmith, done) => {
     Object.keys(files).forEach(file => {
       const fileMeta = files[file];

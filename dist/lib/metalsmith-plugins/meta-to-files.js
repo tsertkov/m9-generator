@@ -15,12 +15,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _default = m9metaToFiles;
+var _default = metaToFiles;
 exports.default = _default;
 const META_KEY = 'meta_to_files';
 const INDEX_FILE = 'index.html';
 
-function m9metaToFiles({
+function metaToFiles({
   slug
 }) {
   let slugFn;

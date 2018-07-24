@@ -9,11 +9,11 @@ var _matterInterpolate = _interopRequireDefault(require("../matter-interpolate")
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default = m9matterInterpolate;
+var _default = matterInterpolatePlugin;
 exports.default = _default;
 const EXCLUDE_PROPS = ['contents', 'mode'];
 
-function m9matterInterpolate() {
+function matterInterpolatePlugin() {
   return (files, metalsmith, done) => {
     Object.keys(files).forEach(file => processFileMeta(files[file], metalsmith.metadata()));
     done();

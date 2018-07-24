@@ -1,6 +1,6 @@
-export default m9permalink
+export default permalink
 
-function m9permalink () {
+function permalink () {
   return (files, metalsmith, done) => {
     Object.keys(files).forEach(file => {
       const fileMeta = files[file]
