@@ -8,7 +8,10 @@ module.exports = function (siteProto, content) {
   Object.defineProperty(siteProto, 'repository', {
     configurable: true,
     enumerable: true,
-    get: () => require('../../../package.json').repository
+    get: () => require('../../../package.json')
+      .repository
+      .url
+      .substr(4)
   })
 
   return siteProto
