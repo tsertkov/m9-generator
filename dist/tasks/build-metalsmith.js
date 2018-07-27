@@ -6,6 +6,8 @@ var _path = _interopRequireDefault(require("path"));
 
 var _metalsmith = _interopRequireDefault(require("metalsmith"));
 
+var _handlebars = _interopRequireDefault(require("handlebars"));
+
 var _handlebarsHelpers = _interopRequireDefault(require("handlebars-helpers"));
 
 var _metalsmithDebug = _interopRequireDefault(require("metalsmith-debug"));
@@ -25,7 +27,9 @@ var _config = _interopRequireDefault(require("../config"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // register handlebars-helpers
-(0, _handlebarsHelpers.default)();
+(0, _handlebarsHelpers.default)({
+  handlebars: _handlebars.default
+});
 
 _gulp.default.task('build-metalsmith', async done => {
   if (!(0, _fs.existsSync)(_config.default.templates.pagesPath)) {

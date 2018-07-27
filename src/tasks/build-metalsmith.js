@@ -1,6 +1,7 @@
 import gulp from 'gulp'
 import path from 'path'
 import Metalsmith from 'metalsmith'
+import handlebars from 'handlebars'
 import handlebarsHelpers from 'handlebars-helpers'
 import debug from 'metalsmith-debug'
 import log from 'fancy-log'
@@ -11,7 +12,7 @@ import Content from '../lib/content'
 import config from '../config'
 
 // register handlebars-helpers
-handlebarsHelpers()
+handlebarsHelpers({ handlebars })
 
 gulp.task('build-metalsmith', async (done) => {
   if (!existsSync(config.templates.pagesPath)) {
