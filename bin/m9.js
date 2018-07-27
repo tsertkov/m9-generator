@@ -10,8 +10,11 @@ const BABEL_CONFIG_CLIENT = {
       targets: {
         node: 'current'
       }
-    }],
-    '@babel/preset-stage-3'
+    }]
+  ],
+  'plugins': [
+    ['@babel/plugin-proposal-class-properties', { 'loose': false }],
+    '@babel/plugin-proposal-json-strings'
   ]
 }
 
