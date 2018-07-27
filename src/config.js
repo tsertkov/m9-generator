@@ -64,11 +64,11 @@ let config = {
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
     plugins: [
-      'matter-interpolate',
-      'permalink',
       'meta-to-files',
+      'matter-interpolate',
       { name: 'metalsmith-in-place', options: metalsmithInPlaceOptions },
-      { name: 'build-manifest', options: 'build.json' }
+      'permalink',
+      { name: 'build-manifest', options: { manifestFile: 'build.json' } }
     ]
   },
   content: {
