@@ -75,9 +75,9 @@ let config = {
     contentPath: paths.srcContent,
     plugins: [
       { name: 'json-dir', options: path.join(paths.srcContent, 'static') },
-      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') },
+      'transform-wp-json',
       'assets-manifest',
-      'transform-wp-json'
+      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') },
     ]
   },
   assets: {

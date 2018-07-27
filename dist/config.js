@@ -102,10 +102,10 @@ let config = {
     plugins: [{
       name: 'json-dir',
       options: _path.default.join(paths.srcContent, 'static')
-    }, {
+    }, 'transform-wp-json', 'assets-manifest', {
       name: 'js-dir',
       options: _path.default.join(paths.srcContent, 'dynamic')
-    }, 'assets-manifest', 'transform-wp-json']
+    }]
   },
   assets: {
     scripts: _path.default.join(paths.srcScripts, '*.js'),
