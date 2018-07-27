@@ -2,7 +2,7 @@ import requireDir from 'require-dir'
 import { existsSync } from 'fs'
 
 export default function (dirPath) {
-  return function loaderJsDir (content, next) {
+  return function jsDirPlugin (content, next) {
     if (!existsSync(dirPath)) return next()
     const modifiers = requireDir(dirPath)
     applyModifiers(modifiers, content)

@@ -1,7 +1,5 @@
-export default permalink
-
-function permalink () {
-  return (files, metalsmith, done) => {
+export default function () {
+  return function permalinkPlugin (files, metalsmith, done) {
     Object.keys(files).forEach(file => {
       const fileMeta = files[file]
       const permalinkPath = fileMeta.permalink

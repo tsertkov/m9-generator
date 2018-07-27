@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = _default;
 
 var _slug = _interopRequireDefault(require("slug"));
 
@@ -11,12 +11,10 @@ var _matterInterpolate = _interopRequireDefault(require("../matter-interpolate")
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default = metaToFiles;
-exports.default = _default;
 const META_KEY = 'meta_to_files';
 const INDEX_FILE = 'index.html';
 
-function metaToFiles({
+function _default({
   slug
 }) {
   let slugFn;
@@ -31,7 +29,7 @@ function metaToFiles({
     slugFn = _slug.default;
   }
 
-  return (files, metalsmith, done) => {
+  return function metaToFilesPlugin(files, metalsmith, done) {
     Object.keys(files).forEach(file => {
       const fileMeta = files[file];
       const pluginMeta = fileMeta[META_KEY];

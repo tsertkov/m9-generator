@@ -1,5 +1,5 @@
-export default function (manifestFile) {
-  return function buildManifest (files, metalsmith, done) {
+export default function ({ manifestFile }) {
+  return function buildManifestPlugin (files, metalsmith, done) {
     files[manifestFile] = {
       contents: JSON.stringify(getBuildManifest(files), null, 2)
     }

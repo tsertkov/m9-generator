@@ -3,18 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = _default;
 
 var _matterInterpolate = _interopRequireDefault(require("../matter-interpolate"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _default = matterInterpolatePlugin;
-exports.default = _default;
 const EXCLUDE_PROPS = ['contents', 'mode'];
 
-function matterInterpolatePlugin() {
-  return (files, metalsmith, done) => {
+function _default() {
+  return function matterInterpolatePlugin(files, metalsmith, done) {
     Object.keys(files).forEach(file => processFileMeta(files[file], metalsmith.metadata()));
     done();
   };

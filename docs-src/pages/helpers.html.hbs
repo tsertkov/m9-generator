@@ -4,8 +4,16 @@ title: m9 - embedded handlebars helpers
 {{#> layout-default}}
 <article>
   <div><a href="{{site.url}}">..back to index</a></div>
-  <h1>Embedded handlebars helpers</h1>
-  <h2>json</h2>
+  <h1>Handlebars helpers</h1>
+  <h2>Embedded handlebars-helpers</h2>
+  <h3>JSONstringify</h3>
+  <p>Example: \{{JSONstringify site 2}}</p>
+  <p>
+    Result:
+    <pre>{{JSONstringify site 2}}</pre>
+  </p>
+  <h2>Custom helpers loaded from &lt;SRC&gt;/helpers</h2>
+  <h3>json</h3>
   <p>Returns json serialized input as a string.<p>
   <p>Example: \{{json site}}</p>
   <p>

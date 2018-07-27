@@ -2,7 +2,7 @@ import normalize from './normalize'
 import resolveReferences from './resolve-references'
 
 export default function () {
-  return function transformWpJson (content, done) {
+  return function transformWpJsonPlugin (content, done) {
     normalize(
       resolveReferences(content)
     )

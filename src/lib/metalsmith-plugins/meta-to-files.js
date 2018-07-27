@@ -1,11 +1,10 @@
 import dodoSlug from 'slug'
 import matterInterpolate from '../matter-interpolate'
-export default metaToFiles
 
 const META_KEY = 'meta_to_files'
 const INDEX_FILE = 'index.html'
 
-function metaToFiles ({ slug }) {
+export default function ({ slug }) {
   let slugFn
   if (typeof slug === 'function') {
     slugFn = slug
@@ -17,7 +16,7 @@ function metaToFiles ({ slug }) {
     slugFn = dodoSlug
   }
 
-  return (files, metalsmith, done) => {
+  return function metaToFilesPlugin (files, metalsmith, done) {
     Object.keys(files).forEach(file => {
       const fileMeta = files[file]
       const pluginMeta = fileMeta[META_KEY]
