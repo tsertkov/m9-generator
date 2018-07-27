@@ -25,17 +25,28 @@ function applyModifiers(modifiers, content) {
     const modifierFn = modifiers[contentType];
     const entities = content[contentType];
     const config = content.__config;
+    let updatedContent;
 
     if (!entities) {
-      content[contentType] = modifierFn({}, content, config);
-      return;
+      updatedContent = modifierFn({}, content, config);
+    } else if (!Array.isArray(entities)) {
+      updatedContent = modifierFn(entities, content, config);
+    } else {
+      updatedContent = entities.reduce((acc, currEntity) => {
+        const entity = modifierFn(currEntity, content, config);
+
+        if (typeof entity !== 'undefined') {
+          acc.push(entity);
+        }
+
+        return acc;
+      }, []);
     }
 
-    if (!Array.isArray(entities)) {
-      content[contentType] = modifierFn(entities, content, config);
-      return;
+    if (typeof updatedContent === 'undefined') {
+      delete content[contentType];
+    } else {
+      content[contentType] = updatedContent;
     }
-
-    content[contentType] = entities.map(entity => modifierFn(entity, content, config));
   });
 }
