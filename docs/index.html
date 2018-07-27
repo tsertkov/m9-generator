@@ -373,13 +373,23 @@
       console.log(&#39;Custom task test&#39;)
     }</code></pre>
     <h2 id="developing-m9-generator">Developing m9-generator</h2>
+    <h3 id="javascript-transpilation">JavaScript transpilation</h3>
+    <p>JavaScript sources of m9-generator are transpiled with babel. Sources are located in <code>src/</code> directory. Compiled files are placed in <code>dist/</code>.</p>
+    <p>Run <code>npm run build-dist</code> to compile files in <code>dist/</code>.</p>
+    <p>By default m9 runs from <code>dist/</code> directory. To run from <code>src/</code> during development pass <code>--m9-use-src</code> command line argument.</p>
+    <h3 id="embedded-documentation-site">Embedded documentation site</h3>
+    <p>Documentation site is embedded with m9-generator. Its source directory is <code>docs-src/</code> and destination <code>docs/</code>.</p>
+    <p>Run <code>npm run dev</code> to start development server for documentation site.</p>
+    <h3 id="using-npm-link">Using <code>npm link</code></h3>
+    <p>Run <code>npm link</code> inside m9-generator local repo to link it from global node_modules. To link dev version of m9-generator in site project run <code>npm link @tsertkov/m9-generator</code>.</p>
+    <p>For example assume having <code>~/m9-generator</code> and <code>~/my-example-site</code> with generator repo and site repo accordingly. Then to run example-site using m9-generator from <code>~/m9-generator</code> do the following:</p>
+    <pre><code class="language-sh">$ cd ~/m9-generator
+    $ npm link
+    $ cd ~/my-example-site
+    $ npm link @tsertkov/m9-generator
+    $ npm run dev --m9-use-src</code></pre>
+    <h3 id="publish-new-npm-version">Publish new npm version</h3>
     <p>Use <code>npm version</code> command to publish new version of npm package and push new git tag to remote.</p>
-    <p>TDB</p>
-    <ul>
-    <li>src/ and dist/ directories</li>
-    <li>embedded docs site</li>
-    <li>npm link</li>
-    </ul>
     
       </div>
     </article>

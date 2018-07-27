@@ -12,7 +12,7 @@ var _fs = require("fs");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _default(dirPath) {
-  return function loaderJsDir(content, next) {
+  return function jsDirPlugin(content, next) {
     if (!(0, _fs.existsSync)(dirPath)) return next();
     const modifiers = (0, _requireDir.default)(dirPath);
     applyModifiers(modifiers, content);

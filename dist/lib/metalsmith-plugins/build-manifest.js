@@ -5,8 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-function _default(manifestFile) {
-  return function buildManifest(files, metalsmith, done) {
+function _default({
+  manifestFile
+}) {
+  return function buildManifestPlugin(files, metalsmith, done) {
     files[manifestFile] = {
       contents: JSON.stringify(getBuildManifest(files), null, 2)
     };

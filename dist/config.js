@@ -87,12 +87,14 @@ let config = {
     pagesPath: paths.srcPages,
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
-    plugins: ['matter-interpolate', 'permalink', 'meta-to-files', {
+    plugins: ['meta-to-files', 'matter-interpolate', {
       name: 'metalsmith-in-place',
       options: metalsmithInPlaceOptions
-    }, {
+    }, 'permalink', {
       name: 'build-manifest',
-      options: 'build.json'
+      options: {
+        manifestFile: 'build.json'
+      }
     }]
   },
   content: {

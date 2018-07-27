@@ -23,8 +23,21 @@
   <section class="content">
     <article>
       <div><a href="">..back to index</a></div>
-      <h1>Embedded handlebars helpers</h1>
-      <h2>json</h2>
+      <h1>Handlebars helpers</h1>
+      <h2>Embedded handlebars-helpers</h2>
+      <h3>JSONstringify</h3>
+      <p>Example: {{JSONstringify site 2}}</p>
+      <p>
+        Result:
+        <pre>{
+      &quot;url&quot;: &quot;&quot;,
+      &quot;title&quot;: &quot;m9-generator&quot;,
+      &quot;copyrightDate&quot;: &quot;© 2016-2018&quot;,
+      &quot;repository&quot;: &quot;https://github.com/tsertkov/m9-generator.git&quot;
+    }</pre>
+      </p>
+      <h2>Custom helpers loaded from &lt;SRC&gt;/helpers</h2>
+      <h3>json</h3>
       <p>Returns json serialized input as a string.<p>
       <p>Example: {{json site}}</p>
       <p>
