@@ -2,7 +2,7 @@ import path from 'path'
 import { existsSync } from 'fs'
 
 export default function () {
-  return function assetsManifest (content, next) {
+  return function assetsManifestPlugin (content, next) {
     const config = content.__config
     const assetsManifestFile = path.join(
       config.assets.destinationPath,

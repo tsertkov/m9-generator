@@ -1,13 +1,12 @@
 import matterInterpolate from '../matter-interpolate'
-export default matterInterpolatePlugin
 
 const EXCLUDE_PROPS = [
   'contents',
   'mode'
 ]
 
-function matterInterpolatePlugin () {
-  return (files, metalsmith, done) => {
+export default function () {
+  return function matterInterpolatePlugin (files, metalsmith, done) {
     Object.keys(files).forEach(file => (
       processFileMeta(files[file], metalsmith.metadata())
     ))
