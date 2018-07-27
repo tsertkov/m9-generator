@@ -11,10 +11,6 @@ var _matterInterpolate = _interopRequireDefault(require("../matter-interpolate")
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var _default = metaToFiles;
 exports.default = _default;
 const META_KEY = 'meta_to_files';
@@ -48,15 +44,13 @@ function metaToFiles({
         [modelName]: entities
       } = metalsmith.metadata();
       entities.forEach(entity => {
-        let newFileMeta = _objectSpread({}, fileMeta);
-
+        let newFileMeta = { ...fileMeta
+        };
         delete newFileMeta[META_KEY];
-
-        const data = _objectSpread({}, metalsmith.metadata(), {
+        const data = { ...metalsmith.metadata(),
           [modelName]: entity // transfer plugin extra props to root scope in frontmatter
 
-        });
-
+        };
         Object.keys(pluginMeta).forEach(key => {
           if (['model_name', 'filename_pattern'].includes(key)) return;
           newFileMeta[key] = (0, _matterInterpolate.default)(pluginMeta[key], data);

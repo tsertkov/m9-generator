@@ -61,7 +61,10 @@ var _default = config => {
             targets: {
               browsers
             }
-          }], '@babel/preset-stage-3']
+          }]],
+          plugins: ['@babel/plugin-syntax-dynamic-import', '@babel/plugin-syntax-import-meta', ['@babel/plugin-proposal-class-properties', {
+            'loose': false
+          }], '@babel/plugin-proposal-json-strings']
         }
       }, {
         test: /\.css$/,
