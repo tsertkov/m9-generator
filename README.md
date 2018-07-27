@@ -452,9 +452,34 @@ module.exports = async function customTask (config) {
 
 ## Developing m9-generator
 
-Use `npm version` command to publish new version of npm package and push new git tag to remote.
+### JavaScript transpilation
 
-TDB
-- src/ and dist/ directories
-- embedded docs site
-- npm link
+JavaScript sources of m9-generator are transpiled with babel. Sources are located in `src/` directory. Compiled files are placed in `dist/`.
+
+Run `npm run build-dist` to compile files in `dist/`.
+
+By default m9 runs from `dist/` directory. To run from `src/` during development pass `--m9-use-src` command line argument.
+
+### Embedded documentation site
+
+Documentation site is embedded with m9-generator. Its source directory is `docs-src/` and destination `docs/`.
+
+Run `npm run dev` to start development server for documentation site.
+
+### Using `npm link`
+
+Run `npm link` inside m9-generator local repo to link it from global node_modules. To link dev version of m9-generator in site project run `npm link @tsertkov/m9-generator`.
+
+For example assume having `~/m9-generator` and `~/my-example-site` with generator repo and site repo accordingly. Then to run example-site using m9-generator from `~/m9-generator` do the following:
+
+```sh
+$ cd ~/m9-generator
+$ npm link
+$ cd ~/my-example-site
+$ npm link @tsertkov/m9-generator
+$ npm run dev --m9-use-src
+```
+
+### Publish new npm version
+
+Use `npm version` command to publish new version of npm package and push new git tag to remote.

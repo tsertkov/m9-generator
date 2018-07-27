@@ -38,7 +38,10 @@ require('@babel/register')(Object.assign(
   {
     ignore: [
       'node_modules',
-      path.join(__dirname, '..', 'dist')
+      path.join(__dirname, '..', 'dist'),
+      // ignore node_modules from m9-generator when it is integrated
+      // using `npm link` (usually for m9 development)
+      path.join(__dirname, '..', 'node_modules')
     ]
   },
   // For some reason babel seems to ignore .babelrc when integrated with
