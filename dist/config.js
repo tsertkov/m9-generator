@@ -63,15 +63,13 @@ const paths = {
   srcPartials: _path.default.join(src, DIR_PARTIALS)
 };
 
-const metalsmithInPlaceOptions = ((options = {
-  engineOptions: {}
-}) => {
+const handlebarsOptions = ((options = {}) => {
   if ((0, _fs.existsSync)(paths.srcPartials)) {
-    options.engineOptions.partials = (0, _readDirFiles.default)(paths.srcPartials);
+    options.partials = (0, _readDirFiles.default)(paths.srcPartials);
   }
 
   if ((0, _fs.existsSync)(paths.srcHelpers)) {
-    options.engineOptions.helpers = (0, _requireDir.default)(paths.srcHelpers);
+    options.helpers = (0, _requireDir.default)(paths.srcHelpers);
   }
 
   return options;
@@ -87,10 +85,10 @@ let config = {
     pagesPath: paths.srcPages,
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
-    plugins: ['meta-to-files', 'matter-interpolate', {
-      name: 'metalsmith-in-place',
-      options: metalsmithInPlaceOptions
-    }, 'permalink', {
+    plugins: [{
+      name: 'handlebars-compile',
+      options: handlebarsOptions
+    }, 'meta-to-files', 'matter-interpolate', 'handlebars-execute', 'permalink', {
       name: 'build-manifest',
       options: {
         manifestFile: 'build.json'

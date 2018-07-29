@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
+var _path = _interopRequireDefault(require("path"));
+
 var _slug = _interopRequireDefault(require("slug"));
 
 var _matterInterpolate = _interopRequireDefault(require("../matter-interpolate"));
@@ -67,11 +69,13 @@ function buildFilename(filenamePattern, data, tplFilename, slugFn) {
   let filename = (0, _matterInterpolate.default)(filenamePattern, data, slugFn);
 
   if (isPermalink(filename)) {
-    const extension = fileExtension(tplFilename, 1);
-    filename += `/${INDEX_FILE}.${extension}`;
+    filename += INDEX_FILE;
   } else {
-    const extension = fileExtension(tplFilename, 2);
-    filename += `.${extension}`;
+    const extension = _path.default.extname(tplFilename);
+
+    if (extension.length) {
+      filename += `.${extension}`;
+    }
   }
 
   return filename;
@@ -79,8 +83,4 @@ function buildFilename(filenamePattern, data, tplFilename, slugFn) {
 
 function isPermalink(filename) {
   return filename.substr(-1) === '/';
-}
-
-function fileExtension(filename, extensionsCount) {
-  return filename.split('.', 3).splice(-1 * extensionsCount).join('.');
 }
