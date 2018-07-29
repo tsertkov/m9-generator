@@ -14,11 +14,10 @@ import config from '../config'
 // register handlebars-helpers
 handlebarsHelpers({ handlebars })
 
-gulp.task('build-metalsmith', async (done) => {
+gulp.task('build-metalsmith', async () => {
   if (!existsSync(config.templates.pagesPath)) {
     const msg = `No templates to compile found:\n - ${config.templates.pagesPath}`
     log.warn(color(msg, 'YELLOW'))
-    done()
     return
   }
 
@@ -34,7 +33,15 @@ gulp.task('build-metalsmith', async (done) => {
     metalsmith.use(pluginLoader(pluginMeta, metalsmithPluginsDir))
   })
 
-  metalsmith.build(done)
+  return new Promise((resolve, reject) =>
+    metalsmith.build(error => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve()
+      }
+    })
+  )
 })
 
 async function getDataContext () {

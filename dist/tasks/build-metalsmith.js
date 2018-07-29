@@ -31,13 +31,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   handlebars: _handlebars.default
 });
 
-_gulp.default.task('build-metalsmith', async done => {
+_gulp.default.task('build-metalsmith', async () => {
   if (!(0, _fs.existsSync)(_config.default.templates.pagesPath)) {
     const msg = `No templates to compile found:\n - ${_config.default.templates.pagesPath}`;
 
     _fancyLog.default.warn((0, _gulpColor.default)(msg, 'YELLOW'));
 
-    done();
     return;
   }
 
@@ -49,7 +48,13 @@ _gulp.default.task('build-metalsmith', async done => {
     metalsmith.use((0, _pluginLoader.default)(pluginMeta, metalsmithPluginsDir));
   });
 
-  metalsmith.build(done);
+  return new Promise((resolve, reject) => metalsmith.build(error => {
+    if (error) {
+      reject(error);
+    } else {
+      resolve();
+    }
+  }));
 });
 
 async function getDataContext() {
