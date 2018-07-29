@@ -43,12 +43,12 @@ const paths = {
   srcPartials: path.join(src, DIR_PARTIALS)
 }
 
-const metalsmithInPlaceOptions = ((options = { engineOptions: {} }) => {
+const handlebarsOptions = ((options = {}) => {
   if (existsSync(paths.srcPartials)) {
-    options.engineOptions.partials = readDirFiles(paths.srcPartials)
+    options.partials = readDirFiles(paths.srcPartials)
   }
   if (existsSync(paths.srcHelpers)) {
-    options.engineOptions.helpers = requireDir(paths.srcHelpers)
+    options.helpers = requireDir(paths.srcHelpers)
   }
   return options
 })()
@@ -64,9 +64,10 @@ let config = {
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
     plugins: [
+      { name: 'handlebars-compile', options: handlebarsOptions },
       'meta-to-files',
       'matter-interpolate',
-      { name: 'metalsmith-in-place', options: metalsmithInPlaceOptions },
+      'handlebars-execute',
       'permalink',
       { name: 'build-manifest', options: { manifestFile: 'build.json' } }
     ]

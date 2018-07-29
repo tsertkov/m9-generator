@@ -1,3 +1,4 @@
+import path from 'path'
 import dodoSlug from 'slug'
 import matterInterpolate from '../matter-interpolate'
 
@@ -62,11 +63,12 @@ function buildFilename (filenamePattern, data, tplFilename, slugFn) {
   let filename = matterInterpolate(filenamePattern, data, slugFn)
 
   if (isPermalink(filename)) {
-    const extension = fileExtension(tplFilename, 1)
-    filename += `/${INDEX_FILE}.${extension}`
+    filename += INDEX_FILE
   } else {
-    const extension = fileExtension(tplFilename, 2)
-    filename += `.${extension}`
+    const extension = path.extname(tplFilename)
+    if (extension.length) {
+      filename += `.${extension}`
+    }
   }
 
   return filename
@@ -74,11 +76,4 @@ function buildFilename (filenamePattern, data, tplFilename, slugFn) {
 
 function isPermalink (filename) {
   return filename.substr(-1) === '/'
-}
-
-function fileExtension (filename, extensionsCount) {
-  return filename
-    .split('.', 3)
-    .splice(-1 * extensionsCount)
-    .join('.')
 }
