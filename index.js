@@ -1,19 +1,34 @@
 const path = require('path')
 const gulp = require('gulp')
-const babelRegister = require('@babel/register')
 const registry = require('./registry')
 
 module.exports = function m9GeneratorFactory ({
   interfaceType = 'api',
   useSrc = false,
   devMode = false,
-  cwd: givenCwd
+  cwd: givenCwd,
+  babelCachePath,
+  src,
+  dst
 } = {}) {
   const cwd = typeof givenCwd === 'undefined'
     ? process.cwd()
     : givenCwd
 
   populateRegistry({ cwd, devMode })
+
+  if (typeof babelCachePath !== 'undefined') {
+    process.env.BABEL_CACHE_PATH = babelCachePath
+  }
+
+  if (typeof src !== 'undefined') {
+    process.env.SRC = src
+  }
+
+  if (typeof dst !== 'undefined') {
+    process.env.DST = dst
+  }
+
   if (interfaceType === 'api') return apiFactory(useSrc)
   if (interfaceType === 'cli') return cliFactory(useSrc)
   throw new Error(`Unsupported interfaceType given: '${interfaceType}'`)
@@ -60,7 +75,7 @@ function getGulpfilePath (useSrc) {
 }
 
 function registerBabel (useSrc) {
-  babelRegister(Object.assign(
+  require('@babel/register')(Object.assign(
     {
       ignore: [
         'node_modules',
