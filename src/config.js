@@ -78,7 +78,7 @@ let config = {
       { name: 'json-dir', options: path.join(paths.srcContent, 'static') },
       'transform-wp-json',
       'assets-manifest',
-      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') },
+      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') }
     ]
   },
   assets: {
