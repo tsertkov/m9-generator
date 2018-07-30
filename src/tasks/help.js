@@ -1,6 +1,6 @@
 import gulp from 'gulp'
 
-gulp.task('help', (done) => {
+gulp.task('help', async () => {
   const { tasks, subTasks } = gulp
     .tree({ deep: true })
     .nodes
@@ -16,6 +16,4 @@ gulp.task('help', (done) => {
     `\nAvailable tasks:\n  ${tasks.join('\n  ')}`,
     `\nAvailable sub-tasks:\n  ${subTasks.join('\n  ')}`
   ].join('\n'))
-
-  done()
 })
