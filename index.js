@@ -24,7 +24,7 @@ function cliFactory (useSrc) {
   normalizeCliArgs()
   const gulpfile = getGulpfilePath(useSrc)
   process.argv.push(`--gulpfile=${gulpfile}`)
-  require('gulp-cli')()
+  require('gulp/bin/gulp')
 }
 
 function apiFactory (useSrc) {
