@@ -6,7 +6,7 @@ import loadConfigs from './lib/load-configs'
 import loadTasks from './lib/load-tasks'
 import readDirFiles from './lib/read-dir-files'
 import webpackConfig from './config-webpack'
-import { registry } from './gulp-runner'
+import registry from '../registry'
 
 // NB! Gulp has changed cwd to m9-generator package directory
 // Get original cwd
@@ -78,7 +78,7 @@ let config = {
       { name: 'json-dir', options: path.join(paths.srcContent, 'static') },
       'transform-wp-json',
       'assets-manifest',
-      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') },
+      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') }
     ]
   },
   assets: {

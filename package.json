@@ -19,7 +19,7 @@
     "build-docs": "./bin/m9.js build --src=docs-src --dst=docs",
     "dev": "./bin/m9.js dev --src=docs-src --dst=docs --m9-use-src",
     "test": "npm run test-src && npm run test-docs",
-    "test-src": "standard --verbose src/*.js src/**/*.js | snazzy",
+    "test-src": "standard --verbose *.js src/*.js src/**/*.js | snazzy",
     "test-docs": "./bin/m9.js test --src=docs-src --m9-use-src",
     "postversion": "git push && git push --tags && npm publish --access public"
   },
@@ -124,5 +124,5 @@
     "url": "https://github.com/tsertkov/m9-generator/issues"
   },
   "homepage": "https://m9-generator.com",
-  "main": "dist/gulpfile.js"
+  "main": "index.js"
 }
