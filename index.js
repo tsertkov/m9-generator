@@ -1,6 +1,5 @@
 const path = require('path')
 const gulp = require('gulp')
-const babelRegister = require('@babel/register')
 const registry = require('./registry')
 
 module.exports = function m9GeneratorFactory ({
@@ -76,7 +75,7 @@ function getGulpfilePath (useSrc) {
 }
 
 function registerBabel (useSrc) {
-  babelRegister(Object.assign(
+  require('@babel/register')(Object.assign(
     {
       ignore: [
         'node_modules',
