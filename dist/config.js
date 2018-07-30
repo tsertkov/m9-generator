@@ -21,7 +21,7 @@ var _readDirFiles = _interopRequireDefault(require("./lib/read-dir-files"));
 
 var _configWebpack = _interopRequireDefault(require("./config-webpack"));
 
-var _gulpRunner = require("./gulp-runner");
+var _registry = _interopRequireDefault(require("../registry"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,7 +30,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const {
   cwd,
   isDevelopment
-} = _gulpRunner.registry;
+} = _registry.default;
 
 const argv = _yargs.default.parse(process.argv); // A stage site is building for
 

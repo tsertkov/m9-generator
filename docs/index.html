@@ -34,7 +34,8 @@
     <li><a href="#yarn-tasks-as-packagejson-scripts">Yarn tasks as package.json scripts</a></li>
     </ul>
     </li>
-    <li><a href="#command-line-tool">Command line tool</a></li>
+    <li><a href="#cli-interface">CLI interface</a></li>
+    <li><a href="#api-interface">API interface</a></li>
     <li><a href="#development-mode">Development mode</a></li>
     <li><a href="#source-and-destination-directories">Source and Destination directories</a></li>
     <li><a href="#stages">Stages</a></li>
@@ -100,7 +101,7 @@
     $ yarn run build
     $ yarn run m9
     $ yarn run m9 &lt;task&gt;</code></pre>
-    <h2 id="command-line-tool">Command line tool</h2>
+    <h2 id="cli-interface">CLI interface</h2>
     <p>m9-generator comes with <code>m9</code> command line tool to execute <code>gulp</code> tasks.</p>
     <p>Run <code>yarn run m9</code> to execute default help task printing complete list of available tasks to run with <code>yarn run m9 &lt;task&gt;</code>.</p>
     <p>There are tasks and sub-tasks in m9-generator. Tasks are always a groups of sub-tasks.</p>
@@ -153,7 +154,18 @@
     [13:23:38] │   └── test-standard
     [13:23:38] └─┬ default
     [13:23:38]   └─┬ &lt;series&gt;
-    [13:23:38]     └── help</code></pre><h2 id="development-mode">Development mode</h2>
+    [13:23:38]     └── help</code></pre><h2 id="api-interface">API interface</h2>
+    <p>m9-generator exports preconfigured <code>gulp</code> instance. See <a href="https://github.com/gulpjs/gulp/blob/master/docs/API.md">gulp API docs</a> for details.</p>
+    <p>Example using m9-generator API:</p>
+    <pre><code class="language-javascript">const m9 = require(&#39;@tsertkov/m9-generator&#39;)()
+    m9.series(&#39;build&#39;)(err =&gt; {
+      if (err) {
+        console.log(&#39;error happened&#39;, err)
+      } else {
+        console.log(&#39;build done&#39;)
+      }
+    })</code></pre>
+    <h2 id="development-mode">Development mode</h2>
     <p><code>yarn run dev</code> executes BrowserSync serving static files from build directory connected to webpack-dev-middleware for dynamic asset serving.</p>
     <p>Look for BrowserSync details in output:</p>
     <pre><code>[Browsersync] Access URLs:
