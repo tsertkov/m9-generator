@@ -88,7 +88,7 @@ let config = {
     plugins: [{
       name: 'handlebars-compile',
       options: handlebarsOptions
-    }, 'meta-to-files', 'matter-interpolate', 'handlebars-execute', 'permalink', {
+    }, 'matter-interpolate', 'multifile', 'handlebars-execute', 'path', {
       name: 'build-manifest',
       options: {
         manifestFile: 'build.json'

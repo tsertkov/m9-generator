@@ -65,10 +65,10 @@ let config = {
     helpersPath: paths.srcHelpers,
     plugins: [
       { name: 'handlebars-compile', options: handlebarsOptions },
-      'meta-to-files',
       'matter-interpolate',
+      'multifile',
       'handlebars-execute',
-      'permalink',
+      'path',
       { name: 'build-manifest', options: { manifestFile: 'build.json' } }
     ]
   },
