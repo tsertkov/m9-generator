@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import handlebars from 'handlebars'
 export default matterInterpolate
 
 const VARIABLE_PATTERN = '\\$\\{([^}]+)\\}'
@@ -16,7 +17,7 @@ function matterInterpolate (input, metadata) {
     resolve(variable, metadata))
 }
 
-function resolve (path, object) {
+function resolvePath (path, object) {
   const value = get(object, path)
   if (value === undefined) {
     throw new Error('Cannot resolve data path: ' + JSON.stringify({
@@ -26,4 +27,18 @@ function resolve (path, object) {
   }
 
   return value
+}
+
+function resolve (path, object) {
+  const parts = path.split(/\s+/).filter(v => v !== '')
+  if (parts.length === 1) return resolvePath(path, object)
+
+  const [
+    helperName,
+    ...params
+  ] = parts
+
+  const resolvedParams = params.map(param => resolvePath(param, object))
+  const helper = handlebars.helpers[helperName]
+  return helper(resolvedParams)
 }

@@ -9,15 +9,9 @@ var _path = _interopRequireDefault(require("path"));
 
 var _yargs = _interopRequireDefault(require("yargs"));
 
-var _fs = require("fs");
-
-var _requireDir = _interopRequireDefault(require("require-dir"));
-
 var _loadConfigs = _interopRequireDefault(require("./lib/load-configs"));
 
 var _loadTasks = _interopRequireDefault(require("./lib/load-tasks"));
-
-var _readDirFiles = _interopRequireDefault(require("./lib/read-dir-files"));
 
 var _configWebpack = _interopRequireDefault(require("./config-webpack"));
 
@@ -60,21 +54,9 @@ const paths = {
   srcContent: _path.default.join(src, DIR_CONTENT),
   srcPages: _path.default.join(src, DIR_PAGES),
   srcHelpers: _path.default.join(src, DIR_HELPERS),
+  srcEmbeddedHelpers: _path.default.join(__dirname, './lib/helpers'),
   srcPartials: _path.default.join(src, DIR_PARTIALS)
 };
-
-const handlebarsOptions = ((options = {}) => {
-  if ((0, _fs.existsSync)(paths.srcPartials)) {
-    options.partials = (0, _readDirFiles.default)(paths.srcPartials);
-  }
-
-  if ((0, _fs.existsSync)(paths.srcHelpers)) {
-    options.helpers = (0, _requireDir.default)(paths.srcHelpers);
-  }
-
-  return options;
-})();
-
 let config = {
   stage,
   isDevelopment,
@@ -85,9 +67,13 @@ let config = {
     pagesPath: paths.srcPages,
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
+    embeddedHelpersPath: paths.srcEmbeddedHelpers,
     plugins: [{
       name: 'handlebars-compile',
-      options: handlebarsOptions
+      options: {
+        partials: paths.srcPartials,
+        helpers: [paths.srcEmbeddedHelpers, paths.srcHelpers]
+      }
     }, 'matter-interpolate', 'multifile', 'handlebars-execute', 'path', {
       name: 'build-manifest',
       options: {
