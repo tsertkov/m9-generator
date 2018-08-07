@@ -13,7 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = matterInterpolate;
 exports.default = _default;
-const VARIABLE_PATTERN = '\\$\\{([^}]+)\\}';
+const VARIABLE_PATTERN = '{{\\s*([^}]+)\\s*}}';
 const VARIABLE_REGEXP = new RegExp(VARIABLE_PATTERN, 'g');
 const SINGLE_VARIABLE_REGEXP = new RegExp(`^${VARIABLE_PATTERN}$`);
 
@@ -43,7 +43,7 @@ function resolvePath(path, object) {
 
 function resolve(path, object) {
   const parts = path.split(/\s+/).filter(v => v !== '');
-  if (parts.length === 1) return resolvePath(path, object);
+  if (parts.length === 1) return resolvePath(parts[0], object);
   const [helperName, ...params] = parts;
   const resolvedParams = params.map(param => resolvePath(param, object));
   const helper = _handlebars.default.helpers[helperName];

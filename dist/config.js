@@ -68,13 +68,13 @@ let config = {
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
     embeddedHelpersPath: paths.srcEmbeddedHelpers,
-    plugins: [{
+    plugins: ['matter-parse', {
       name: 'handlebars-compile',
       options: {
         partials: paths.srcPartials,
         helpers: [paths.srcEmbeddedHelpers, paths.srcHelpers]
       }
-    }, 'matter-interpolate', 'multifile', 'handlebars-execute', 'path', {
+    }, 'multifile', 'handlebars-execute', 'path', {
       name: 'build-manifest',
       options: {
         manifestFile: 'build.json'

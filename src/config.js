@@ -53,6 +53,7 @@ let config = {
     helpersPath: paths.srcHelpers,
     embeddedHelpersPath: paths.srcEmbeddedHelpers,
     plugins: [
+      'matter-parse',
       {
         name: 'handlebars-compile',
         options: {
@@ -63,7 +64,6 @@ let config = {
           ]
         }
       },
-      'matter-interpolate',
       'multifile',
       'handlebars-execute',
       'path',

@@ -66,6 +66,7 @@
     "require-dir": "^1.0.0",
     "slug": "^0.9.1",
     "style-loader": "^0.21.0",
+    "toml": "^2.3.3",
     "ware": "^1.3.0",
     "webpack": "^4.16.4",
     "webpack-dev-middleware": "^3.1.3",

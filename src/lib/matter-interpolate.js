@@ -2,7 +2,7 @@ import { get } from 'lodash'
 import handlebars from 'handlebars'
 export default matterInterpolate
 
-const VARIABLE_PATTERN = '\\$\\{([^}]+)\\}'
+const VARIABLE_PATTERN = '{{\\s*([^}]+)\\s*}}'
 const VARIABLE_REGEXP = new RegExp(VARIABLE_PATTERN, 'g')
 const SINGLE_VARIABLE_REGEXP = new RegExp(`^${VARIABLE_PATTERN}$`)
 
@@ -31,7 +31,7 @@ function resolvePath (path, object) {
 
 function resolve (path, object) {
   const parts = path.split(/\s+/).filter(v => v !== '')
-  if (parts.length === 1) return resolvePath(path, object)
+  if (parts.length === 1) return resolvePath(parts[0], object)
 
   const [
     helperName,
