@@ -13,13 +13,12 @@ const META_KEY = 'multifile';
 
 function _default() {
   return function multifilePlugin(files, metalsmith, done) {
-    Object.keys(files).forEach(file => {
-      const fileMeta = files[file];
+    Object.keys(files).forEach(fileName => {
+      const fileMeta = files[fileName];
       const pluginMeta = fileMeta[META_KEY];
       if (!pluginMeta) return;
       const {
-        collection: collectionName,
-        path
+        collection: collectionName
       } = pluginMeta;
       const metadata = metalsmith.metadata();
       const {
@@ -38,10 +37,10 @@ function _default() {
           });
         }); // assume that file path will be processed by other plugins
 
-        files[`multifile.${path}.${i}`] = newFileMeta;
+        files[`multifile.${fileName}.${i}`] = newFileMeta;
       }); // unpublish meta template file
 
-      delete files[file];
+      delete files[fileName];
     });
     done();
   };

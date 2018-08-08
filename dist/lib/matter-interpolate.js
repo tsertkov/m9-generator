@@ -47,5 +47,5 @@ function resolve(path, object) {
   const [helperName, ...params] = parts;
   const resolvedParams = params.map(param => resolvePath(param, object));
   const helper = _handlebars.default.helpers[helperName];
-  return helper(resolvedParams);
+  return helper(...resolvedParams);
 }
