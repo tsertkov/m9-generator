@@ -258,7 +258,7 @@ Page template example `<SRC>/pages/index.html.hbs`:
 
 ```handlebars
 ---
-title: ${site.title}
+title = "{{site.title}}"
 ---
 {{#> layout-default}}
 <article>
@@ -360,7 +360,7 @@ module.exports = m9config => Object.assign(
 
 ### Front-matter
 
-Metalsmith is parsing front-matter headers in template files using `---` as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.
+Metalsmith is parsing front-matter headers in template files using `---` as delimiter. Front-matter content must be in TOML format. It is used to control metalsmith plugins and overwrite data context variables.
 
 ### Data context
 
