@@ -40,7 +40,7 @@ _gulp.default.task('build-metalsmith', async () => {
     return;
   }
 
-  const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).clean(false).source(_config.default.templates.pagesPath).destination(_config.default.templates.destinationPath).metadata((await getDataContext()));
+  const metalsmith = new _metalsmith.default(_config.default.paths.cwd).use((0, _metalsmithDebug.default)()).frontmatter(false).clean(false).source(_config.default.templates.pagesPath).destination(_config.default.templates.destinationPath).metadata((await getDataContext()));
 
   const metalsmithPluginsDir = _path.default.join(__dirname, '../lib/metalsmith-plugins');
 

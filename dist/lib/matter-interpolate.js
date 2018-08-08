@@ -7,28 +7,28 @@ exports.default = void 0;
 
 var _lodash = require("lodash");
 
+var _handlebars = _interopRequireDefault(require("handlebars"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var _default = matterInterpolate;
 exports.default = _default;
-const VARIABLE_PATTERN = '\\$\\{([^}]+)\\}';
+const VARIABLE_PATTERN = '{{\\s*([^}]+)\\s*}}';
 const VARIABLE_REGEXP = new RegExp(VARIABLE_PATTERN, 'g');
 const SINGLE_VARIABLE_REGEXP = new RegExp(`^${VARIABLE_PATTERN}$`);
 
-function matterInterpolate(input, metadata, processFn = v => v) {
+function matterInterpolate(input, metadata) {
   let result = input.match(SINGLE_VARIABLE_REGEXP);
 
   if (result) {
     const variable = result[1];
-    return interpolateOne(variable, metadata, processFn);
+    return resolve(variable, metadata);
   }
 
-  return input.replace(VARIABLE_REGEXP, (match, variable) => interpolateOne(variable, metadata, processFn));
+  return input.replace(VARIABLE_REGEXP, (match, variable) => resolve(variable, metadata));
 }
 
-function interpolateOne(variable, object, processFn) {
-  return processFn(resolve(variable, object));
-}
-
-function resolve(path, object) {
+function resolvePath(path, object) {
   const value = (0, _lodash.get)(object, path);
 
   if (value === undefined) {
@@ -39,4 +39,13 @@ function resolve(path, object) {
   }
 
   return value;
+}
+
+function resolve(path, object) {
+  const parts = path.split(/\s+/).filter(v => v !== '');
+  if (parts.length === 1) return resolvePath(parts[0], object);
+  const [helperName, ...params] = parts;
+  const resolvedParams = params.map(param => resolvePath(param, object));
+  const helper = _handlebars.default.helpers[helperName];
+  return helper(...resolvedParams);
 }

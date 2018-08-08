@@ -1,10 +1,7 @@
 import path from 'path'
 import yargs from 'yargs'
-import { existsSync } from 'fs'
-import requireDir from 'require-dir'
 import loadConfigs from './lib/load-configs'
 import loadTasks from './lib/load-tasks'
-import readDirFiles from './lib/read-dir-files'
 import webpackConfig from './config-webpack'
 import registry from '../registry'
 
@@ -40,18 +37,9 @@ const paths = {
   srcContent: path.join(src, DIR_CONTENT),
   srcPages: path.join(src, DIR_PAGES),
   srcHelpers: path.join(src, DIR_HELPERS),
+  srcEmbeddedHelpers: path.join(__dirname, './lib/helpers'),
   srcPartials: path.join(src, DIR_PARTIALS)
 }
-
-const handlebarsOptions = ((options = {}) => {
-  if (existsSync(paths.srcPartials)) {
-    options.partials = readDirFiles(paths.srcPartials)
-  }
-  if (existsSync(paths.srcHelpers)) {
-    options.helpers = requireDir(paths.srcHelpers)
-  }
-  return options
-})()
 
 let config = {
   stage,
@@ -63,22 +51,43 @@ let config = {
     pagesPath: paths.srcPages,
     partialsPath: paths.srcPartials,
     helpersPath: paths.srcHelpers,
+    embeddedHelpersPath: paths.srcEmbeddedHelpers,
     plugins: [
-      { name: 'handlebars-compile', options: handlebarsOptions },
-      'meta-to-files',
-      'matter-interpolate',
+      'matter-parse',
+      {
+        name: 'handlebars-compile',
+        options: {
+          partials: paths.srcPartials,
+          helpers: [
+            paths.srcEmbeddedHelpers,
+            paths.srcHelpers
+          ]
+        }
+      },
+      'multifile',
       'handlebars-execute',
-      'permalink',
-      { name: 'build-manifest', options: { manifestFile: 'build.json' } }
+      'path',
+      {
+        name: 'build-manifest',
+        options: {
+          manifestFile: 'build.json'
+        }
+      }
     ]
   },
   content: {
     contentPath: paths.srcContent,
     plugins: [
-      { name: 'json-dir', options: path.join(paths.srcContent, 'static') },
+      {
+        name: 'json-dir',
+        options: path.join(paths.srcContent, 'static')
+      },
       'transform-wp-json',
       'assets-manifest',
-      { name: 'js-dir', options: path.join(paths.srcContent, 'dynamic') }
+      {
+        name: 'js-dir',
+        options: path.join(paths.srcContent, 'dynamic')
+      }
     ]
   },
   assets: {

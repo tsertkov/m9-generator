@@ -1,26 +1,23 @@
 import { get } from 'lodash'
+import handlebars from 'handlebars'
 export default matterInterpolate
 
-const VARIABLE_PATTERN = '\\$\\{([^}]+)\\}'
+const VARIABLE_PATTERN = '{{\\s*([^}]+)\\s*}}'
 const VARIABLE_REGEXP = new RegExp(VARIABLE_PATTERN, 'g')
 const SINGLE_VARIABLE_REGEXP = new RegExp(`^${VARIABLE_PATTERN}$`)
 
-function matterInterpolate (input, metadata, processFn = v => v) {
+function matterInterpolate (input, metadata) {
   let result = input.match(SINGLE_VARIABLE_REGEXP)
   if (result) {
     const variable = result[1]
-    return interpolateOne(variable, metadata, processFn)
+    return resolve(variable, metadata)
   }
 
   return input.replace(VARIABLE_REGEXP, (match, variable) =>
-    interpolateOne(variable, metadata, processFn))
+    resolve(variable, metadata))
 }
 
-function interpolateOne (variable, object, processFn) {
-  return processFn(resolve(variable, object))
-}
-
-function resolve (path, object) {
+function resolvePath (path, object) {
   const value = get(object, path)
   if (value === undefined) {
     throw new Error('Cannot resolve data path: ' + JSON.stringify({
@@ -30,4 +27,18 @@ function resolve (path, object) {
   }
 
   return value
+}
+
+function resolve (path, object) {
+  const parts = path.split(/\s+/).filter(v => v !== '')
+  if (parts.length === 1) return resolvePath(parts[0], object)
+
+  const [
+    helperName,
+    ...params
+  ] = parts
+
+  const resolvedParams = params.map(param => resolvePath(param, object))
+  const helper = handlebars.helpers[helperName]
+  return helper(...resolvedParams)
 }

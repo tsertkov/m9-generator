@@ -23,6 +23,7 @@ gulp.task('build-metalsmith', async () => {
 
   const metalsmith = new Metalsmith(config.paths.cwd)
     .use(debug())
+    .frontmatter(false)
     .clean(false)
     .source(config.templates.pagesPath)
     .destination(config.templates.destinationPath)

@@ -1,10 +1,10 @@
 ---
-meta_to_files:
-  title: ${site.title} | ${post.title}
-  model_name: post
-  model: ${post}
-  filename_pattern: ${post.slug}/
+[multifile]
+collection = "post"
+curPost = "{{this}}"
+path = "{{slug this.slug}}/"
+title = "{{this.title}}"
 ---
 {{#> layout-default}}
-model: <pre>{{json model}}</pre>
+model: <pre>{{json curPost}}</pre>
 {{/layout-default}}
