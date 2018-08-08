@@ -1,10 +1,10 @@
 ---
 [multifile]
 collection = "post"
-curPost = "{{this}}"
+thisPost = "{{this}}"
 path = "{{slug this.slug}}/"
 title = "{{this.title}}"
 ---
 {{#> layout-default}}
-model: <pre>{{json curPost}}</pre>
+model: <pre>{{json thisPost}}</pre>
 {{/layout-default}}
