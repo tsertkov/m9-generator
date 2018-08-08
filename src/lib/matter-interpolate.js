@@ -40,5 +40,5 @@ function resolve (path, object) {
 
   const resolvedParams = params.map(param => resolvePath(param, object))
   const helper = handlebars.helpers[helperName]
-  return helper(resolvedParams)
+  return helper(...resolvedParams)
 }
