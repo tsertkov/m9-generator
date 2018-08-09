@@ -14,8 +14,8 @@ _gulp.default.task('build', _gulp.default.series('build-clean', 'build-copy', 'b
 
 _gulp.default.task('dev', _gulp.default.series('build-clean', 'build-copy', 'dev-browsersync', 'build-metalsmith', 'dev-watch'));
 
-_gulp.default.task('deploy', _gulp.default.series('build'));
-
 _gulp.default.task('test', _gulp.default.series('test-standard'));
+
+_gulp.default.task('deploy', _gulp.default.series('build', 'publish-aws'));
 
 _gulp.default.task('default', _gulp.default.series('help'));

@@ -97,6 +97,9 @@ let config = {
     manifestFile: 'assets.json',
     publicPath: `/${DIR_ASSETS}/`,
     destinationPath: paths.dstAssets
+  },
+  deploy: {
+    src: dst
   }
 };
 config.__webpack = (0, _configWebpack.default)(config);
