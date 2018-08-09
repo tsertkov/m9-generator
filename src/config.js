@@ -100,7 +100,7 @@ let config = {
 }
 
 config.__webpack = webpackConfig(config)
-loadConfigs(src, config)
+config = loadConfigs(src, config)
 loadTasks(src, config)
 
 export default config
