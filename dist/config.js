@@ -100,7 +100,7 @@ let config = {
   }
 };
 config.__webpack = (0, _configWebpack.default)(config);
-(0, _loadConfigs.default)(src, config);
+config = (0, _loadConfigs.default)(src, config);
 (0, _loadTasks.default)(src, config);
 var _default = config;
 exports.default = _default;
