@@ -225,7 +225,7 @@
     &lt;/html&gt;</code></pre>
     <p>Page template example <code>&lt;SRC&gt;/pages/index.html.hbs</code>:</p>
     <pre><code class="language-handlebars">---
-    title: ${site.title}
+    title = &quot;{{site.title}}&quot;
     ---
     {{#&gt; layout-default}}
     &lt;article&gt;
@@ -292,7 +292,7 @@
       )
     )</code></pre>
     <h3 id="front-matter">Front-matter</h3>
-    <p>Metalsmith is parsing front-matter headers in template files using <code>---</code> as delimiter. Front-matter content is yaml structure. It is used to control metalsmith plugins and overwrite data context variables.</p>
+    <p>Metalsmith is parsing front-matter headers in template files using <code>---</code> as delimiter. Front-matter content must be in TOML format. It is used to control metalsmith plugins and overwrite data context variables.</p>
     <h3 id="data-context">Data context</h3>
     <p>m9-generator preloads data context and exponses it to Handlebars templating. There are two types of input data: <strong>static content</strong> in form of json files and <strong>dynamic content</strong> as JavaScript files.</p>
     <h4 id="system-data">System data</h4>

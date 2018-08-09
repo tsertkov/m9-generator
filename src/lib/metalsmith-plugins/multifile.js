@@ -37,7 +37,7 @@ export default function () {
         })
 
         // assume that file path will be processed by other plugins
-        files[`multifile.${fileName}.${i}`] = newFileMeta
+        files[`${fileName}.${i}`] = newFileMeta
       })
 
       // unpublish meta template file
