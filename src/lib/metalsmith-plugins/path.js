@@ -1,22 +1,33 @@
+import { dirname, join } from 'path'
+
 export default function () {
   return function pathPlugin (files, metalsmith, done) {
-    Object.keys(files).forEach(file => {
-      const fileMeta = files[file]
+    Object.keys(files).forEach(fileName => {
+      const fileMeta = files[fileName]
       const { path } = fileMeta
       if (!path) return
 
-      const filePath = buildFilePath(path)
+      const filePath = buildFilePath(path, fileName)
       files[filePath] = fileMeta
-      delete files[file]
+      delete files[fileName]
     })
     done()
   }
 }
 
-function buildFilePath (path) {
-  if (path.substr(-1) === '/') {
-    return `${path}index.html`
+function buildFilePath (path, tplPath) {
+  let newPath = path
+  const tplDir = dirname(tplPath)
+
+  if (newPath[0] === '/') {
+    newPath = newPath.substr(1)
+  } else if (tplDir !== '.') {
+    newPath = join(tplDir, newPath)
   }
 
-  return path
+  if (newPath.substr(-1) === '/') {
+    newPath += 'index.html'
+  }
+
+  return newPath
 }

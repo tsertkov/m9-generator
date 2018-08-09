@@ -5,26 +5,37 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
+var _path = require("path");
+
 function _default() {
   return function pathPlugin(files, metalsmith, done) {
-    Object.keys(files).forEach(file => {
-      const fileMeta = files[file];
+    Object.keys(files).forEach(fileName => {
+      const fileMeta = files[fileName];
       const {
         path
       } = fileMeta;
       if (!path) return;
-      const filePath = buildFilePath(path);
+      const filePath = buildFilePath(path, fileName);
       files[filePath] = fileMeta;
-      delete files[file];
+      delete files[fileName];
     });
     done();
   };
 }
 
-function buildFilePath(path) {
-  if (path.substr(-1) === '/') {
-    return `${path}index.html`;
+function buildFilePath(path, tplPath) {
+  let newPath = path;
+  const tplDir = (0, _path.dirname)(tplPath);
+
+  if (newPath[0] === '/') {
+    newPath = newPath.substr(1);
+  } else if (tplDir !== '.') {
+    newPath = (0, _path.join)(tplDir, newPath);
   }
 
-  return path;
+  if (newPath.substr(-1) === '/') {
+    newPath += 'index.html';
+  }
+
+  return newPath;
 }
