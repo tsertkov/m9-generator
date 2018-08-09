@@ -19,12 +19,13 @@ gulp.task('dev', gulp.series(
   'dev-watch'
 ))
 
-gulp.task('deploy', gulp.series(
-  'build'
-))
-
 gulp.task('test', gulp.series(
   'test-standard'
+))
+
+gulp.task('deploy', gulp.series(
+  'build',
+  'publish-aws'
 ))
 
 gulp.task('default', gulp.series(
