@@ -6,9 +6,15 @@ var _path = _interopRequireDefault(require("path"));
 
 var _requireDir = _interopRequireDefault(require("require-dir"));
 
+var _fancyLog = _interopRequireDefault(require("fancy-log"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 (0, _requireDir.default)(_path.default.join(__dirname, '/tasks'));
+
+_gulp.default.on('error', error => {
+  _fancyLog.default.error(error.name, error.message);
+});
 
 _gulp.default.task('build', _gulp.default.series('build-clean', 'build-copy', 'build-webpack', 'build-metalsmith'));
 
