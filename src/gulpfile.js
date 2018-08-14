@@ -1,13 +1,8 @@
 import gulp from 'gulp'
 import path from 'path'
 import requireDir from 'require-dir'
-import log from 'fancy-log'
 
 requireDir(path.join(__dirname, '/tasks'))
-
-gulp.on('error', (error) => {
-  log.error(error.name, error.message)
-})
 
 gulp.task('build', gulp.series(
   'build-clean',
