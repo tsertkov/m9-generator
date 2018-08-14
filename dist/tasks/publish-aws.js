@@ -42,7 +42,7 @@ _gulp.default.task('publish-aws', async () => {
   let s3Result;
 
   try {
-    s3Result = await exec(['aws s3 sync', `"${deployConfig.src}"`, `"s3://${deployConfig.s3Bucket}"`, deployConfig.sizeOnlyCompare ? '--size-only' : '', '--delete', '--acl public-read', '--no-progress'].join(' '), {
+    s3Result = await exec(['/usr/bin/aws s3 sync', `"${deployConfig.src}"`, `"s3://${deployConfig.s3Bucket}"`, deployConfig.sizeOnlyCompare ? '--size-only' : '', '--delete', '--acl public-read', '--no-progress'].join(' '), {
       cwd: deployConfig.src,
       stdio: null
     });
@@ -66,7 +66,7 @@ _gulp.default.task('publish-aws', async () => {
   if (!deployConfig.cfId) return;
 
   try {
-    await exec(['aws cloudfront create-invalidation', `--distribution-id "${deployConfig.cfId}"`, '--paths "/*"'].join(' '), true);
+    await exec(['/usr/bin/aws cloudfront create-invalidation', `--distribution-id "${deployConfig.cfId}"`, '--paths "/*"'].join(' '), true);
   } catch (error) {
     _fancyLog.default.error(error.stderr);
 
