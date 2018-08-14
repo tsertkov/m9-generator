@@ -41,7 +41,8 @@ _gulp.default.task('publish-aws', done => {
 
   if (deployConfig.cfId) {
     stream = stream.pipe((0, _gulpCloudfrontInvalidateAwsPublish.default)({
-      distribution: deployConfig.cfId
+      distribution: deployConfig.cfId,
+      indexRootPath: true
     }));
   }
 

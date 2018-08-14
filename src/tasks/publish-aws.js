@@ -46,7 +46,8 @@ gulp.task('publish-aws', (done) => {
 
   if (deployConfig.cfId) {
     stream = stream.pipe(cloudfront({
-      distribution: deployConfig.cfId
+      distribution: deployConfig.cfId,
+      indexRootPath: true
     }))
   }
 
