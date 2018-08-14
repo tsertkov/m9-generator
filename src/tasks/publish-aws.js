@@ -1,59 +1,51 @@
-import path from 'path'
 import gulp from 'gulp'
 import log from 'fancy-log'
-import awspublish from 'gulp-awspublish'
-import cloudfront from 'gulp-cloudfront-invalidate-aws-publish'
-import parallelize from 'concurrent-transform'
+import execSh from 'exec-sh'
+import util from 'util'
 import config from '../config'
 
-const DEFAULT_CONCURRENCY = 10
+const exec = util.promisify(execSh)
 
-gulp.task('publish-aws', (done) => {
+gulp.task('publish-aws', async () => {
   const deployConfig = config.deploy
-
   if (
     !deployConfig ||
     !deployConfig.src ||
-    !deployConfig.region ||
     !deployConfig.s3Bucket
   ) {
     log.warn('No valid deploy config given')
-    done()
     return
   }
 
-  const publisher = awspublish.create({
-    region: deployConfig.region,
-    params: {
-      Bucket: deployConfig.s3Bucket
-    }
-  }, {
-    cacheFileName: path.join(
-      deployConfig.cacheDir
-        ? deployConfig.cacheDir
-        : deployConfig.src,
-      `.awspublish-${deployConfig.s3Bucket}`
-    )
+  const s3Log = await exec([
+    'aws s3 sync',
+    `"${deployConfig.src}"`,
+    `"s3://${deployConfig.s3Bucket}"`,
+    deployConfig.sizeOnlyCompare ? '--size-only' : '',
+    '--delete',
+    '--acl public-read',
+    '--no-progress'
+  ].join(' '), {
+    cwd: deployConfig.src,
+    stdio: null
   })
 
-  let stream = gulp
-    .src(path.join(deployConfig.src, '**/*'))
-    .pipe(parallelize(
-      publisher.publish(),
-      deployConfig.concurrency || DEFAULT_CONCURRENCY
-    ))
-    .pipe(publisher.sync())
-
-  if (deployConfig.cfId) {
-    stream = stream.pipe(cloudfront({
-      distribution: deployConfig.cfId,
-      indexRootPath: true
-    }))
+  if (s3Log) {
+    const logLines = s3Log.trim().split('\n')
+    const numFiles = logLines.length
+    log(`Files were updated and deployed: ${numFiles} file(s)`)
+  } else {
+    log('No files were updated - nothing to deploy')
+    return
   }
 
-  stream = stream
-    .pipe(publisher.cache())
-    .pipe(awspublish.reporter())
+  if (!deployConfig.cfId) return
 
-  return stream
+  await exec([
+    'aws cloudfront create-invalidation',
+    `--distribution-id "${deployConfig.cfId}"`,
+    '--paths "/*"'
+  ].join(' '), true)
+
+  log('CloudFront invalidation created')
 })

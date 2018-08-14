@@ -1,51 +1,43 @@
 "use strict";
 
-var _path = _interopRequireDefault(require("path"));
-
 var _gulp = _interopRequireDefault(require("gulp"));
 
 var _fancyLog = _interopRequireDefault(require("fancy-log"));
 
-var _gulpAwspublish = _interopRequireDefault(require("gulp-awspublish"));
+var _execSh = _interopRequireDefault(require("exec-sh"));
 
-var _gulpCloudfrontInvalidateAwsPublish = _interopRequireDefault(require("gulp-cloudfront-invalidate-aws-publish"));
-
-var _concurrentTransform = _interopRequireDefault(require("concurrent-transform"));
+var _util = _interopRequireDefault(require("util"));
 
 var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const DEFAULT_CONCURRENCY = 10;
+const exec = _util.default.promisify(_execSh.default);
 
-_gulp.default.task('publish-aws', done => {
+_gulp.default.task('publish-aws', async () => {
   const deployConfig = _config.default.deploy;
 
-  if (!deployConfig || !deployConfig.src || !deployConfig.region || !deployConfig.s3Bucket) {
+  if (!deployConfig || !deployConfig.src || !deployConfig.s3Bucket) {
     _fancyLog.default.warn('No valid deploy config given');
 
-    done();
     return;
   }
 
-  const publisher = _gulpAwspublish.default.create({
-    region: deployConfig.region,
-    params: {
-      Bucket: deployConfig.s3Bucket
-    }
-  }, {
-    cacheFileName: _path.default.join(deployConfig.cacheDir ? deployConfig.cacheDir : deployConfig.src, `.awspublish-${deployConfig.s3Bucket}`)
+  const s3Log = await exec(['aws s3 sync', `"${deployConfig.src}"`, `"s3://${deployConfig.s3Bucket}"`, deployConfig.sizeOnlyCompare ? '--size-only' : '', '--delete', '--acl public-read', '--no-progress'].join(' '), {
+    cwd: deployConfig.src,
+    stdio: null
   });
 
-  let stream = _gulp.default.src(_path.default.join(deployConfig.src, '**/*')).pipe((0, _concurrentTransform.default)(publisher.publish(), deployConfig.concurrency || DEFAULT_CONCURRENCY)).pipe(publisher.sync());
-
-  if (deployConfig.cfId) {
-    stream = stream.pipe((0, _gulpCloudfrontInvalidateAwsPublish.default)({
-      distribution: deployConfig.cfId,
-      indexRootPath: true
-    }));
+  if (s3Log) {
+    const logLines = s3Log.trim().split('\n');
+    const numFiles = logLines.length;
+    (0, _fancyLog.default)(`Files were updated and deployed: ${numFiles} file(s)`);
+  } else {
+    (0, _fancyLog.default)('No files were updated - nothing to deploy');
+    return;
   }
 
-  stream = stream.pipe(publisher.cache()).pipe(_gulpAwspublish.default.reporter());
-  return stream;
+  if (!deployConfig.cfId) return;
+  await exec(['aws cloudfront create-invalidation', `--distribution-id "${deployConfig.cfId}"`, '--paths "/*"'].join(' '), true);
+  (0, _fancyLog.default)('CloudFront invalidation created');
 });
