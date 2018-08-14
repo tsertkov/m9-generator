@@ -12,8 +12,6 @@ var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const S3_CONNECT_TIMEOUT = 10000;
-
 _gulp.default.task('publish-aws', async () => {
   const deployConfig = _config.default.deploy;
 
@@ -75,17 +73,7 @@ function syncDirS3(config) {
       }
     });
     let uploadedFiles = [];
-    uploader.on('error', reject); // In case of invalid or missing AWS credentials s3client hangs
-    // until socket times out. I could not find a way to specify
-    // timeout for AWS S3 client. httpsOptions.connectTimeout does not
-    // work. Implementing custom timeout handling here.
-
-    const connectTimeoutId = setTimeout(() => {
-      reject(new Error('Could not connect to s3 within specified timeout'));
-    }, S3_CONNECT_TIMEOUT);
-    uploader.on('fileUploadStart', (localFilePath, s3Key) => {
-      clearTimeout(connectTimeoutId);
-    });
+    uploader.on('error', reject);
     uploader.on('fileUploadEnd', (localFilePath, s3Key) => {
       const localFile = localFilePath.substr(config.src.length + 1);
       uploadedFiles.push([localFile, s3Key]);
