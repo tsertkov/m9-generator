@@ -14,7 +14,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _gulp.default.task('build-webpack', done => {
   if (!_config.default.__webpack) {
-    _fancyLog.default.warn(['webpack] nothing to compile yet...']);
+    _fancyLog.default.warn('Nothing to compile yet...');
 
     done();
     return;
@@ -23,7 +23,7 @@ _gulp.default.task('build-webpack', done => {
   (0, _webpack.default)(_config.default.__webpack, (err, stats) => {
     if (err) throw new _pluginError.default('webpack', err);
 
-    _fancyLog.default.info('[webpack]', '\n' + stats.toString());
+    _fancyLog.default.info(stats.toString());
 
     done();
   });

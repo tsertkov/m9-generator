@@ -6,14 +6,14 @@ import config from '../config'
 
 gulp.task('build-webpack', (done) => {
   if (!config.__webpack) {
-    log.warn(['webpack] nothing to compile yet...'])
+    log.warn('Nothing to compile yet...')
     done()
     return
   }
 
   webpack(config.__webpack, (err, stats) => {
     if (err) throw new PluginError('webpack', err)
-    log.info('[webpack]', '\n' + stats.toString())
+    log.info(stats.toString())
     done()
   })
 })
