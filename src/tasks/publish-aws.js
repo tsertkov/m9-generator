@@ -1,14 +1,10 @@
-import path from 'path'
 import gulp from 'gulp'
 import log from 'fancy-log'
-import awspublish from 'gulp-awspublish'
-import cloudfront from 'gulp-cloudfront-invalidate-aws-publish'
-import parallelize from 'concurrent-transform'
+import s3 from 's3-client'
+import AWS from 'aws-sdk'
 import config from '../config'
 
-const DEFAULT_CONCURRENCY = 10
-
-gulp.task('publish-aws', (done) => {
+gulp.task('publish-aws', async () => {
   const deployConfig = config.deploy
 
   if (
@@ -18,42 +14,76 @@ gulp.task('publish-aws', (done) => {
     !deployConfig.s3Bucket
   ) {
     log.warn('No valid deploy config given')
-    done()
     return
   }
 
-  const publisher = awspublish.create({
-    region: deployConfig.region,
-    params: {
-      Bucket: deployConfig.s3Bucket
-    }
-  }, {
-    cacheFileName: path.join(
-      deployConfig.cacheDir
-        ? deployConfig.cacheDir
-        : deployConfig.src,
-      `.awspublish-${deployConfig.s3Bucket}`
-    )
-  })
-
-  let stream = gulp
-    .src(path.join(deployConfig.src, '**/*'))
-    .pipe(parallelize(
-      publisher.publish(),
-      deployConfig.concurrency || DEFAULT_CONCURRENCY
-    ))
-    .pipe(publisher.sync())
-
-  if (deployConfig.cfId) {
-    stream = stream.pipe(cloudfront({
-      distribution: deployConfig.cfId,
-      indexRootPath: true
-    }))
+  const { uploaded, deletedTotal } = await syncDirS3(deployConfig)
+  if (uploaded.length || deletedTotal) {
+    log(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`)
+  } else {
+    log('No files were updated - nothing to deploy')
+    return
   }
 
-  stream = stream
-    .pipe(publisher.cache())
-    .pipe(awspublish.reporter())
-
-  return stream
+  if (!deployConfig.cfId) return
+  const invalidationId = await invalidateCf(deployConfig.cfId)
+  log(`CloudFront invalidation created: '${invalidationId}'`)
 })
+
+function invalidateCf (cfId) {
+  return new Promise((resolve, reject) => {
+    const cloudFront = new AWS.CloudFront()
+    cloudFront.createInvalidation({
+      DistributionId: cfId,
+      InvalidationBatch: {
+        CallerReference: Date.now().toString(),
+        Paths: {
+          Quantity: 1,
+          Items: [
+            '/*'
+          ]
+        }
+      }
+    }, (error, data) => {
+      error
+        ? reject(error)
+        : resolve(data.Invalidation.Id)
+    })
+  })
+}
+
+function syncDirS3 (config) {
+  return new Promise((resolve, reject) => {
+    const s3client = s3.createClient({
+      s3Options: {
+        region: config.region
+      }
+    })
+
+    const uploader = s3client.uploadDir({
+      localDir: config.src,
+      deleteRemoved: true,
+      s3Params: {
+        ACL: 'public-read',
+        Bucket: config.s3Bucket
+      }
+    })
+
+    let uploadedFiles = []
+
+    uploader.on('error', reject)
+
+    uploader.on('fileUploadEnd', (localFilePath, s3Key) => {
+      const localFile = localFilePath.substr(config.src.length + 1)
+      uploadedFiles.push([localFile, s3Key])
+      log(`Uploaded: ${localFile} -> ${s3Key}`)
+    })
+
+    uploader.on('end', () => {
+      resolve({
+        uploaded: uploadedFiles,
+        deletedTotal: uploader.deleteTotal
+      })
+    })
+  })
+}

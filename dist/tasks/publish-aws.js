@@ -1,51 +1,89 @@
 "use strict";
 
-var _path = _interopRequireDefault(require("path"));
-
 var _gulp = _interopRequireDefault(require("gulp"));
 
 var _fancyLog = _interopRequireDefault(require("fancy-log"));
 
-var _gulpAwspublish = _interopRequireDefault(require("gulp-awspublish"));
+var _s3Client = _interopRequireDefault(require("s3-client"));
 
-var _gulpCloudfrontInvalidateAwsPublish = _interopRequireDefault(require("gulp-cloudfront-invalidate-aws-publish"));
-
-var _concurrentTransform = _interopRequireDefault(require("concurrent-transform"));
+var _awsSdk = _interopRequireDefault(require("aws-sdk"));
 
 var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const DEFAULT_CONCURRENCY = 10;
-
-_gulp.default.task('publish-aws', done => {
+_gulp.default.task('publish-aws', async () => {
   const deployConfig = _config.default.deploy;
 
   if (!deployConfig || !deployConfig.src || !deployConfig.region || !deployConfig.s3Bucket) {
     _fancyLog.default.warn('No valid deploy config given');
 
-    done();
     return;
   }
 
-  const publisher = _gulpAwspublish.default.create({
-    region: deployConfig.region,
-    params: {
-      Bucket: deployConfig.s3Bucket
-    }
-  }, {
-    cacheFileName: _path.default.join(deployConfig.cacheDir ? deployConfig.cacheDir : deployConfig.src, `.awspublish-${deployConfig.s3Bucket}`)
-  });
+  const {
+    uploaded,
+    deletedTotal
+  } = await syncDirS3(deployConfig);
 
-  let stream = _gulp.default.src(_path.default.join(deployConfig.src, '**/*')).pipe((0, _concurrentTransform.default)(publisher.publish(), deployConfig.concurrency || DEFAULT_CONCURRENCY)).pipe(publisher.sync());
-
-  if (deployConfig.cfId) {
-    stream = stream.pipe((0, _gulpCloudfrontInvalidateAwsPublish.default)({
-      distribution: deployConfig.cfId,
-      indexRootPath: true
-    }));
+  if (uploaded.length || deletedTotal) {
+    (0, _fancyLog.default)(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`);
+  } else {
+    (0, _fancyLog.default)('No files were updated - nothing to deploy');
+    return;
   }
 
-  stream = stream.pipe(publisher.cache()).pipe(_gulpAwspublish.default.reporter());
-  return stream;
+  if (!deployConfig.cfId) return;
+  const invalidationId = await invalidateCf(deployConfig.cfId);
+  (0, _fancyLog.default)(`CloudFront invalidation created: '${invalidationId}'`);
 });
+
+function invalidateCf(cfId) {
+  return new Promise((resolve, reject) => {
+    const cloudFront = new _awsSdk.default.CloudFront();
+    cloudFront.createInvalidation({
+      DistributionId: cfId,
+      InvalidationBatch: {
+        CallerReference: Date.now().toString(),
+        Paths: {
+          Quantity: 1,
+          Items: ['/*']
+        }
+      }
+    }, (error, data) => {
+      error ? reject(error) : resolve(data.Invalidation.Id);
+    });
+  });
+}
+
+function syncDirS3(config) {
+  return new Promise((resolve, reject) => {
+    const s3client = _s3Client.default.createClient({
+      s3Options: {
+        region: config.region
+      }
+    });
+
+    const uploader = s3client.uploadDir({
+      localDir: config.src,
+      deleteRemoved: true,
+      s3Params: {
+        ACL: 'public-read',
+        Bucket: config.s3Bucket
+      }
+    });
+    let uploadedFiles = [];
+    uploader.on('error', reject);
+    uploader.on('fileUploadEnd', (localFilePath, s3Key) => {
+      const localFile = localFilePath.substr(config.src.length + 1);
+      uploadedFiles.push([localFile, s3Key]);
+      (0, _fancyLog.default)(`Uploaded: ${localFile} -> ${s3Key}`);
+    });
+    uploader.on('end', () => {
+      resolve({
+        uploaded: uploadedFiles,
+        deletedTotal: uploader.deleteTotal
+      });
+    });
+  });
+}
