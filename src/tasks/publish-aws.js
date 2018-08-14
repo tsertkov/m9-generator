@@ -4,6 +4,8 @@ import s3 from 's3-client'
 import AWS from 'aws-sdk'
 import config from '../config'
 
+const S3_CONNECT_TIMEOUT = 10000
+
 gulp.task('publish-aws', async () => {
   const deployConfig = config.deploy
 
@@ -17,9 +19,9 @@ gulp.task('publish-aws', async () => {
     return
   }
 
-  const uploadedFiles = await syncDirS3(deployConfig)
-  if (uploadedFiles) {
-    log(`Files deployed: ${uploadedFiles.length} file(s)`)
+  const { uploaded, deletedTotal } = await syncDirS3(deployConfig)
+  if (uploaded.length || deletedTotal) {
+    log(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`)
   } else {
     log('No files were updated - nothing to deploy')
     return
@@ -73,14 +75,30 @@ function syncDirS3 (config) {
 
     uploader.on('error', reject)
 
+    // In case of invalid or missing AWS credentials s3client hangs
+    // until socket times out. I could not find a way to specify
+    // timeout for AWS S3 client. httpsOptions.connectTimeout does not
+    // work. Implementing custom timeout handling here.
+
+    const connectTimeoutId = setTimeout(() => {
+      reject(new Error('Could not connect to s3 within specified timeout'))
+    }, S3_CONNECT_TIMEOUT)
+
+    uploader.on('fileUploadStart', (localFilePath, s3Key) => {
+      clearTimeout(connectTimeoutId)
+    })
+
     uploader.on('fileUploadEnd', (localFilePath, s3Key) => {
       const localFile = localFilePath.substr(config.src.length + 1)
       uploadedFiles.push([localFile, s3Key])
-      log(`uploaded: ${localFile} -> ${s3Key}`)
+      log(`Uploaded: ${localFile} -> ${s3Key}`)
     })
 
     uploader.on('end', () => {
-      resolve(uploadedFiles)
+      resolve({
+        uploaded: uploadedFiles,
+        deletedTotal: uploader.deleteTotal
+      })
     })
   })
 }

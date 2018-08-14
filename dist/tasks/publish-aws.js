@@ -12,6 +12,8 @@ var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const S3_CONNECT_TIMEOUT = 10000;
+
 _gulp.default.task('publish-aws', async () => {
   const deployConfig = _config.default.deploy;
 
@@ -21,10 +23,13 @@ _gulp.default.task('publish-aws', async () => {
     return;
   }
 
-  const uploadedFiles = await syncDirS3(deployConfig);
+  const {
+    uploaded,
+    deletedTotal
+  } = await syncDirS3(deployConfig);
 
-  if (uploadedFiles) {
-    (0, _fancyLog.default)(`Files deployed: ${uploadedFiles.length} file(s)`);
+  if (uploaded.length || deletedTotal) {
+    (0, _fancyLog.default)(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`);
   } else {
     (0, _fancyLog.default)('No files were updated - nothing to deploy');
     return;
@@ -70,14 +75,27 @@ function syncDirS3(config) {
       }
     });
     let uploadedFiles = [];
-    uploader.on('error', reject);
+    uploader.on('error', reject); // In case of invalid or missing AWS credentials s3client hangs
+    // until socket times out. I could not find a way to specify
+    // timeout for AWS S3 client. httpsOptions.connectTimeout does not
+    // work. Implementing custom timeout handling here.
+
+    const connectTimeoutId = setTimeout(() => {
+      reject(new Error('Could not connect to s3 within specified timeout'));
+    }, S3_CONNECT_TIMEOUT);
+    uploader.on('fileUploadStart', (localFilePath, s3Key) => {
+      clearTimeout(connectTimeoutId);
+    });
     uploader.on('fileUploadEnd', (localFilePath, s3Key) => {
       const localFile = localFilePath.substr(config.src.length + 1);
       uploadedFiles.push([localFile, s3Key]);
-      (0, _fancyLog.default)(`uploaded: ${localFile} -> ${s3Key}`);
+      (0, _fancyLog.default)(`Uploaded: ${localFile} -> ${s3Key}`);
     });
     uploader.on('end', () => {
-      resolve(uploadedFiles);
+      resolve({
+        uploaded: uploadedFiles,
+        deletedTotal: uploader.deleteTotal
+      });
     });
   });
 }
