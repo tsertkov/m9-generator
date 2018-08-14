@@ -6,13 +6,29 @@ var _fancyLog = _interopRequireDefault(require("fancy-log"));
 
 var _execSh = _interopRequireDefault(require("exec-sh"));
 
-var _util = _interopRequireDefault(require("util"));
-
 var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const exec = _util.default.promisify(_execSh.default);
+// const exec = util.promisify(execSh)
+const exec = (command, options) => {
+  return new Promise((resolve, reject) => {
+    const childProcess = (0, _execSh.default)(command, options, (error, stdout, stderr) => {
+      if (error) {
+        error.stdout = stdout;
+        error.stderr = stderr;
+        error.childProcess = childProcess;
+        reject(error);
+      } else {
+        resolve({
+          stdout,
+          stderr,
+          childProcess
+        });
+      }
+    });
+  });
+};
 
 _gulp.default.task('publish-aws', async () => {
   const deployConfig = _config.default.deploy;
@@ -23,13 +39,23 @@ _gulp.default.task('publish-aws', async () => {
     return;
   }
 
-  const s3Log = await exec(['aws s3 sync', `"${deployConfig.src}"`, `"s3://${deployConfig.s3Bucket}"`, deployConfig.sizeOnlyCompare ? '--size-only' : '', '--delete', '--acl public-read', '--no-progress'].join(' '), {
-    cwd: deployConfig.src,
-    stdio: null
-  });
+  let s3Result;
 
-  if (s3Log) {
-    const logLines = s3Log.trim().split('\n');
+  try {
+    s3Result = await exec(['aws s3 sync', `"${deployConfig.src}"`, `"s3://${deployConfig.s3Bucket}"`, deployConfig.sizeOnlyCompare ? '--size-only' : '', '--delete', '--acl public-read', '--no-progress'].join(' '), {
+      cwd: deployConfig.src,
+      stdio: null
+    });
+  } catch (error) {
+    _fancyLog.default.error(error.stderr);
+
+    throw error;
+  }
+
+  const s3Out = s3Result.stdout.trim();
+
+  if (s3Out) {
+    const logLines = s3Out.split('\n');
     const numFiles = logLines.length;
     (0, _fancyLog.default)(`Files were updated and deployed: ${numFiles} file(s)`);
   } else {
@@ -38,6 +64,14 @@ _gulp.default.task('publish-aws', async () => {
   }
 
   if (!deployConfig.cfId) return;
-  await exec(['aws cloudfront create-invalidation', `--distribution-id "${deployConfig.cfId}"`, '--paths "/*"'].join(' '), true);
+
+  try {
+    await exec(['aws cloudfront create-invalidation', `--distribution-id "${deployConfig.cfId}"`, '--paths "/*"'].join(' '), true);
+  } catch (error) {
+    _fancyLog.default.error(error.stderr);
+
+    throw error;
+  }
+
   (0, _fancyLog.default)('CloudFront invalidation created');
 });
