@@ -4,6 +4,8 @@ var _gulp = _interopRequireDefault(require("gulp"));
 
 var _fancyLog = _interopRequireDefault(require("fancy-log"));
 
+var _gulpColor = _interopRequireDefault(require("gulp-color"));
+
 var _util = _interopRequireDefault(require("util"));
 
 var _fs = _interopRequireDefault(require("fs"));
@@ -16,7 +18,6 @@ var _config = _interopRequireDefault(require("../config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const contentDir = path.join(__dirname, '../content/static')
 const writeFile = _util.default.promisify(_fs.default.writeFile);
 
 const fetchUrl = fetcUrlFactory({
@@ -25,30 +26,36 @@ const fetchUrl = fetcUrlFactory({
 
 _gulp.default.task('update-content', async () => {
   const {
-    content: contentConfig
+    content
   } = _config.default;
 
-  if (!contentConfig.apiEndpoint) {
-    _fancyLog.default.warn('No valid content config given');
+  if (!content.wpApiEndpoint) {
+    _fancyLog.default.warn((0, _gulpColor.default)('No valid content config given', 'YELLOW'));
 
     return;
   }
 
-  return fetchWpJson(contentConfig);
+  return fetchWpJson(content);
 });
 
 async function fetchWpJson(config) {
-  let contentTypes = Object.keys((await fetchWordpressJson(`${config.wpApiEndpoint}/types`)));
+  const {
+    wpApiEndpoint,
+    excludedTypes,
+    additionalTypes,
+    staticPath
+  } = config;
+  let contentTypes = Object.keys((await fetchWordpressJson(`${wpApiEndpoint}/types`)));
 
-  if (config.excludedTypes) {
-    contentTypes = contentTypes.filter(type => !config.excludedTypes.includes(type));
+  if (excludedTypes) {
+    contentTypes = contentTypes.filter(type => !excludedTypes.includes(type));
   }
 
-  if (config.additionalTypes) {
-    contentTypes = contentTypes.concat(config.additionalTypes);
+  if (additionalTypes) {
+    contentTypes = contentTypes.concat(additionalTypes);
   }
 
-  await Promise.all(contentTypes.map(type => fetchWordpressJson(`${config.apiEndpoint}/${type}`).then(data => writeFile(`${config.staticPath}/${type}.json`, JSON.stringify(data, null, 2)).then(() => (0, _fancyLog.default)(type, data.length)))));
+  await Promise.all(contentTypes.map(type => fetchWordpressJson(`${wpApiEndpoint}/${type}`).then(data => writeFile(`${staticPath}/${type}.json`, JSON.stringify(data, null, 2)).then(() => (0, _fancyLog.default)(type, data.length)))));
 }
 
 function fetchWordpressJson(url, {
