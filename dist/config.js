@@ -52,6 +52,8 @@ const paths = {
   srcScripts: _path.default.join(src, DIR_SCRIPTS),
   srcStyles: _path.default.join(src, DIR_STYLES),
   srcContent: _path.default.join(src, DIR_CONTENT),
+  srcContentStatic: _path.default.join(src, DIR_CONTENT, 'static'),
+  srcContentDynamic: _path.default.join(src, DIR_CONTENT, 'dynamic'),
   srcPages: _path.default.join(src, DIR_PAGES),
   srcHelpers: _path.default.join(src, DIR_HELPERS),
   srcEmbeddedHelpers: _path.default.join(__dirname, './lib/helpers'),
@@ -83,12 +85,14 @@ let config = {
   },
   content: {
     contentPath: paths.srcContent,
+    staticPath: paths.srcContentStatic,
+    dynamicPath: paths.srcContentDynamic,
     plugins: [{
       name: 'json-dir',
-      options: _path.default.join(paths.srcContent, 'static')
+      options: paths.srcContentStatic
     }, 'transform-wp-json', 'assets-manifest', {
       name: 'js-dir',
-      options: _path.default.join(paths.srcContent, 'dynamic')
+      options: paths.srcContentDynamic
     }]
   },
   assets: {
