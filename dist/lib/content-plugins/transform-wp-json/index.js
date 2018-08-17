@@ -13,6 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _default() {
   return function transformWpJsonPlugin(content, done) {
+    content.__static = JSON.parse(JSON.stringify(content));
     (0, _normalize.default)((0, _resolveReferences.default)(content));
     done();
   };

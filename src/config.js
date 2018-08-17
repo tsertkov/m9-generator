@@ -7,7 +7,11 @@ import registry from '../registry'
 
 // NB! Gulp has changed cwd to m9-generator package directory
 // Get original cwd
-const { cwd, isDevelopment } = registry
+const {
+  cwd,
+  isDevelopment,
+  config: configOverrideFn
+} = registry
 
 const argv = yargs.parse(process.argv)
 
@@ -108,6 +112,11 @@ let config = {
 
 config.__webpack = webpackConfig(config)
 config = loadConfigs(src, config)
+
+if (configOverrideFn) {
+  config = configOverrideFn(config)
+}
+
 loadTasks(src, config)
 
 export default config
