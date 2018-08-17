@@ -9,13 +9,14 @@ module.exports = function m9GeneratorFactory ({
   cwd: givenCwd,
   babelCachePath,
   src,
-  dst
+  dst,
+  config = {}
 } = {}) {
   const cwd = typeof givenCwd === 'undefined'
     ? process.cwd()
     : givenCwd
 
-  populateRegistry({ cwd, devMode })
+  populateRegistry({ cwd, devMode, config })
 
   if (typeof babelCachePath !== 'undefined') {
     process.env.BABEL_CACHE_PATH = babelCachePath

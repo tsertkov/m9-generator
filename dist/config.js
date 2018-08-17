@@ -23,7 +23,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Get original cwd
 const {
   cwd,
-  isDevelopment
+  isDevelopment,
+  config: configOverrideFn
 } = _registry.default;
 
 const argv = _yargs.default.parse(process.argv); // A stage site is building for
@@ -108,6 +109,11 @@ let config = {
 };
 config.__webpack = (0, _configWebpack.default)(config);
 config = (0, _loadConfigs.default)(src, config);
+
+if (configOverrideFn) {
+  config = configOverrideFn(config);
+}
+
 (0, _loadTasks.default)(src, config);
 var _default = config;
 exports.default = _default;
