@@ -1,6 +1,6 @@
 # m9-generator
 
-> Static site framework powered by `webpack` bundling, `handlebars` templating and `browser-sync` live-reloading.
+> Static site generator powered by `webpack` bundling, `handlebars` templating and `browser-sync` live-reloading.
 
 ## Table of Contents
 
