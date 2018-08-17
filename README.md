@@ -38,7 +38,7 @@
 
 ## Overview
 
-m9-generator is static site framework relying on `handlebars` for static files templating, `webpack` for JavaScript and CSS bundling and `browser-sync` for local live-reload development server.
+m9-generator is static site generator relying on `handlebars` for static files templating, `webpack` for JavaScript and CSS bundling and `browser-sync` for local live-reload development server.
 
 m9-generator follows future-focused approach and provides support to new standard solutions when handling CSS and JavaScript.
 
