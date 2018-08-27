@@ -59,6 +59,9 @@ function populateRegistry ({ cwd, devMode, config }) {
 
   // Define early dev mode as it is required before loading dynamic configuration
   registry.isDevelopment = devMode
+
+  // Store config override function
+  registry.config = config
 }
 
 function getM9Dir (useSrc) {
