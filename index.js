@@ -10,7 +10,7 @@ module.exports = function m9GeneratorFactory ({
   babelCachePath,
   src,
   dst,
-  config = {}
+  config
 } = {}) {
   const cwd = typeof givenCwd === 'undefined'
     ? process.cwd()
@@ -49,7 +49,7 @@ function apiFactory (useSrc) {
   return gulp
 }
 
-function populateRegistry ({ cwd, devMode }) {
+function populateRegistry ({ cwd, devMode, config }) {
   // Gulp automatically changes working directory to the one containing gulpfile.js
   // To correctly resolve site source directory relative to current working directory
   // it is necessary to know what was initial working directory.
@@ -59,6 +59,9 @@ function populateRegistry ({ cwd, devMode }) {
 
   // Define early dev mode as it is required before loading dynamic configuration
   registry.isDevelopment = devMode
+
+  // Store config override function
+  registry.config = config
 }
 
 function getM9Dir (useSrc) {
