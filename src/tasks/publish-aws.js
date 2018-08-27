@@ -1,5 +1,4 @@
 import gulp from 'gulp'
-import log from 'fancy-log'
 import s3 from 's3-client'
 import AWS from 'aws-sdk'
 import config from '../config'
@@ -13,21 +12,21 @@ gulp.task('publish-aws', async () => {
     !deployConfig.region ||
     !deployConfig.s3Bucket
   ) {
-    log.warn('No valid deploy config given')
+    console.log('No valid deploy config given')
     return
   }
 
   const { uploaded, deletedTotal } = await syncDirS3(deployConfig)
   if (uploaded.length || deletedTotal) {
-    log(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`)
+    console.log(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`)
   } else {
-    log('No files were updated - nothing to deploy')
+    console.log('No files were updated - nothing to deploy')
     return
   }
 
   if (!deployConfig.cfId) return
   const invalidationId = await invalidateCf(deployConfig.cfId)
-  log(`CloudFront invalidation created: '${invalidationId}'`)
+  console.log(`CloudFront invalidation created: '${invalidationId}'`)
 })
 
 function invalidateCf (cfId) {
@@ -76,7 +75,7 @@ function syncDirS3 (config) {
     uploader.on('fileUploadEnd', (localFilePath, s3Key) => {
       const localFile = localFilePath.substr(config.src.length + 1)
       uploadedFiles.push([localFile, s3Key])
-      log(`Uploaded: ${localFile} -> ${s3Key}`)
+      console.log(`Uploaded: ${localFile} -> ${s3Key}`)
     })
 
     uploader.on('end', () => {

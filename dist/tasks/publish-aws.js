@@ -2,8 +2,6 @@
 
 var _gulp = _interopRequireDefault(require("gulp"));
 
-var _fancyLog = _interopRequireDefault(require("fancy-log"));
-
 var _s3Client = _interopRequireDefault(require("s3-client"));
 
 var _awsSdk = _interopRequireDefault(require("aws-sdk"));
@@ -16,8 +14,7 @@ _gulp.default.task('publish-aws', async () => {
   const deployConfig = _config.default.deploy;
 
   if (!deployConfig || !deployConfig.src || !deployConfig.region || !deployConfig.s3Bucket) {
-    _fancyLog.default.warn('No valid deploy config given');
-
+    console.log('No valid deploy config given');
     return;
   }
 
@@ -27,15 +24,15 @@ _gulp.default.task('publish-aws', async () => {
   } = await syncDirS3(deployConfig);
 
   if (uploaded.length || deletedTotal) {
-    (0, _fancyLog.default)(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`);
+    console.log(`Uploaded: ${uploaded.length} file(s), Deleted: ${deletedTotal} file(s)`);
   } else {
-    (0, _fancyLog.default)('No files were updated - nothing to deploy');
+    console.log('No files were updated - nothing to deploy');
     return;
   }
 
   if (!deployConfig.cfId) return;
   const invalidationId = await invalidateCf(deployConfig.cfId);
-  (0, _fancyLog.default)(`CloudFront invalidation created: '${invalidationId}'`);
+  console.log(`CloudFront invalidation created: '${invalidationId}'`);
 });
 
 function invalidateCf(cfId) {
@@ -77,7 +74,7 @@ function syncDirS3(config) {
     uploader.on('fileUploadEnd', (localFilePath, s3Key) => {
       const localFile = localFilePath.substr(config.src.length + 1);
       uploadedFiles.push([localFile, s3Key]);
-      (0, _fancyLog.default)(`Uploaded: ${localFile} -> ${s3Key}`);
+      console.log(`Uploaded: ${localFile} -> ${s3Key}`);
     });
     uploader.on('end', () => {
       resolve({

@@ -2,10 +2,6 @@
 
 var _gulp = _interopRequireDefault(require("gulp"));
 
-var _fancyLog = _interopRequireDefault(require("fancy-log"));
-
-var _gulpColor = _interopRequireDefault(require("gulp-color"));
-
 var _util = _interopRequireDefault(require("util"));
 
 var _fs = _interopRequireDefault(require("fs"));
@@ -24,8 +20,7 @@ _gulp.default.task('update-content', () => {
   } = _config.default.content;
 
   if (!wpJson.endpoint) {
-    _fancyLog.default.warn((0, _gulpColor.default)('No valid content config given', 'YELLOW'));
-
+    console.log('No valid content config given');
     return;
   }
 
@@ -44,5 +39,5 @@ async function fetchWpJson(config) {
     exclude,
     include
   });
-  await Promise.all(contentTypes.map(type => (0, _fetchWp.fetchWpContentType)(endpoint, type).then(data => writeFile(`${staticPath}/${type}.json`, JSON.stringify(data, null, 2)).then(() => (0, _fancyLog.default)(type, data.length)))));
+  await Promise.all(contentTypes.map(type => (0, _fetchWp.fetchWpContentType)(endpoint, type).then(data => writeFile(`${staticPath}/${type}.json`, JSON.stringify(data, null, 2)).then(() => console.log(type, data.length)))));
 }

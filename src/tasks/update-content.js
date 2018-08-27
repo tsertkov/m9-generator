@@ -1,6 +1,4 @@
 import gulp from 'gulp'
-import log from 'fancy-log'
-import color from 'gulp-color'
 import util from 'util'
 import fs from 'fs'
 import { fetchContentTypes, fetchWpContentType } from '../lib/fetch-wp'
@@ -12,7 +10,7 @@ gulp.task('update-content', () => {
   const { wpJson } = config.content
 
   if (!wpJson.endpoint) {
-    log.warn(color('No valid content config given', 'YELLOW'))
+    console.log('No valid content config given')
     return
   }
 
@@ -42,7 +40,7 @@ async function fetchWpJson (config) {
             JSON.stringify(data, null, 2)
           )
             .then(() =>
-              log(type, data.length)
+              console.log(type, data.length)
             )
         )
     )

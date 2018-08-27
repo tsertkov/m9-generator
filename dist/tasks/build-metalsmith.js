@@ -12,10 +12,6 @@ var _handlebarsHelpers = _interopRequireDefault(require("handlebars-helpers"));
 
 var _metalsmithDebug = _interopRequireDefault(require("metalsmith-debug"));
 
-var _fancyLog = _interopRequireDefault(require("fancy-log"));
-
-var _gulpColor = _interopRequireDefault(require("gulp-color"));
-
 var _fs = require("fs");
 
 var _pluginLoader = _interopRequireDefault(require("../lib/plugin-loader"));
@@ -33,10 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _gulp.default.task('build-metalsmith', async () => {
   if (!(0, _fs.existsSync)(_config.default.templates.pagesPath)) {
-    const msg = `No templates to compile found:\n - ${_config.default.templates.pagesPath}`;
-
-    _fancyLog.default.warn((0, _gulpColor.default)(msg, 'YELLOW'));
-
+    console.log(`No templates to compile found:\n - ${_config.default.templates.pagesPath}`);
     return;
   }
 

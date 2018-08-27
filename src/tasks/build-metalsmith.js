@@ -4,8 +4,6 @@ import Metalsmith from 'metalsmith'
 import handlebars from 'handlebars'
 import handlebarsHelpers from 'handlebars-helpers'
 import debug from 'metalsmith-debug'
-import log from 'fancy-log'
-import color from 'gulp-color'
 import { existsSync } from 'fs'
 import pluginLoader from '../lib/plugin-loader'
 import Content from '../lib/content'
@@ -16,8 +14,7 @@ handlebarsHelpers({ handlebars })
 
 gulp.task('build-metalsmith', async () => {
   if (!existsSync(config.templates.pagesPath)) {
-    const msg = `No templates to compile found:\n - ${config.templates.pagesPath}`
-    log.warn(color(msg, 'YELLOW'))
+    console.log(`No templates to compile found:\n - ${config.templates.pagesPath}`)
     return
   }
 
