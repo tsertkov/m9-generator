@@ -10,6 +10,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _requireDir.default)(_path.default.join(__dirname, '/tasks'));
 
+_gulp.default.on('error', console.log);
+
 _gulp.default.task('build', _gulp.default.series('build-clean', 'build-copy', 'build-webpack', 'build-metalsmith'));
 
 _gulp.default.task('dev', _gulp.default.series('build-clean', 'build-copy', 'dev-browsersync', 'build-metalsmith', 'dev-watch'));
