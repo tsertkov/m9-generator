@@ -39,5 +39,13 @@ async function fetchWpJson(config) {
     exclude,
     include
   });
-  await Promise.all(contentTypes.map(type => (0, _fetchWp.fetchWpContentType)(endpoint, type).then(data => writeFile(`${staticPath}/${type}.json`, JSON.stringify(data, null, 2)).then(() => console.log(type, data.length)))));
+  const stats = {};
+  await Promise.all(contentTypes.map(type => (0, _fetchWp.fetchWpContentType)(endpoint, type).then(data => {
+    stats[type] = data.length;
+    return writeFile(`${staticPath}/${type}.json`, JSON.stringify(data, null, 2));
+  })));
+  console.log('Downloaded content stats:');
+  Object.keys(stats).forEach(type => {
+    console.log(type, stats[type]);
+  });
 }
