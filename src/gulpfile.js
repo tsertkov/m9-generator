@@ -4,6 +4,8 @@ import requireDir from 'require-dir'
 
 requireDir(path.join(__dirname, '/tasks'))
 
+gulp.on('error', console.log)
+
 gulp.task('build', gulp.series(
   'build-clean',
   'build-copy',

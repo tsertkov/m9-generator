@@ -31,18 +31,22 @@ async function fetchWpJson (config) {
     include
   })
 
+  const stats = {}
   await Promise.all(
     contentTypes.map(type =>
       fetchWpContentType(endpoint, type)
-        .then(data =>
-          writeFile(
+        .then(data => {
+          stats[type] = data.length
+          return writeFile(
             `${staticPath}/${type}.json`,
             JSON.stringify(data, null, 2)
           )
-            .then(() =>
-              console.log(type, data.length)
-            )
-        )
+        })
     )
   )
+
+  console.log('Downloaded content stats:')
+  Object.keys(stats).forEach(type => {
+    console.log(type, stats[type])
+  })
 }

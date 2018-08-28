@@ -97,6 +97,8 @@ function fetcUrlFactory({
     resolve,
     reject
   }) {
+    console.log(`Downloading ${url}`);
+
     const req = _https.default.get(url, res => {
       const {
         statusCode

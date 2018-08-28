@@ -76,6 +76,7 @@ function fetcUrlFactory ({ concurrency }) {
   }
 
   function getUrl ({ url, resolve, reject }) {
+    console.log(`Downloading ${url}`)
     const req = https.get(url, (res) => {
       const { statusCode } = res
       if (statusCode !== 200) {
