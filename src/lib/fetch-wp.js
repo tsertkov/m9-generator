@@ -1,4 +1,5 @@
 import https from 'https'
+import http from 'http'
 import { URLSearchParams } from 'url'
 
 const fetchUrl = fetcUrlFactory({ concurrency: 3 })
@@ -77,7 +78,11 @@ function fetcUrlFactory ({ concurrency }) {
 
   function getUrl ({ url, resolve, reject }) {
     console.log(`Downloading ${url}`)
-    const req = https.get(url, (res) => {
+    const client = url.startsWith('https')
+      ? https
+      : http
+
+    const req = client.get(url, (res) => {
       const { statusCode } = res
       if (statusCode !== 200) {
         reject(new Error(`Unexpected status code: ${statusCode}`))

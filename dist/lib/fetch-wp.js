@@ -9,6 +9,8 @@ exports.fetchWpContentType = fetchWpContentType;
 
 var _https = _interopRequireDefault(require("https"));
 
+var _http = _interopRequireDefault(require("http"));
+
 var _url = require("url");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -98,8 +100,8 @@ function fetcUrlFactory({
     reject
   }) {
     console.log(`Downloading ${url}`);
-
-    const req = _https.default.get(url, res => {
+    const client = url.startsWith('https') ? _https.default : _http.default;
+    const req = client.get(url, res => {
       const {
         statusCode
       } = res;
@@ -117,7 +119,6 @@ function fetcUrlFactory({
         headers: res.headers
       }));
     });
-
     req.on('error', reject);
   }
 
