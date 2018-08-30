@@ -24,7 +24,7 @@ function _default() {
 }
 
 function buildFilePath(path, tplPath) {
-  let newPath = path;
+  let newPath = path.replace(/\/+/, '/');
   const tplDir = (0, _path.dirname)(tplPath);
 
   if (newPath[0] === '/') {

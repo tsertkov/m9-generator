@@ -16,7 +16,7 @@ export default function () {
 }
 
 function buildFilePath (path, tplPath) {
-  let newPath = path
+  let newPath = path.replace(/\/+/, '/')
   const tplDir = dirname(tplPath)
 
   if (newPath[0] === '/') {
