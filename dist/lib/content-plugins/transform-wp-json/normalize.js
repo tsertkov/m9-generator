@@ -15,15 +15,23 @@ function normalize(content) {
       entities.forEach(entity => {
         removeCruft(entity);
         normalizeTitle(entity);
+        normalizeDate(entity);
         normalizeAcf(entity);
       });
     } else {
       removeCruft(entities);
       normalizeTitle(entities);
+      normalizeDate(entities);
       normalizeAcf(entities);
     }
   });
   return content;
+}
+
+function normalizeDate(entity) {
+  if (entity.date) {
+    entity.date = new Date(entity.date);
+  }
 }
 
 function removeCruft(entity) {
