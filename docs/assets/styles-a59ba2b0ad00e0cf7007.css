@@ -17,7 +17,7 @@ body {
   white-space: pre-wrap; /* CSS 2.1 */
   white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
   word-wrap: break-word; /* IE */
-}/* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */::-moz-selection{background: #178B42; color: #fff; text-shadow: none;}::selection {background: #178B42; color: #fff; text-shadow: none;}/*  j.mp/webkit-tap-highlight-color */a:link {-webkit-tap-highlight-color: #178B42;}.clear {
+}/* Custom text-selection colors (remove any text shadows: twitter.com/miketaylr/status/12228805301) */::selection {background: #178B42; color: #fff; text-shadow: none;}/*  j.mp/webkit-tap-highlight-color */a:link {-webkit-tap-highlight-color: #178B42;}.clear {
   height: 1px; clear: both;
 }body {
   font-family: 'Sunflower', sans-serif;
@@ -64,11 +64,11 @@ footer,
       text-decoration: none;
       padding: 0 0.5em;
       border-radius: 0.2em;
-      border: 0.1em solid rgb(230, 210, 175);
-      background-color: hsl(38.734177215189895, 97.5308641975%, 85%)
+      border: 0.1em solid color-mod(#FEE2AF blackness(10%));
+      background-color: color-mod(#FEE2AF lightness(85%))
     }header .download a:hover {
-        background-color: hsl(38.734177215189895, 97.5308641975%, 85%);
-        border-color: rgb(230, 210, 175);
+        background-color: color-mod(#FEE2AF lightness(85%));
+        border-color: color-mod(#FEE2AF blackness(10%));
       }header .download a img {
         width: 1.1em;
         display: baseline;
@@ -76,7 +76,7 @@ footer,
         margin-left: 0.5em;
       }@media (min-width: 780px) {
       header .download a {
-        border: 0.1em solid rgb(255, 227, 175);
+        border: 0.1em solid color-mod(#FEE2AF blackness(0%));
         background-color: #fff;
       }
     }.intro {
@@ -95,7 +95,7 @@ footer,
   font-style: italic;
   font-size: 0.9em
 }footer a {
-    color: hsl(0, 0%, 60%);
+    color: color-mod(#272727 lightness(60%));
     text-decoration: none;
   }@media (max-width: 560px) {
   header {
