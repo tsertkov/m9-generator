@@ -64,7 +64,8 @@ function syncDirS3 (config) {
       deleteRemoved: true,
       s3Params: {
         ACL: 'public-read',
-        Bucket: config.s3Bucket
+        Bucket: config.s3Bucket,
+        Prefix: config.s3Prefix || ''
       }
     })
 
