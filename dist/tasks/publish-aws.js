@@ -63,7 +63,7 @@ function syncDirS3(config) {
 
     const uploader = s3client.uploadDir({
       localDir: config.src,
-      deleteRemoved: true,
+      deleteRemoved: 'deleteRemoved' in config ? config.deleteRemoved : true,
       s3Params: {
         ACL: 'public-read',
         Bucket: config.s3Bucket,
