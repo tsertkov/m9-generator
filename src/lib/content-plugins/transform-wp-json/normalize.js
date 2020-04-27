@@ -9,14 +9,12 @@ function normalize (content) {
         normalizeTitle(entity)
         normalizeDate(entity)
         normalizeAcf(entity)
-        removeFuturePostsReferences(entity)
       })
-    } else if (typeof entities === 'object') {
+    } else {
       removeCruft(entities)
       normalizeTitle(entities)
       normalizeDate(entities)
       normalizeAcf(entities)
-      removeFuturePostsReferences(entities)
     }
   })
   return content
@@ -50,23 +48,4 @@ function normalizeAcf (entity) {
     })
     delete entity.acf
   }
-}
-
-function removeFuturePostsReferences (entity) {
-  Object.keys(entity).forEach(propertyName => {
-    const property = entity[propertyName]
-    if (!Array.isArray(propertyName)) return
-
-    property.forEach((entity, i) => {
-      if (typeof entity !== 'object') return
-
-      // remove future posts reference
-      if (entity.post_status === 'future') {
-        property.splice(i, 1)
-      } else {
-        // process nested entities
-        removeFuturePostsReferences(property)
-      }
-    })
-  })
 }
