@@ -43,6 +43,7 @@ function getReferencedEntity(content, refEntitySrc) {
     post_status: postStatus
   } = refEntitySrc;
   if (postStatus === 'draft') return null;
+  if (postStatus === 'future') return null;
   const entities = content[postType];
   return entities ? getById(entities, id) : refEntitySrc;
 }
